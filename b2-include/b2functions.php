@@ -715,7 +715,7 @@ function pingWeblogsRss($blog_ID = 1, $rss_url) {
 	}
 }
 
-// pings CaféLog.com
+// pings Cafï¿½Log.com
 function pingCafelog($cafelogID,$title='',$p='') {
 	global $use_cafelogping, $blogname, $siteurl, $blogfilename;
 	if ((!(($blogname=="my weblog") && ($siteurl=="http://example.com") && ($blogfilename=="b2.php"))) && (!preg_match("/localhost\//",$siteurl)) && ($use_cafelogping) && ($cafelogID != '')) {

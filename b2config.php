@@ -13,7 +13,7 @@
 # $blogfilename is the name of the default file for your blog
 # $blogname is the name of your blog
 
-$siteurl = 'http://example.com';
+$siteurl = 'http://localhost:8787';
 $blogfilename = 'index.php';
 $blogname = "my weblog";
 $blogdescription = "babblings !";
@@ -32,7 +32,7 @@ $use_cafelogping = 0;    # set this to 1 if you do have a Cafelog ID
 # $pathserver is where you have uploaded b2: for example, 'http://mydomain.com' (no ending slash !)
 #   by default b2 is set to run in the folder your blog resides, same as $siteurl
 
-$pathserver = 'http://example.com';
+$pathserver = 'http://localhost:8787';
 
 
 # your email (obvious uh ?)
@@ -56,9 +56,11 @@ $start_of_week = 1;
 
 # fill with your database details
 $dbname = 'b2';			// the name of the database
-$dbhost = 'localhost';		// 99% chances you won't need to change this value
-$dbusername = 'user';			// your MySQL username
-$dbpassword = 'pass';		// ...and password
+// $dbhost = 'db.blog.local';		// 100% chance you will need to change this
+// $dbhost = '192.168.164.2';		// hostname is not working, so use the ip docker gives it
+$dbhost = 'host.docker.internal:33306'; // container networking in general seems hosed on this image...
+$dbusername = 'b2';			// your MySQL username
+$dbpassword = 'password';		// ...and password
 
 # database tables' names (change them if you want to have multiple b2's in a single database)
 $tableposts = 'b2posts';
@@ -115,7 +117,7 @@ $use_fileupload = 0;
 $fileupload_realpath = '/home/example/public_html/images';
 
 # enter the URL of that directory (it's used to generate the links to the pictures)
-$fileupload_url = 'http://example.com/images';
+$fileupload_url = 'http://localhost:8787/images';
 
 # accepted file types, you can add to that list if you want
 #   note: add a space before and after each file type
@@ -169,7 +171,7 @@ $use_weblogsping = 0;
 $use_blodotgsping = 0;
 
 # if you ping blo.gs, this is the URL that will be sent to it (enter your blog's URL):
-$blodotgsping_url = 'http://example.com';
+$blodotgsping_url = 'http://localhost:8787';
 
 
 
@@ -208,7 +210,7 @@ $comments_notify = 0;
 $use_smilies = 0;
 
 # the directory where your smilies are (no trailing slash)
-$smilies_directory = 'http://example.com/b2-img/smilies';
+$smilies_directory = 'http://localhost:8787/b2-img/smilies';
 
 # here's the conversion table, you can modify it if you know what you're doing
 $b2smiliestrans = array(
