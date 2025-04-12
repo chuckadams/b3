@@ -1,0 +1,40 @@
+services:
+  b2-app:
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+      - ./Caddyfile:/etc/caddy/Caddyfile
+    ports:
+      - "8787:80"
+    networks:
+      app-net:
+        aliases:
+          - "b2.blog.local"
+
+  b2-mysql:
+    restart: unless-stopped
+    image: mysql/mysql-server:8.0
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_ROOT_HOST=%
+      - MYSQL_USER=b2
+      - MYSQL_PASSWORD=password
+      - MYSQL_DATABASE=b2
+    volumes:
+      - ./my.cnf:/etc/my.cnf
+      - dbdata:/var/lib/mysql
+    ports:
+      - "33306:3306"
+    networks:
+      app-net:
+        aliases:
+          - "db.blog.local"
+
+networks:
+  app-net: ~
+
+volumes:
+  dbdata: ~

@@ -1,0 +1,14 @@
+node_modules/
+tmp/
+vendor/
+
+.envrc
+docker-compose.override.yml
+shell.nix
+
+*.bak
+*.tmp
+*~
+
+*.secret
+*.secret.*
