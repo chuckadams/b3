@@ -295,16 +295,8 @@ function make_clickable($text) { // original function: phpBB, extended here for 
 
 
 function is_email($user_email) {
-	$chars = "/^([a-z0-9_]|\\-|\\.)+@(([a-z0-9_]|\\-)+\\.)+[a-z]{2,4}\$/i";
-	if(strstr($user_email, '@') && strstr($user_email, '.')) {
-		if (preg_match($chars, $user_email)) {
-			return true;
-		} else {
-			return false;
-		}
-	} else {
-		return false;
-	}
+  // the email validation regex was a bad idea then, and breaks completely in 2025
+  return str_contains($user_email, '@') && str_contains($user_email, '.');
 }
 
 
