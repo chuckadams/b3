@@ -646,7 +646,8 @@ function get_the_category() {
 
 function get_the_category_by_ID($cat_ID) {
 	global $id,$tablecategories,$querycount,$cache_categories,$use_cache, $connexion;
-	if ((!$cache_categories[$cat_ID]) OR (!$use_cache)) {
+	$cache_categories ??= [];
+	if (!($cache_categories[$cat_ID] ?? null) OR (!$use_cache)) {
 		$query="SELECT cat_name FROM $tablecategories WHERE cat_ID = '$cat_ID'";
 		$result=mysqli_query($connexion,$query);
 		$querycount++;

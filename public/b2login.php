@@ -276,6 +276,9 @@ default:
 		global $user_login,$user_pass_md5,$user_ID;
 
 		$userdata = get_userdatabylogin($user_login);
+    if (!$userdata) {
+      return false;
+    }
 
 		if ($user_pass_md5 != md5($userdata["user_pass"])) {
 			return false;
