@@ -4,7 +4,6 @@
  * b2's config file *
                   * */
 
-
 # Reminder: everything that starts with #, /* or // is a comment
 
 /* Start editing */
@@ -18,7 +17,6 @@ $blogfilename = 'index.php';
 $blogname = "my weblog";
 $blogdescription = "babblings !";
 
-
 # fill these only if you have a Cafelog ID,
 # this enables your blog to be in the Recently Updated b2 blogs list.
 # to obtain this ID, e-mail update@tidakada.com with these details:
@@ -28,29 +26,22 @@ $blogdescription = "babblings !";
 $cafelogID = '';
 $use_cafelogping = 0;    # set this to 1 if you do have a Cafelog ID
 
-
 # $pathserver is where you have uploaded b2: for example, 'http://mydomain.com' (no ending slash !)
 #   by default b2 is set to run in the folder your blog resides, same as $siteurl
 
 $pathserver = 'https://b2.blog.local';
 
-
 # your email (obvious uh ?)
 $admin_email = 'you@example.com';
-
 
 # set this to 0 or 1, whether you want new users to be able to post entries once they registered
 $new_users_can_blog = 1;
 
-
 # set this to 0 or 1, whether you want to allow users to register on your blog.
 $users_can_register = 1;
 
-
 # day at the start of the week: 0 for Sunday, 1 for Monday, 2 for Tuesday, etc
 $start_of_week = 1;
-
-
 
 // ** MySQL settings **
 
@@ -66,7 +57,6 @@ $tablesettings = 'b2settings';
 $tablecategories = 'b2categories';
 $tablecomments = 'b2comments';
 
-
 // ** Post preview function **
 
 # set this to 1 if you want to use the 'preview' function
@@ -75,9 +65,9 @@ $use_preview = 1;
 // ** Text formatting options **
 
 # these options can help you format your text without using too much html
-$use_bbcode = 0;	// use BBCode, like [b]bold[/b]
-$use_gmcode = 0;	// use GreyMatter-styles: **bold** \italic\ __underline__
-$use_quicktags = 1;	// buttons for HTML tags (they won't work on IE Mac yet)
+$use_bbcode = 0;    // use BBCode, like [b]bold[/b]
+$use_gmcode = 0;    // use GreyMatter-styles: **bold** \italic\ __underline__
+$use_quicktags = 1;    // buttons for HTML tags (they won't work on IE Mac yet)
 
 # IMPORTANT! set this to 0 if you are using Chinese, Japanese, Korean,
 #                                           or other double-bytes languages
@@ -89,9 +79,7 @@ $use_balanceTags = 1;
 # this would convert quotes into smart/curly quotes, set it to 1 to enable it
 $use_smartquotes = 0;
 
-
 // ** Image upload **
-
 
 # set this to 0 to disable file upload, or 1 to enable it
 $use_fileupload = 0;
@@ -124,8 +112,6 @@ $fileupload_minlevel = '1';
 #   example: $fileupload_allowedusers = ' barbara anne ';
 $fileupload_allowedusers = '';
 
-
-
 // ** RSS syndication options **
 
 # these options are used by b2rdf.php (1.0), b2rss.php (0.92), and b2rss2.php (2.0)
@@ -144,7 +130,6 @@ $rss_encoded_html = 0;
 #  note: in b2rss.php, this will be set to 0 if you use encoded HTML
 $rss_excerpt_length = 50;
 
-
 // ** Comments options **
 
 # set this to 1 to require e-mail and name, or 0 to allow comments without e-mail/name
@@ -159,8 +144,6 @@ $comment_allowed_tags = '<b><i><u><strong><em><code><blockquote><p><br><strike><
 # set this to 1 to let every author be notified about comments on their posts
 $comments_notify = 0;
 
-
-
 // ** Smilies options **
 
 # set this to 1 to enable smiley conversion in posts
@@ -171,86 +154,81 @@ $use_smilies = 0;
 $smilies_directory = 'http://example.com/b2-img/smilies';
 
 # here's the conversion table, you can modify it if you know what you're doing
-$b2smiliestrans = array(
-	':)'		=> 'icon_smile.gif',
-	':D'		=> 'icon_biggrin.gif',
-	':-D'		=> 'icon_biggrin.gif',
-	':grin:'		=> 'icon_biggrin.gif',
-	':)'		=> 'icon_smile.gif',
-	':-)'		=> 'icon_smile.gif',
-	':smile:'		=> 'icon_smile.gif',
-	':('		=> 'icon_sad.gif',
-	':-('		=> 'icon_sad.gif',
-	':sad:'		=> 'icon_sad.gif',
-	':o'		=> 'icon_surprised.gif',
-	':-o'		=> 'icon_surprised.gif',
-	':eek:'		=> 'icon_surprised.gif',
-	'8O'		=> 'icon_eek.gif',
-	'8-O'		=> 'icon_eek.gif',
-	':shock:'		=> 'icon_eek.gif',
-	':?'		=> 'icon_confused.gif',
-	':-?'		=> 'icon_confused.gif',
-	':???:'		=> 'icon_confused.gif',
-	'8)'		=> 'icon_cool.gif',
-	'8-)'		=> 'icon_cool.gif',
-	':cool:'		=> 'icon_cool.gif',
-	':lol:'		=> 'icon_lol.gif',
-	':x'		=> 'icon_mad.gif',
-	':-x'		=> 'icon_mad.gif',
-	':mad:'		=> 'icon_mad.gif',
-	':P'		=> 'icon_razz.gif',
-	':-P'		=> 'icon_razz.gif',
-	':razz:'		=> 'icon_razz.gif',
-	':oops:'		=> 'icon_redface.gif',
-	':cry:'		=> 'icon_cry.gif',
-	':evil:'		=> 'icon_evil.gif',
-	':twisted:'		=> 'icon_twisted.gif',
-	':roll:'		=> 'icon_rolleyes.gif',
-	':wink:'		=> 'icon_wink.gif',
-	';)'		=> 'icon_wink.gif',
-	';-)'		=> 'icon_wink.gif',
-	':!:'		=> 'icon_exclaim.gif',
-	':?:'		=> 'icon_question.gif',
-	':idea:'		=> 'icon_idea.gif',
-	':arrow:'		=> 'icon_arrow.gif',
-	':|'		=> 'icon_neutral.gif',
-	':-|'		=> 'icon_neutral.gif',
-	':neutral:'		=> 'icon_neutral.gif',
-	':mrgreen:'		=> 'icon_mrgreen.gif',
-);
-
+$b2smiliestrans = [
+    ':)' => 'icon_smile.gif',
+    ':D' => 'icon_biggrin.gif',
+    ':-D' => 'icon_biggrin.gif',
+    ':grin:' => 'icon_biggrin.gif',
+    ':)' => 'icon_smile.gif',
+    ':-)' => 'icon_smile.gif',
+    ':smile:' => 'icon_smile.gif',
+    ':(' => 'icon_sad.gif',
+    ':-(' => 'icon_sad.gif',
+    ':sad:' => 'icon_sad.gif',
+    ':o' => 'icon_surprised.gif',
+    ':-o' => 'icon_surprised.gif',
+    ':eek:' => 'icon_surprised.gif',
+    '8O' => 'icon_eek.gif',
+    '8-O' => 'icon_eek.gif',
+    ':shock:' => 'icon_eek.gif',
+    ':?' => 'icon_confused.gif',
+    ':-?' => 'icon_confused.gif',
+    ':???:' => 'icon_confused.gif',
+    '8)' => 'icon_cool.gif',
+    '8-)' => 'icon_cool.gif',
+    ':cool:' => 'icon_cool.gif',
+    ':lol:' => 'icon_lol.gif',
+    ':x' => 'icon_mad.gif',
+    ':-x' => 'icon_mad.gif',
+    ':mad:' => 'icon_mad.gif',
+    ':P' => 'icon_razz.gif',
+    ':-P' => 'icon_razz.gif',
+    ':razz:' => 'icon_razz.gif',
+    ':oops:' => 'icon_redface.gif',
+    ':cry:' => 'icon_cry.gif',
+    ':evil:' => 'icon_evil.gif',
+    ':twisted:' => 'icon_twisted.gif',
+    ':roll:' => 'icon_rolleyes.gif',
+    ':wink:' => 'icon_wink.gif',
+    ';)' => 'icon_wink.gif',
+    ';-)' => 'icon_wink.gif',
+    ':!:' => 'icon_exclaim.gif',
+    ':?:' => 'icon_question.gif',
+    ':idea:' => 'icon_idea.gif',
+    ':arrow:' => 'icon_arrow.gif',
+    ':|' => 'icon_neutral.gif',
+    ':-|' => 'icon_neutral.gif',
+    ':neutral:' => 'icon_neutral.gif',
+    ':mrgreen:' => 'icon_mrgreen.gif',
+];
 
 # the weekdays and the months.. translate them if necessary
 
-$weekday[0]='Sunday';
-$weekday[1]='Monday';
-$weekday[2]='Tuesday';
-$weekday[3]='Wednesday';
-$weekday[4]='Thursday';
-$weekday[5]='Friday';
-$weekday[6]='Saturday';
-
+$weekday[0] = 'Sunday';
+$weekday[1] = 'Monday';
+$weekday[2] = 'Tuesday';
+$weekday[3] = 'Wednesday';
+$weekday[4] = 'Thursday';
+$weekday[5] = 'Friday';
+$weekday[6] = 'Saturday';
 
 # the months, translate them if necessary - note: this isn't active everywhere yet
-$month['01']='January';
-$month['02']='February';
-$month['03']='March';
-$month['04']='April';
-$month['05']='May';
-$month['06']='June';
-$month['07']='July';
-$month['08']='August';
-$month['09']='September';
-$month['10']='October';
-$month['11']='November';
-$month['12']='December';
-
-
+$month['01'] = 'January';
+$month['02'] = 'February';
+$month['03'] = 'March';
+$month['04'] = 'April';
+$month['05'] = 'May';
+$month['06'] = 'June';
+$month['07'] = 'July';
+$month['08'] = 'August';
+$month['09'] = 'September';
+$month['10'] = 'October';
+$month['11'] = 'November';
+$month['12'] = 'December';
 
 # $b2inc is where the included b2 files are: that's generally the directory b2-include,
 #  so you shouldn't have to change that setting
 $b2inc = './b2-include';
-
 
 // ** Querystring Configuration ** (don't change if you don't know what you're doing)
 
@@ -260,10 +238,9 @@ $querystring_separator = '&amp;';
 
 /* Stop editing */
 
-
-$HTTP_HOST=getenv('HTTP_HOST');  /* domain name */
-$REMOTE_ADDR=getenv('REMOTE_ADDR'); /* visitor's IP */
-$HTTP_USER_AGENT=getenv('HTTP_USER_AGENT'); /* visitor's browser */
+$HTTP_HOST = getenv('HTTP_HOST');  /* domain name */
+$REMOTE_ADDR = getenv('REMOTE_ADDR'); /* visitor's IP */
+$HTTP_USER_AGENT = getenv('HTTP_USER_AGENT'); /* visitor's browser */
 
 $server = $dbhost;
 $loginsql = $dbusername;

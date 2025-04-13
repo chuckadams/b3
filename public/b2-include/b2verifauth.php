@@ -3,53 +3,57 @@
 require_once('b2config.php');
 
 /* connecting the db */
-$connexion = @mysqli_connect($server,$loginsql,$passsql) or die("Can't connect to the database<br>");
-mysqli_select_db($connexion,"$base");
+$connexion = @mysqli_connect($server, $loginsql, $passsql) or die("Can't connect to the database<br>");
+mysqli_select_db($connexion, "$base");
 
 /* checking login & pass in the database */
-function veriflog() {
-	global $_COOKIE, $connexion;
-	global $tableusers,$tablesettings,$tablecategories,$tableposts,$tablecomments;
+function veriflog()
+{
+    global $_COOKIE, $connexion;
+    global $tableusers, $tablesettings, $tablecategories, $tableposts, $tablecomments;
 
-	if (!empty($_COOKIE["cafeloguser"])) {
-		$user_login = $_COOKIE["cafeloguser"];
-		$user_pass_md5 = $_COOKIE["cafelogpass"];
-	} else {
-		return false;
-	}
+    if (!empty($_COOKIE["cafeloguser"])) {
+        $user_login = $_COOKIE["cafeloguser"];
+        $user_pass_md5 = $_COOKIE["cafelogpass"];
+    } else {
+        return false;
+    }
 
-	if (!($user_login != ""))
-		return false;
-	if (!$user_pass_md5)
-		return false;
+    if (!($user_login != "")) {
+        return false;
+    }
+    if (!$user_pass_md5) {
+        return false;
+    }
 
-	$query =  " SELECT user_login, user_pass FROM $tableusers WHERE user_login = '$user_login' ";
-	$result = @mysqli_query($connexion,$query) or die("Query: $query<br /><br />Error: ".mysqli_error($connexion));
+    $query = " SELECT user_login, user_pass FROM $tableusers WHERE user_login = '$user_login' ";
+    $result = @mysqli_query($connexion, $query) or die("Query: $query<br /><br />Error: " . mysqli_error($connexion));
 
-	$lines = mysqli_num_rows($result);
-	if ($lines<1) {
-		return false;
-	} else {
-		$res=mysqli_fetch_row($result);
-		if ($res[0]==$user_login && md5($res[1])==$user_pass_md5) {
-			return true;
-		} else {
-			return false;
-		}
-	}
+    $lines = mysqli_num_rows($result);
+    if ($lines < 1) {
+        return false;
+    } else {
+        $res = mysqli_fetch_row($result);
+        if ($res[0] == $user_login && md5($res[1]) == $user_pass_md5) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
+
 #if ( $user_login!="" && $user_pass!="" && $id_session!="" && $adresse_ip==$REMOTE_ADDR) {
 #	if ( !(veriflog()) AND !(verifcookielog()) ) {
-	if (!(veriflog())) {
-		header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
-		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-		header("Cache-Control: no-cache, must-revalidate");
-		header("Pragma: no-cache");
-		if (!empty($_COOKIE["cafeloguser"])) {
-			$error="<b>Error</b>: wrong login or password";
-		}
-		include("b2login.php");
-		exit();
-	}
+if (!(veriflog())) {
+    header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+    header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+    header("Cache-Control: no-cache, must-revalidate");
+    header("Pragma: no-cache");
+    if (!empty($_COOKIE["cafeloguser"])) {
+        $error = "<b>Error</b>: wrong login or password";
+    }
+    include("b2login.php");
+    exit();
+}
 #}
 ?>

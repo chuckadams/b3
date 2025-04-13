@@ -2,339 +2,363 @@
 /* <Register> */
 
 include("./b2config.php");
-include($b2inc."/b2functions.php");
+include($b2inc . "/b2functions.php");
 
-function add_magic_quotes($array) {
-	foreach ($array as $k => $v) {
-		if (is_array($v)) {
-			$array[$k] = add_magic_quotes($v);
-		} else {
-			$array[$k] = addslashes($v);
-		}
-	}
-	return $array;
-} 
+function add_magic_quotes($array)
+{
+    foreach ($array as $k => $v) {
+        if (is_array($v)) {
+            $array[$k] = add_magic_quotes($v);
+        } else {
+            $array[$k] = addslashes($v);
+        }
+    }
+    return $array;
+}
 
-$_GET    = add_magic_quotes($_GET);
-$_POST   = add_magic_quotes($_POST);
+$_GET = add_magic_quotes($_GET);
+$_POST = add_magic_quotes($_POST);
 $_COOKIE = add_magic_quotes($_COOKIE);
 
-$b2varstoreset = array('action');
-for ($i=0; $i<count($b2varstoreset); $i += 1) {
-	$b2var = $b2varstoreset[$i];
-	if (!isset($$b2var)) {
-		if (empty($_POST["$b2var"])) {
-			if (empty($_GET["$b2var"])) {
-				$$b2var = '';
-			} else {
-				$$b2var = $_GET["$b2var"];
-			}
-		} else {
-			$$b2var = $_POST["$b2var"];
-		}
-	}
+$b2varstoreset = ['action'];
+for ($i = 0; $i < count($b2varstoreset); $i += 1) {
+    $b2var = $b2varstoreset[$i];
+    if (!isset($$b2var)) {
+        if (empty($_POST["$b2var"])) {
+            if (empty($_GET["$b2var"])) {
+                $$b2var = '';
+            } else {
+                $$b2var = $_GET["$b2var"];
+            }
+        } else {
+            $$b2var = $_POST["$b2var"];
+        }
+    }
 }
 
 if (!$users_can_register) {
-	$action = 'disabled';
+    $action = 'disabled';
 }
 
-switch($action) {
+switch ($action) {
+    case "register":
 
-case "register":
+        function filter($value)
+        {
+            return preg_match('/^[a-zA-Z0-9_-|]+$/', $value);
+        }
 
-	function filter($value)	{
-		return preg_match('/^[a-zA-Z0-9_-|]+$/',$value);
-	}
+        $user_login = $_POST["user_login"];
+        $pass1 = $_POST["pass1"];
+        $pass2 = $_POST["pass2"];
+        $user_email = $_POST["user_email"];
+        $user_login = $_POST["user_login"];
 
-	$user_login = $_POST["user_login"];
-	$pass1 = $_POST["pass1"];
-	$pass2 = $_POST["pass2"];
-	$user_email = $_POST["user_email"];
-	$user_login = $_POST["user_login"];
-
-	/* declaring global fonctions */
+        /* declaring global fonctions */
 #	global $user_login,$pass1,$pass2,$user_firstname,$user_nickname,$user_icq,$user_email,$user_url;
-		
-	/* checking login has been typed */
-	if ($user_login=='') {
-		die ("<b>ERROR</b>: please enter a Login");
-	}
 
-	/* checking the password has been typed twice */
-	if ($pass1=='' ||$pass2=='') {
-		die ("<b>ERROR</b>: please enter your password twice");
-	}
+        /* checking login has been typed */
+        if ($user_login == '') {
+            die ("<b>ERROR</b>: please enter a Login");
+        }
 
-	/* checking the password has been typed twice the same */
-	if ($pass1!=$pass2)	{
-		die ("<b>ERROR</b>: please type the same password in the two password fields");
-	}
-	$user_nickname=$user_login;
+        /* checking the password has been typed twice */
+        if ($pass1 == '' || $pass2 == '') {
+            die ("<b>ERROR</b>: please enter your password twice");
+        }
 
-	/* checking e-mail address */
-	if ($user_email=="") {
-		die ("<b>ERROR</b>: please type your e-mail address");
-	} else if (!is_email($user_email)) {
-		die ("<b>ERROR</b>: the email address isn't correct");
-	}
+        /* checking the password has been typed twice the same */
+        if ($pass1 != $pass2) {
+            die ("<b>ERROR</b>: please type the same password in the two password fields");
+        }
+        $user_nickname = $user_login;
 
-	$id=mysqli_connect($server,$loginsql,$passsql);
-	if ($id==false)	{
-		die ("<b>OOPS</b>: can't connect to the server !");
-	}
+        /* checking e-mail address */
+        if ($user_email == "") {
+            die ("<b>ERROR</b>: please type your e-mail address");
+        } else {
+            if (!is_email($user_email)) {
+                die ("<b>ERROR</b>: the email address isn't correct");
+            }
+        }
 
-	mysqli_select_db($id,"$base") or die ("<b>OOPS</b>: can't select the database $base : ".mysqli_error($id));
+        $id = mysqli_connect($server, $loginsql, $passsql);
+        if ($id == false) {
+            die ("<b>OOPS</b>: can't connect to the server !");
+        }
 
-	/* checking the login isn't already used by another user */
-	$request =  " SELECT user_login FROM $tableusers WHERE user_login = '$user_login'";
-	$result = mysqli_query($id,$request) or die ("<b>OOPS</b>: can't check the login...");
-	$lines = mysqli_num_rows($result);
-	mysqli_free_result($result);
-	if ($lines>=1) {
-		die ("<b>ERROR</b>: this login is already registered, please choose another one");
-	}
+        mysqli_select_db($id, "$base") or die ("<b>OOPS</b>: can't select the database $base : " . mysqli_error($id));
 
-	$user_ip = $_SERVER['REMOTE_ADDR'] ;
-	$user_domain = gethostbyaddr($_SERVER['REMOTE_ADDR'] );
-	$user_browser = $_SERVER['HTTP_USER_AGENT'];
+        /* checking the login isn't already used by another user */
+        $request = " SELECT user_login FROM $tableusers WHERE user_login = '$user_login'";
+        $result = mysqli_query($id, $request) or die ("<b>OOPS</b>: can't check the login...");
+        $lines = mysqli_num_rows($result);
+        mysqli_free_result($result);
+        if ($lines >= 1) {
+            die ("<b>ERROR</b>: this login is already registered, please choose another one");
+        }
 
-	$user_login=addslashes($user_login);
-	$pass1=addslashes($pass1);
-	$user_nickname=addslashes($user_nickname);
+        $user_ip = $_SERVER['REMOTE_ADDR'];
+        $user_domain = gethostbyaddr($_SERVER['REMOTE_ADDR']);
+        $user_browser = $_SERVER['HTTP_USER_AGENT'];
 
-	$query = "INSERT INTO $tableusers (user_login, user_pass, user_nickname, user_email, user_ip, user_domain, user_browser, dateYMDhour, user_level, user_idmode) VALUES ('$user_login','$pass1','$user_nickname','$user_email','$user_ip','$user_domain','$user_browser',NOW(),'$new_users_can_blog','nickname')";
-	$result = mysqli_query($id,$query);
-	if ($result==false) {
-		die ("<b>ERROR</b>: couldn't register you... please contact the <a href=\"mailto:$admin_email\">webmaster</a> !".mysqli_error($id));
-	}
+        $user_login = addslashes($user_login);
+        $pass1 = addslashes($pass1);
+        $user_nickname = addslashes($user_nickname);
 
-	$stars="";
-	for ($i = 0; $i < strlen($pass1); $i = $i + 1) {
-		$stars .= "*";
-	}
+        $query = "INSERT INTO $tableusers (user_login, user_pass, user_nickname, user_email, user_ip, user_domain, user_browser, dateYMDhour, user_level, user_idmode) VALUES ('$user_login','$pass1','$user_nickname','$user_email','$user_ip','$user_domain','$user_browser',NOW(),'$new_users_can_blog','nickname')";
+        $result = mysqli_query($id, $query);
+        if ($result == false) {
+            die ("<b>ERROR</b>: couldn't register you... please contact the <a href=\"mailto:$admin_email\">webmaster</a> !" . mysqli_error($id));
+        }
 
-	$message  = "new user registration on your blog $blogname:\r\n\r\n";
-	$message .= "login: $user_login\r\n\r\ne-mail: $user_email";
+        $stars = "";
+        for ($i = 0; $i < strlen($pass1); $i = $i + 1) {
+            $stars .= "*";
+        }
 
-	@mail($admin_email,"new user registration on your blog $blogname",$message);
+        $message = "new user registration on your blog $blogname:\r\n\r\n";
+        $message .= "login: $user_login\r\n\r\ne-mail: $user_email";
 
-	?><html>
-<head>
-<title>b2 > Registration complete</title>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<link rel="stylesheet" href="<?php echo $b2inc; ?>/b2.css" type="text/css">
-<style type="text/css">
-<!--
-<?php
-if (!preg_match("/Nav/",$HTTP_USER_AGENT)) {
-?>
-textarea,input,select {
-	background-color: #f0f0f0;
-	border-width: 1px;
-	border-color: #cccccc;
-	border-style: solid;
-	padding: 2px;
-	margin: 1px;
-}
-<?php
-}
-?>
--->
-</style>
-</head>
-<body bgcolor="#ffffff" text="#000000" link="#cccccc" vlink="#cccccc" alink="#ff0000">
+        @mail($admin_email, "new user registration on your blog $blogname", $message);
 
-<table width="100%" height="100%">
-<td align="center" valign="middle">
+        ?>
+      <html>
+    <head>
+      <title>b2 > Registration complete</title>
+      <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+      <link rel="stylesheet" href="<?php echo $b2inc; ?>/b2.css" type="text/css">
+      <style type="text/css">
+        <!--
+        <?php
+        if (!preg_match("/Nav/",$HTTP_USER_AGENT)) {
+        ?>
+        textarea, input, select {
+          background-color: #f0f0f0;
+          border-width: 1px;
+          border-color: #cccccc;
+          border-style: solid;
+          padding: 2px;
+          margin: 1px;
+        }
 
-<table width="200" height="200" style="border: 1px solid #cccccc;" cellpadding="0" cellspacing="0">
+        <?php
+        }
+        ?>
+        -->
+      </style>
+    </head>
+    <body bgcolor="#ffffff" text="#000000" link="#cccccc" vlink="#cccccc" alink="#ff0000">
 
-<tr height="50">
-<td height="50" width="50">
-<a href="http://cafelog.com" target="_blank"><img src="b2-img/b2minilogo.png" border="0" alt="visit b2's homepage" /></a>
-</td>
-<td class="b2menutop" align="center">
-registration<br />complete
-</td>
-</tr>
+    <table width="100%" height="100%">
+      <td align="center" valign="middle">
 
-<tr height="150"><td align="right" valign="bottom" height="150" colspan="2">
+        <table width="200" height="200" style="border: 1px solid #cccccc;" cellpadding="0" cellspacing="0">
 
-<table width="180">
-<tr><td align="right" colspan="2">login: <b><?php echo $user_login ?>&nbsp;</b></td></tr>
-<tr><td align="right" colspan="2">password: <b><?php echo $stars ?>&nbsp;</b></td></tr>
-<tr><td align="right" colspan="2">e-mail: <b><?php echo $user_email ?>&nbsp;</b></td></tr>
-<tr><td width="90">&nbsp;</td>
-<td><form name="login" action="b2login.php" method="post">
-<input type="hidden" name="log" value="<?php echo $user_login ?>" />
-<input type="submit" class="search" value="Login" name="submit" /></form></td></tr>
-</table>
-</td>
-</tr>
-</table>
+          <tr height="50">
+            <td height="50" width="50">
+              <a href="http://cafelog.com" target="_blank"><img src="b2-img/b2minilogo.png" border="0" alt="visit b2's homepage"/></a>
+            </td>
+            <td class="b2menutop" align="center">
+              registration<br/>complete
+            </td>
+          </tr>
 
-</td>
-</tr>
-</table>
+          <tr height="150">
+            <td align="right" valign="bottom" height="150" colspan="2">
 
-</div>
-</body>
-</html>
+              <table width="180">
+                <tr>
+                  <td align="right" colspan="2">login: <b><?php echo $user_login ?>&nbsp;</b></td>
+                </tr>
+                <tr>
+                  <td align="right" colspan="2">password: <b><?php echo $stars ?>&nbsp;</b></td>
+                </tr>
+                <tr>
+                  <td align="right" colspan="2">e-mail: <b><?php echo $user_email ?>&nbsp;</b></td>
+                </tr>
+                <tr>
+                  <td width="90">&nbsp;</td>
+                  <td>
+                    <form name="login" action="b2login.php" method="post">
+                      <input type="hidden" name="log" value="<?php echo $user_login ?>"/>
+                      <input type="submit" class="search" value="Login" name="submit"/></form>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
 
-	<?php
-break;
+      </td>
+      </tr>
+    </table>
 
-case "disabled":
+    </div>
+    </body>
+      </html>
 
-	?><html>
-<head>
-<title>b2 > Registration Currently Disabled</title>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<link rel="stylesheet" href="<?php echo $b2inc; ?>/b2.css" type="text/css">
-<style type="text/css">
-<!--
-<?php
-if (!preg_match("/Nav/",$HTTP_USER_AGENT)) {
-?>
-textarea,input,select {
-	background-color: #f0f0f0;
-	border-width: 1px;
-	border-color: #cccccc;
-	border-style: solid;
-	padding: 2px;
-	margin: 1px;
-}
-<?php
-}
-?>
--->
-</style>
-</head>
-<body bgcolor="#ffffff" text="#000000" link="#cccccc" vlink="#cccccc" alink="#ff0000">
+        <?php
+        break;
 
-<table width="100%" height="100%">
-<td align="center" valign="middle">
+    case "disabled":
 
-<table width="200" height="200" style="border: 1px solid #cccccc;" cellpadding="0" cellspacing="0">
+        ?>
+      <html>
+    <head>
+      <title>b2 > Registration Currently Disabled</title>
+      <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+      <link rel="stylesheet" href="<?php echo $b2inc; ?>/b2.css" type="text/css">
+      <style type="text/css">
+        <!--
+        <?php
+        if (!preg_match("/Nav/",$HTTP_USER_AGENT)) {
+        ?>
+        textarea, input, select {
+          background-color: #f0f0f0;
+          border-width: 1px;
+          border-color: #cccccc;
+          border-style: solid;
+          padding: 2px;
+          margin: 1px;
+        }
 
-<tr height="50">
-<td height="50" width="50">
-<a href="http://cafelog.com" target="_blank"><img src="b2-img/b2minilogo.png" border="0" alt="visit b2's homepage" /></a>
-</td>
-<td class="b2menutop" align="center">
-registration disabled<br />
-</td>
-</tr>
+        <?php
+        }
+        ?>
+        -->
+      </style>
+    </head>
+    <body bgcolor="#ffffff" text="#000000" link="#cccccc" vlink="#cccccc" alink="#ff0000">
 
-<tr height="150">
-<td align="center" valign="center" height="150" colspan="2">
-<table width="80%" height="100%">
-<tr><td class="b2menutop">
-User registration is currently not allowed.<br />
-<a href="<?php echo $siteurl.'/'.$blogfilename; ?>" >Home</a>
-</td></tr></table>
-</td>
-</tr>
-</table>
+    <table width="100%" height="100%">
+      <td align="center" valign="middle">
 
-</td>
-</tr>
-</table>
+        <table width="200" height="200" style="border: 1px solid #cccccc;" cellpadding="0" cellspacing="0">
 
-</body>
-</html>
+          <tr height="50">
+            <td height="50" width="50">
+              <a href="http://cafelog.com" target="_blank"><img src="b2-img/b2minilogo.png" border="0" alt="visit b2's homepage"/></a>
+            </td>
+            <td class="b2menutop" align="center">
+              registration disabled<br/>
+            </td>
+          </tr>
 
-	<?php
-break;
+          <tr height="150">
+            <td align="center" valign="center" height="150" colspan="2">
+              <table width="80%" height="100%">
+                <tr>
+                  <td class="b2menutop">
+                    User registration is currently not allowed.<br/>
+                    <a href="<?php echo $siteurl . '/' . $blogfilename; ?>">Home</a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
 
-default:
+      </td>
+      </tr>
+    </table>
 
-	?><html>
-<head>
-<title>b2 > Register form</title>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<link rel="stylesheet" href="<?php echo $b2inc; ?>/b2.css" type="text/css">
-<style type="text/css">
-<!--
-<?php
-if (!preg_match("/Nav/",$HTTP_USER_AGENT)) {
-?>
-textarea,input,select {
-	background-color: #f0f0f0;
-	border-width: 1px;
-	border-color: #cccccc;
-	border-style: solid;
-	padding: 2px;
-	margin: 1px;
-}
-<?php
-}
-?>
--->
-</style>
-</head>
-<body bgcolor="#ffffff" text="#000000" link="#cccccc" vlink="#cccccc" alink="#ff0000">
+    </body>
+      </html>
 
-<table width="100%" height="100%">
-<td align="center" valign="middle">
+        <?php
+        break;
 
-<table width="200" height="200" style="border: 1px solid #cccccc;" cellpadding="0" cellspacing="0">
+    default:
 
-<tr height="50">
-<td height="50" width="50">
-<a href="http://cafelog.com" target="_blank"><img src="b2-img/b2minilogo.png" border="0" alt="visit b2's homepage" /></a>
-</td>
-<td class="b2menutop" align="center">
-registration<br />
-</td>
-</tr>
+        ?>
+      <html>
+    <head>
+      <title>b2 > Register form</title>
+      <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+      <link rel="stylesheet" href="<?php echo $b2inc; ?>/b2.css" type="text/css">
+      <style type="text/css">
+        <!--
+        <?php
+        if (!preg_match("/Nav/",$HTTP_USER_AGENT)) {
+        ?>
+        textarea, input, select {
+          background-color: #f0f0f0;
+          border-width: 1px;
+          border-color: #cccccc;
+          border-style: solid;
+          padding: 2px;
+          margin: 1px;
+        }
 
-<tr height="150"><td align="right" valign="bottom" height="150" colspan="2">
+        <?php
+        }
+        ?>
+        -->
+      </style>
+    </head>
+    <body bgcolor="#ffffff" text="#000000" link="#cccccc" vlink="#cccccc" alink="#ff0000">
 
-<form method="post" action="b2register.php">
-<input type="hidden" name="action" value="register" />
-<table border="0" width="180" class="menutop" style="background-color: #ffffff">
-<tr> 
-<td width="150" align="right">login</td>
-<td>
-<input type="text" name="user_login" size="8" maxlength="20" />
-</td>
-</tr>
-<tr> 
-<td align="right">password<br />(twice)</td>
-<td> 
-<input type="password" name="pass1" size="8" maxlength="100" />
-<br />
-<input type="password" name="pass2" size="8" maxlength="100" />
-</td>
-</tr>
-<tr> 
-<td align="right">e-mail</td>
-<td>
-<input type="text" name="user_email" size="8" maxlength="100" />
-</td>
-</tr>
-<tr> 
-<td>&nbsp;</td>
-<td><input type="submit" value="OK" class="search" name="submit">
-</td>
-</tr>
-</table>
+    <table width="100%" height="100%">
+      <td align="center" valign="middle">
 
-</form>
+        <table width="200" height="200" style="border: 1px solid #cccccc;" cellpadding="0" cellspacing="0">
 
-</td>
-</tr>
-</table>
+          <tr height="50">
+            <td height="50" width="50">
+              <a href="http://cafelog.com" target="_blank"><img src="b2-img/b2minilogo.png" border="0" alt="visit b2's homepage"/></a>
+            </td>
+            <td class="b2menutop" align="center">
+              registration<br/>
+            </td>
+          </tr>
 
-</td>
-</tr>
-</table>
+          <tr height="150">
+            <td align="right" valign="bottom" height="150" colspan="2">
 
-</body>
-</html>
-	<?php
+              <form method="post" action="b2register.php">
+                <input type="hidden" name="action" value="register"/>
+                <table border="0" width="180" class="menutop" style="background-color: #ffffff">
+                  <tr>
+                    <td width="150" align="right">login</td>
+                    <td>
+                      <input type="text" name="user_login" size="8" maxlength="20"/>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td align="right">password<br/>(twice)</td>
+                    <td>
+                      <input type="password" name="pass1" size="8" maxlength="100"/>
+                      <br/>
+                      <input type="password" name="pass2" size="8" maxlength="100"/>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td align="right">e-mail</td>
+                    <td>
+                      <input type="text" name="user_email" size="8" maxlength="100"/>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>&nbsp;</td>
+                    <td><input type="submit" value="OK" class="search" name="submit">
+                    </td>
+                  </tr>
+                </table>
 
-break;
+              </form>
+
+            </td>
+          </tr>
+        </table>
+
+      </td>
+      </tr>
+    </table>
+
+    </body>
+      </html>
+        <?php
+
+        break;
 }
