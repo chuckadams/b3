@@ -557,6 +557,7 @@ function dropdown_categories($blog_ID=1) {
 
 function touch_time($edit=1) {
 	global $month, $postdata, $time_difference;
+  $postdata ??= ['Date' => new DateTime()->format( 'Y-m-d H:i:s' )];
 	echo $postdata['Date'];
 	echo '<br /><br /><input type="checkbox" class="checkbox" name="edit_date" value="1" id="timestamp" /><label for="timestamp"> Edit timestamp</label><br />';
 	
