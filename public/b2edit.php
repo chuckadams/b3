@@ -69,7 +69,7 @@ case 'post':
 	}
 
 	$query = "INSERT INTO $tableposts (ID, post_author, post_date, post_content, post_title, post_category) VALUES ('0','$user_ID','$now','$content','".$post_title."','".$post_category."')";
-	$result = mysqli_query($connexion,$query) or mysql_oops($query);
+	$result = mysqli_query($connexion,$query) or db_oops($query);
 
 	$post_ID = mysqli_insert_id($connexion);
 
@@ -178,7 +178,7 @@ case "editpost":
 	}
 
 	$query = "UPDATE $tableposts SET post_content=\"$content\", post_title=\"$post_title\", post_category=\"$post_category\"".$datemodif." WHERE ID=$post_ID";
-	$result = mysqli_query($connexion,$query) or mysql_oops($query);
+	$result = mysqli_query($connexion,$query) or db_oops($query);
 
 	if (isset($sleep_after_edit) && $sleep_after_edit > 0) {
 		sleep($sleep_after_edit);
@@ -303,7 +303,7 @@ case "editedcomment":
 	$content = format_to_post($content);
 
 	$query = "UPDATE $tablecomments SET comment_content=\"$content\", comment_author=\"$newcomment_author\", comment_author_email=\"$newcomment_author_email\", comment_author_url=\"$newcomment_author_url\"".$datemodif." WHERE comment_ID=$comment_ID";
-	$result = mysqli_query($connexion,$query) or mysql_oops($query);
+	$result = mysqli_query($connexion,$query) or db_oops($query);
 
 	header ("Location: b2edit.php?p=$comment_post_ID&c=1#comments"); //?a=ec");
 

@@ -40,7 +40,7 @@ function dbconnect() {
 }
 
 
-function mysql_oops($query) {
+function db_oops($query) {
     global $connexion;
     $error  = '<p>Oops, MySQL error!</p><p>Your query:<br />'.$query;
 	$error .= '</p><p>MySQL said:<br />'.mysqli_error($connexion).'</p>';
