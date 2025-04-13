@@ -47,8 +47,8 @@ class POP3 {
                                 //  This must be set to true
                                 //  manually
 
-    function POP3 ( $server = '', $timeout = '' ) {
-        settype($this->BUFFER,"integer");
+    function __construct( $server = '', $timeout = '' ) {
+        $this->BUFFER = (int)$this->BUFFER;
         if( !empty($server) ) {
             // Do not allow programs to alter MAILSERVER
             // if it is already specified. They can get around
@@ -61,7 +61,6 @@ class POP3 {
             $this->TIMEOUT = $timeout;
             set_time_limit($timeout);
         }
-        return true;
     }
 
     function update_timer () {
@@ -92,7 +91,7 @@ class POP3 {
             return false;
         }
 
-        socket_set_blocking($fp,-1);
+        stream_set_blocking($fp,-1);
         $this->update_timer();
         $reply = fgets($fp,$this->BUFFER);
         $reply = $this->strip_clf($reply);
@@ -330,7 +329,7 @@ class POP3 {
                 $this->ERROR = _("POP3 pop_list:") . ' ' . _("Error ") . "[$reply]";
                 return false;
             }
-            list($junk,$num,$size) = explode(" ",$reply);
+            [$junk,$num,$size] = explode(" ",$reply);
             return $size;
         }
         $cmd = "LIST";
@@ -353,7 +352,7 @@ class POP3 {
                 $this->ERROR = _("POP3 pop_list:") . ' ' . _("Premature end of list");
                 return false;
             }
-            list($thisMsg,$msgSize) = explode(" ",$line);
+            [$thisMsg,$msgSize] = explode(" ",$line);
             settype($thisMsg,"integer");
             if($thisMsg != $msgC)
             {
@@ -428,7 +427,7 @@ class POP3 {
         $size = $Vars[2];
         settype($count,"integer");
         settype($size,"integer");
-        if($type != "count")
+        if($type !== "count")
         {
             return array($count,$size);
         }
@@ -554,7 +553,7 @@ class POP3 {
                 $this->ERROR = _("POP3 uidl:") . ' ' . _("Error ") . "[$reply]";
                 return false;
             }
-            list ($ok,$num,$myUidl) = explode(" ",$reply);
+            [$ok,$num,$myUidl] = explode(" ",$reply);
             return $myUidl;
         } else {
             $this->update_timer();
@@ -585,7 +584,7 @@ class POP3 {
                 if(str_starts_with($line, ".\r\n")) {
                     break;
                 }
-                list ($msg,$msgUidl) = explode(" ",$line);
+                [$msg,$msgUidl] = explode(" ",$line);
                 $msgUidl = $this->strip_clf($msgUidl);
                 if($count == $msg) {
                     $UIDLArray[$msg] = $msgUidl;
@@ -657,16 +656,13 @@ class POP3 {
         {
             $digit = substr($server_text,$count,1);
             if(!empty($digit))             {
-                if( (!$outside) && ($digit != '<') && ($digit != '>') )
-                {
+                if( (!$outside) && ($digit !== '<') && ($digit !== '>') ) {
                     $banner .= $digit;
                 }
-                if ($digit == '<')
-                {
+                if ($digit === '<') {
                     $outside = false;
                 }
-                if($digit == '>')
-                {
+                if($digit === '>') {
                     $outside = true;
                 }
             }
