@@ -4,12 +4,11 @@
 
     <td height="15" width="20"><img src="b2-img/blank.gif" width="1" height="1" alt=""/></td>
 
-    <td rowspan="3" width="50" valign="top"><a href="http://cafelog.com/"><img
+    <td rowspan="3" width="50" valign="top"><a href="/"><img
             src="b2-img/b2minilogo.png"
             width="50"
             height="50"
             border="0"
-            alt="visit b2's website"
             style="border-width:1px; border-color: #999999; border-style: dashed"
         /></a></td>
 

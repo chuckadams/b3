@@ -157,7 +157,7 @@ switch ($action) {
 
           <tr height="50">
             <td height="50" width="50">
-              <a href="http://cafelog.com" target="_blank"><img src="b2-img/b2minilogo.png" border="0" alt="visit b2's homepage"/></a>
+              <a href="/" target="_blank"><img src="b2-img/b2minilogo.png" border="0" alt="visit b2's homepage"/></a>
             </td>
             <td class="b2menutop" align="center">
               registration<br/>complete
@@ -238,7 +238,7 @@ switch ($action) {
 
           <tr height="50">
             <td height="50" width="50">
-              <a href="http://cafelog.com" target="_blank"><img src="b2-img/b2minilogo.png" border="0" alt="visit b2's homepage"/></a>
+              <a href="/" target="_blank"><img src="b2-img/b2minilogo.png" border="0" alt="visit b2's homepage"/></a>
             </td>
             <td class="b2menutop" align="center">
               registration disabled<br/>
@@ -306,7 +306,7 @@ switch ($action) {
 
           <tr height="50">
             <td height="50" width="50">
-              <a href="http://cafelog.com" target="_blank"><img src="b2-img/b2minilogo.png" border="0" alt="visit b2's homepage"/></a>
+              <a href="/" target="_blank"><img src="b2-img/b2minilogo.png" border="0" alt="visit b2's homepage"/></a>
             </td>
             <td class="b2menutop" align="center">
               registration<br/>

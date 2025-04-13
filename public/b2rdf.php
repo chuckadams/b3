@@ -25,7 +25,7 @@ if (!isset($rss_language)) {
     <dc:language><?php echo $rss_language ?></dc:language>
     <dc:date><?php echo gmdate('Y-m-d\TH:i:s'); ?></dc:date>
     <dc:creator><?php echo $admin_email ?></dc:creator>
-    <admin:generatorAgent rdf:resource="http://cafelog.com/?v=<?php echo $b2_version ?>"/>
+    <admin:generatorAgent rdf:resource="<?php echo $site_url ?>?v=<?php echo $b2_version ?>"/>
     <admin:errorReportsTo rdf:resource="mailto:<?php echo $admin_email ?>"/>
     <sy:updatePeriod>hourly</sy:updatePeriod>
     <sy:updateFrequency>1</sy:updateFrequency>

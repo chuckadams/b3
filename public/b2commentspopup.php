@@ -137,10 +137,5 @@ $blog = 1; include("blog.header.php"); while($row = mysqli_fetch_object($result)
 
 </div>
 
-<p class="centerP">
-  [powered by <a href="http://cafelog.com" target="_blank"><b>b2</b></a>.]
-</p>
-
-
 </body>
 </html>

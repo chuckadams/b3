@@ -197,7 +197,7 @@ switch ($action) {
 
           <tr height="50">
             <td height="50" width="50">
-              <a href="http://cafelog.com" target="_blank"><img src="b2-img/b2minilogo.png" border="0" alt="visit b2's homepage"/></a>
+              <a href="/" target="_blank"><img src="b2-img/b2minilogo.png" border="0"/></a>
             </td>
             <td align="right" valign="top">&nbsp;</td>
           </tr>
@@ -335,7 +335,7 @@ switch ($action) {
 
           <tr height="50">
             <td height="50" width="50">
-              <a href="http://cafelog.com" target="_blank"><img src="b2-img/b2minilogo.png" border="0" alt="visit b2's homepage"/></a>
+              <a href="/" target="_blank"><img src="b2-img/b2minilogo.png" border="0"/></a>
             </td>
             <td align="right" valign="top">
               <a href="b2register.php" class="b2menutop">register ?</a><br/>

@@ -94,7 +94,7 @@ require("$b2inc/b2vars.php");
                             $user_login = addslashes($post_author);
                             $pass1 = addslashes("password");
                             $user_nickname = addslashes($post_author);
-                            $user_email = addslashes("user@cafelog.com");
+                            $user_email = addslashes("user@example.com");
                             $user_url = addslashes("");
                             $user_joindate = addslashes($user_joindate);
                             $query = "INSERT INTO $tableusers (user_login,user_pass,user_nickname,user_email,user_url,user_ip,user_domain,user_browser,dateYMDhour,user_level,user_idmode) VALUES ('$user_login','$pass1','$user_nickname','$user_email','$user_url','$user_ip','$user_domain','$user_browser','$user_joindate','1','nickname')";

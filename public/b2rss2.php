@@ -31,7 +31,7 @@ if (!isset($rss_excerpt_length) || ($rss_encoded_html == 1)) {
     <dc:creator><?php echo $admin_email ?></dc:creator>
     <dc:rights>Copyright <?php echo mysql2date('Y', get_lastpostdate()); ?></dc:rights>
     <dc:date><?php echo gmdate('Y-m-d\TH:i:s'); ?></dc:date>
-    <admin:generatorAgent rdf:resource="http://cafelog.com/?v=<?php echo $b2_version ?>"/>
+    <admin:generatorAgent rdf:resource="<?php echo $siteurl ?>?v=<?php echo $b2_version ?>"/>
     <admin:errorReportsTo rdf:resource="mailto:<?php echo $admin_email ?>"/>
     <sy:updatePeriod>hourly</sy:updatePeriod>
     <sy:updateFrequency>1</sy:updateFrequency>

@@ -26,11 +26,11 @@ include("blog.header.php"); ?>
       <?php permalink_anchor(); ?>
 
     <strong><?php the_title(); ?></strong> (category: <strong><?php the_category() ?></strong>)<br/>
-      <?php the_content(); ?><?php link_pages("<br />Pages: ", "<br />", "number") ?>
+      <?php the_content(); ?><?php link_pages("<br />Pages: ") ?>
     <br/>
     <em>posted by <strong><?php the_author() ?></strong> @ <a href="<?php permalink_link() ?>"><?php the_time() ?></a></em>
     <br/>
-      <?php comments_popup_link("comments ?", "1 comment", "% comments") ?>
+      <?php comments_popup_link("comments ?") ?>
 
   </p>
 
@@ -40,16 +40,10 @@ include("blog.header.php"); ?>
   <!-- // this is just the end of the motor - don't touch that line either :) -->
 <?php } ?>
 
-<div align="right">[powered by <a href="http://cafelog.com" target="_blank"><b>b2</b></a>.]<br/>
-  <br/>
+<div align="right">
   <a href="b2login.php">login</a><br/>
-  <a href="b2register.php">register</a></div>
-
-<?php
-if ($debug == "1") {
-    echo "<p>$querycount queries - " . number_format(timer_stop(), 3) . " seconds</p>";
-}
-?>
+  <a href="b2register.php">register</a>
+</div>
 
 </body>
 </html>

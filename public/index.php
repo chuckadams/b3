@@ -1,15 +1,14 @@
-<?php /* Don't remove this line, it calls the b2 function files ! */ $blog = 1; include("blog.header.php"); ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<?php
+$blog = 1;
+include("blog.header.php");
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN""http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<!-- layout credits goto http://bluerobot.com/web/layouts/layout2.html -->
 
 <head>
   <title><?php bloginfo('name') ?><?php single_post_title(' :: ') ?><?php single_cat_title(' :: ') ?><?php single_month_title(' :: ') ?></title>
 
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
-  <meta http-equiv="reply-to" content="<?php bloginfo('admin_email'); ?>"/>
-  <meta http-equiv="imagetoolbar" content="no"/>
-  <meta content="TRUE" name="MSSmartTagsPreventParsing"/>
 
   <style type="text/css" media="screen">
     @import url(layout2b.css);
@@ -42,7 +41,7 @@
           <?php the_content(); ?>
 
         <div class="rightFlush">
-            <?php link_pages("<br />Pages: ", "<br />", "number") ?>
+            <?php link_pages("<br />Pages: ") ?>
             <?php comments_popup_link("Comments (0)", "Comments (1)", "Comments (%)") ?>
 
           <!-- this includes the comments and a form to add a new comment -->
@@ -59,16 +58,10 @@
 
 </div>
 
-<p class="centerP"><?php timer_stop(1); ?>
-  [powered by <a href="http://cafelog.com" target="_blank"><b>b2</b></a>.]
-</p>
-
-
 <div id="menu">
 
   <h4>quick links:</h4>
 
-  <a href="http://www.cafelog.com" title="b2's homepage">cafelog.com</a><br/>
   <a href="http://some other site" title="another link">another link</a><br/>
   <a href="http://some other site" title="another link">another link</a><br/>
   <a href="http://some other site" title="another link">another link</a><br/>
@@ -103,10 +96,6 @@
 
 </div>
 
-<div id="chaff">
-  <a href="mailto:abuse@[127.0.0.1]" title="anti sp@mbot addrss">4 sp@mbots e-mail me</a>
-</div>
-<!-- BlueRobot was here. -->
 </body>
 </html>
 
