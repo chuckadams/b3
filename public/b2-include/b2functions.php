@@ -236,8 +236,8 @@ function convert_bbcode($content) {
 function convert_bbcode_email($content) {
 	global $use_bbcode;
 	$bbcode_email["in"] = array(
-		'#\[email](.+?)\[/email]#eis',
-		'#\[email=(.+?)](.+?)\[/email]#eis'
+		'#\[email](.+?)\[/email]#is',
+		'#\[email=(.+?)](.+?)\[/email]#is'
 	);
 	$bbcode_email["out"] = array(
 		"'<a href=\"mailto:'.antispambot('\\1').'\">'.antispambot('\\1').'</a>'",		// E-mail
