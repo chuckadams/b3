@@ -160,7 +160,7 @@ textarea,input,select {
 
 			$sql = "SELECT * FROM $tableusers WHERE user_login = '$post_author'";
 			$result = mysqli_query($connexion,$sql);
-			$myrow = mysql_fetch_array($result);
+			$myrow = mysqli_fetch_array($result);
 			$post_author_ID=$myrow[0];
 
 			$post_title=gm2autobr($postinfo[2]);
@@ -196,7 +196,7 @@ textarea,input,select {
 			
 			$sql2 = "SELECT * FROM $tableposts WHERE 1=1 ORDER BY ID DESC LIMIT 1";
 			$result2 = mysqli_query($connexion,$sql2);
-			$myrow2 = mysql_fetch_array($result2);
+			$myrow2 = mysqli_fetch_array($result2);
 			$post_ID=$myrow2[0];
 
 

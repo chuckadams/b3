@@ -109,7 +109,7 @@ textarea,input,select {
 
 			$sql = "SELECT * FROM $tableusers WHERE user_login = '$post_author'";
 			$result = mysqli_query($connexion,$sql);
-			$myrow = mysql_fetch_array($result);
+			$myrow = mysqli_fetch_array($result);
 			$post_author_ID=$myrow[0];
 
 			$post_date = explode(" ",$post_date);

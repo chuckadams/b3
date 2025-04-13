@@ -638,7 +638,7 @@ function get_the_category() {
 		$query="SELECT cat_name FROM $tablecategories WHERE cat_ID = '$cat_ID'";
 		$result=mysqli_query($connexion,$query);
 		$querycount++;
-		$myrow = mysql_fetch_array($result);
+		$myrow = mysqli_fetch_array($result);
 		$cat_name = $myrow[0];
 		$cache_categories[$cat_ID] = $cat_name;
 	} else {
@@ -653,7 +653,7 @@ function get_the_category_by_ID($cat_ID) {
 		$query="SELECT cat_name FROM $tablecategories WHERE cat_ID = '$cat_ID'";
 		$result=mysqli_query($connexion,$query);
 		$querycount++;
-		$myrow = mysql_fetch_array($result);
+		$myrow = mysqli_fetch_array($result);
 		$cat_name = $myrow[0];
 		$cache_categories[$cat_ID] = $cat_name;
 	} else {

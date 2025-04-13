@@ -56,7 +56,7 @@ if ($archive_mode == 'monthly') {
 	$arc_sql="SELECT DISTINCT YEAR(post_date), MONTH(post_date) FROM $tableposts WHERE post_date < '$now' AND post_category > 0 ORDER BY post_date DESC";
 	$querycount++;
 	$arc_result=mysqli_query($connexion,$arc_sql) or die($arc_sql.'<br />'.mysqli_error($connexion));
-	while($arc_row = mysql_fetch_array($arc_result)) {
+	while($arc_row = mysqli_fetch_array($arc_result)) {
 		$arc_year  = $arc_row['YEAR(post_date)'];
 		$arc_month = $arc_row['MONTH(post_date)'];
 		echo "<a href=\"$archive_link_m$arc_year".zeroise($arc_month,2).'">';
@@ -68,7 +68,7 @@ if ($archive_mode == 'monthly') {
 	$arc_sql="SELECT DISTINCT YEAR(post_date), MONTH(post_date), DAYOFMONTH(post_date) FROM $tableposts WHERE post_date < '$now' AND post_category > 0 ORDER BY post_date DESC";
 	$querycount++;
 	$arc_result=mysqli_query($connexion,$arc_sql) or die($arc_sql.'<br />'.mysqli_error($connexion));
-	while($arc_row = mysql_fetch_array($arc_result)) {
+	while($arc_row = mysqli_fetch_array($arc_result)) {
 		$arc_year  = $arc_row['YEAR(post_date)'];
 		$arc_month = $arc_row['MONTH(post_date)'];
 		$arc_dayofmonth = $arc_row['DAYOFMONTH(post_date)'];
@@ -86,7 +86,7 @@ if ($archive_mode == 'monthly') {
 	$querycount++;
 	$arc_result=mysqli_query($connexion,$arc_sql) or die($arc_sql.'<br />'.mysqli_error($connexion));
 	$arc_w_last = '';
-	while($arc_row = mysql_fetch_array($arc_result)) {
+	while($arc_row = mysqli_fetch_array($arc_result)) {
 		$arc_year = $arc_row['YEAR(post_date)'];
 		$arc_w = $arc_row['WEEK(post_date)'];
 		if ($arc_w != $arc_w_last) {

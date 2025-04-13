@@ -385,7 +385,7 @@ function get_userdata($userid) {
 	if ((empty($cache_userdata[$userid])) OR (!$use_cache)) {
 		$sql = "SELECT * FROM $tableusers WHERE ID = '$userid'";
 		$result = mysqli_query($connexion,$sql) or die("Your SQL query: <br />$sql<br /><br />MySQL said:<br />".mysqli_error($connexion));
-		$myrow = mysql_fetch_array($result);
+		$myrow = mysqli_fetch_array($result);
 		$querycount++;
 		$cache_userdata[$userid] = $myrow;
 	} else {
@@ -413,7 +413,7 @@ function get_userdatabylogin($user_login) {
 		$sql = "SELECT * FROM $tableusers WHERE user_login = '$user_login'";
 		$result = mysqli_query($connexion,$sql) or die("Your SQL query: <br />$sql<br /><br />MySQL said:<br />".mysqli_error($connexion));
 		if (!$result)	die($sql."<br /><br />".mysqli_error($connexion));
-		$myrow = mysql_fetch_array($result);
+		$myrow = mysqli_fetch_array($result);
 		$querycount++;
 		$cache_userdata["$user_login"] = $myrow;
 	} else {
@@ -427,7 +427,7 @@ function get_userid($user_login) {
 	if ((empty($cache_userdata["$user_login"])) OR (!$use_cache)) {
 		$sql = "SELECT ID FROM $tableusers WHERE user_login = '$user_login'";
 		$result = mysqli_query($connexion,$sql) or die("No user with the login <i>$user_login</i>");
-		$myrow = mysql_fetch_array($result);
+		$myrow = mysqli_fetch_array($result);
 		$querycount++;
 		$cache_userdata["$user_login"] = $myrow;
 	} else {
@@ -501,7 +501,7 @@ function get_commentdata($comment_ID,$no_cache=0) { // less flexible, but saves 
 		$query="SELECT * FROM $tablecomments WHERE comment_ID = $comment_ID";
 		$result=mysqli_query($connexion,$query);
 		$querycount++;
-		$myrow = mysql_fetch_array($result);
+		$myrow = mysqli_fetch_array($result);
 	} else {
 		$myrow['comment_ID']=$rowc->comment_ID;
 		$myrow['comment_post_ID']=$rowc->comment_post_ID;

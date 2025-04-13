@@ -135,7 +135,7 @@ echo " selected";
 		$arc_sql="SELECT DISTINCT YEAR(post_date), MONTH(post_date) FROM $tableposts ORDER BY post_date DESC";
 		$querycount++;
 		$arc_result=mysqli_query($connexion,$arc_sql) or die($arc_sql."<br />".mysqli_error($connexion));
-		while($arc_row = mysql_fetch_array($arc_result)) {
+		while($arc_row = mysqli_fetch_array($arc_result)) {
 			$arc_year  = $arc_row["YEAR(post_date)"];
 			$arc_month = $arc_row["MONTH(post_date)"];
 			echo "<option value=\"$arc_year".zeroise($arc_month,2)."\">";
@@ -148,7 +148,7 @@ echo " selected";
 		$arc_sql="SELECT DISTINCT YEAR(post_date), MONTH(post_date), DAYOFMONTH(post_date) FROM $tableposts ORDER BY post_date DESC";
 		$querycount++;
 		$arc_result=mysqli_query($connexion,$arc_sql) or die($arc_sql."<br />".mysqli_error($connexion));
-		while($arc_row = mysql_fetch_array($arc_result)) {
+		while($arc_row = mysqli_fetch_array($arc_result)) {
 			$arc_year  = $arc_row["YEAR(post_date)"];
 			$arc_month = $arc_row["MONTH(post_date)"];
 			$arc_dayofmonth = $arc_row["DAYOFMONTH(post_date)"];
@@ -168,7 +168,7 @@ echo " selected";
 		$querycount++;
 		$arc_result=mysqli_query($connexion,$arc_sql) or die($arc_sql."<br />".mysqli_error($connexion));
 		$arc_w_last = '';
-		while($arc_row = mysql_fetch_array($arc_result)) {
+		while($arc_row = mysqli_fetch_array($arc_result)) {
 			$arc_year = $arc_row["YEAR(post_date)"];
 			$arc_w = $arc_row["WEEK(post_date)"];
 			if ($arc_w != $arc_w_last) {

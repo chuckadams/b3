@@ -956,7 +956,7 @@ function pingback_ping($m) {
 				$title = preg_replace('/[^a-zA-Z0-9]/', '.', $urltest['fragment']);
 				$sql = "SELECT ID FROM $tableposts WHERE post_title RLIKE '$title'";
 				$result = mysqli_query($connexion,$sql) or die("Query: $sql\n\nError: ".mysqli_error($connexion));
-				$blah = mysql_fetch_array($result);
+				$blah = mysqli_fetch_array($result);
 				$post_ID = $blah['ID'];
 				$way = 'from the fragment (title)';
 			}

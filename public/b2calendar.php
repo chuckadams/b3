@@ -92,7 +92,7 @@ if ($ak_next_month == 13) {
 }
 
 $ak_first_post = mysqli_query($connexion,"SELECT MONTH(MIN(post_date)), YEAR(MIN(post_date)) FROM $tableposts");
-$ak_first_post = mysql_fetch_array($ak_first_post);
+$ak_first_post = mysqli_fetch_array($ak_first_post);
 // using text links by default
 	$ak_previous_month_dim = '<span>&lt;</span>&nbsp;&nbsp;';
 	$ak_previous_month_active = '<a href="'.$archive_link_m.$ak_previous_year.zeroise($ak_previous_month,2).'" style="text-decoration: none;">&lt;</a>&nbsp;&nbsp;';
@@ -127,7 +127,7 @@ while($calendarmonthwithpost == 0) {
 	$arc_result=mysqli_query($connexion,$arc_sql) or die($arc_sql."<br />".mysqli_error($connexion));
 	if (mysql_num_rows($arc_result) > 0) {
 		$daysinmonthwithposts = '-';
-		while($arc_row = mysql_fetch_array($arc_result)) {
+		while($arc_row = mysqli_fetch_array($arc_result)) {
 			$daysinmonthwithposts .= $arc_row["DAYOFMONTH(post_date)"].'-';
 		}
 		$calendarmonthwithpost = 1;
@@ -206,7 +206,7 @@ if ($ak_use_tooltip_titles == 1) {
 	$ak_days_result = mysqli_query($connexion,"SELECT post_title, post_date FROM $tableposts WHERE YEAR(post_date) = '$thisyear' AND MONTH(post_date) = '$thismonth'");
 
 	$ak_day_title_array = array();
-	while($ak_temp = mysql_fetch_array($ak_days_result)) {
+	while($ak_temp = mysqli_fetch_array($ak_days_result)) {
 		$ak_day_title_array[] = $ak_temp;
 	}
 	if (strstr($_SERVER["HTTP_USER_AGENT"], "MSIE")) {
