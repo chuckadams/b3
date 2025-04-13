@@ -511,27 +511,13 @@ function get_postdata2($postid = 0)
     return ($postdata);
 }
 
-function get_commentdata($comment_ID, $no_cache = 0)
-{ // less flexible, but saves mysql queries
-    global $rowc, $id, $commentdata, $tablecomments, $querycount, $connexion;
-    if ($no_cache) {
-        $query = "SELECT * FROM $tablecomments WHERE comment_ID = $comment_ID";
-        $result = mysqli_query($connexion, $query);
-        $querycount++;
-        $myrow = mysqli_fetch_array($result);
-    } else {
-        $myrow['comment_ID'] = $rowc->comment_ID;
-        $myrow['comment_post_ID'] = $rowc->comment_post_ID;
-        $myrow['comment_author'] = $rowc->comment_author;
-        $myrow['comment_author_email'] = $rowc->comment_author_email;
-        $myrow['comment_author_url'] = $rowc->comment_author_url;
-        $myrow['comment_author_IP'] = $rowc->comment_author_IP;
-        $myrow['comment_date'] = $rowc->comment_date;
-        $myrow['comment_content'] = $rowc->comment_content;
-        $myrow['comment_karma'] = $rowc->comment_karma;
-        $myrow['comment_type'] = 'comment';
-    }
-    return ($myrow);
+function get_commentdata($comment_ID)
+{
+    global $tablecomments, $querycount, $connexion;
+    $query = "SELECT * FROM $tablecomments WHERE comment_ID = $comment_ID";
+    $result = mysqli_query($connexion, $query);
+    $querycount++;
+    return mysqli_fetch_array($result);
 }
 
 function get_catname($cat_ID)
