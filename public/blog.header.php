@@ -59,7 +59,7 @@ $where = '';
 $limits = '';
 $distinct = '';
 
-if ($pagenow != 'b2edit.php') {
+if ($pagenow !== 'b2edit.php') {
     timer_start();
 }
 
@@ -68,8 +68,8 @@ if ($posts) {
     $posts_per_page = $posts;
 }
 // if a month is specified in the querystring, load that month
-if ($m != '') {
-    $m = '' . intval($m);
+if ($m !== '') {
+    $m = '' . (int)$m;
     $where .= ' AND YEAR(post_date)=' . substr($m, 0, 4);
     if (strlen($m) > 5) {
         $where .= ' AND MONTH(post_date)=' . substr($m, 4, 2);
@@ -88,14 +88,14 @@ if ($m != '') {
     }
 }
 
-if ($w != '') {
-    $w = '' . intval($w);
+if ($w !== '') {
+    $w = '' . (int)$w;
     $where .= ' AND WEEK(post_date,1)=' . $w;
 }
 
 // if a post number is specified, load that post
-if (($p != '') && ($p != 'all')) {
-    $p = intval($p);
+if (($p !== '') && ($p !== 'all')) {
+    $p = (int)$p;
     $where = ' AND ID = ' . $p;
 }
 
@@ -105,8 +105,7 @@ if (!empty($s)) {
     $search = ' AND (';
     // puts spaces instead of commas
     $s = preg_replace('/, +/', '', $s);
-    $s = str_replace(',', ' ', $s);
-    $s = str_replace('"', ' ', $s);
+    $s = str_replace([',', '"'], ' ', $s);
     $s = trim($s);
     if ($exact) {
         $n = '';
@@ -116,7 +115,7 @@ if (!empty($s)) {
     if (!$sentence) {
         $s_array = explode(' ', $s);
         $search .= '(post_title LIKE \'' . $n . $s_array[0] . $n . '\') OR (post_content LIKE \'' . $s_array[0] . '\')';
-        for ($i = 1; $i < count($s_array); $i = $i + 1) {
+        for ($i = 1; $i < count($s_array); ++$i) {
             $search .= ' OR (post_title LIKE \'' . $n . $s_array[$i] . $n . '\') OR (post_content LIKE \'' . $n . $s_array[$i] . $n . '\')';
         }
         $search .= ' OR (post_title LIKE \'' . $n . $s . $n . '\') OR (post_content LIKE \'' . $n . $s . $n . '\')';
@@ -127,54 +126,54 @@ if (!empty($s)) {
 }
 
 // category stuff
-if ((empty($cat)) || ($cat == 'all') || ($cat == '0')) {
+if ((empty($cat)) || ($cat === 'all')) {
     $whichcat = '';
 } else {
-    $cat = '' . urldecode($cat) . '';
+    $cat = urldecode($cat);
     $cat = addslashes_gpc($cat);
-    if (stristr($cat, '-')) {
-        $eq = '!=';
+    if (str_contains($cat, '-')) {
+        $eq = '!==';
         $andor = 'AND';
         $cat = explode('-', $cat);
-        $cat = intval($cat[1]);
+        $cat = (int)$cat[1];
     } else {
         $eq = '=';
         $andor = 'OR';
     }
     $cat_array = explode(' ', $cat);
-    $whichcat .= ' AND (post_category ' . $eq . ' ' . intval($cat_array[0]);
-    for ($i = 1; $i < (count($cat_array)); $i = $i + 1) {
-        $whichcat .= ' ' . $andor . ' post_category ' . $eq . ' ' . intval($cat_array[$i]);
+    $whichcat .= ' AND (post_category ' . $eq . ' ' . (int)$cat_array[0];
+    for ($i = 1; $i < (count($cat_array)); ++$i) {
+        $whichcat .= ' ' . $andor . ' post_category ' . $eq . ' ' . (int)$cat_array[$i];
     }
     $whichcat .= ')';
 }
 
 // author stuff
-if ((empty($author)) || ($author == 'all') || ($author == '0')) {
+if ((empty($author)) || ($author === 'all')) {
     $whichauthor = '';
 } else {
-    $author = '' . urldecode($author) . '';
+    $author = urldecode($author);
     $author = addslashes_gpc($author);
-    if (stristr($author, '-')) {
-        $eq = '!=';
+    if (str_contains($author, '-')) {
+        $eq = '!==';
         $andor = 'AND';
         $author = explode('-', $author);
-        $author = '' . intval($author[1]);
+        $author = '' . (int)$author[1];
     } else {
         $eq = '=';
         $andor = 'OR';
     }
     $author_array = explode(' ', $author);
-    $whichauthor .= ' AND (post_author ' . $eq . ' ' . intval($author_array[0]);
-    for ($i = 1; $i < (count($author_array)); $i = $i + 1) {
-        $whichauthor .= ' ' . $andor . ' post_author ' . $eq . ' ' . intval($author_array[$i]);
+    $whichauthor .= ' AND (post_author ' . $eq . ' ' . (int)$author_array[0];
+    for ($i = 1; $i < (count($author_array)); ++$i) {
+        $whichauthor .= ' ' . $andor . ' post_author ' . $eq . ' ' . (int)$author_array[$i];
     }
     $whichauthor .= ')';
 }
 
 $where .= $search . $whichcat . $whichauthor;
 
-if ((empty($order)) || ((strtoupper($order) != 'ASC') && (strtoupper($order) != 'DESC'))) {
+if ((empty($order)) || ((strtoupper($order) !== 'ASC') && (strtoupper($order) !== 'DESC'))) {
     $order = 'DESC';
 }
 
@@ -187,14 +186,14 @@ if (empty($orderby)) {
     $orderby = urldecode($orderby);
     $orderby = addslashes_gpc($orderby);
     $orderby_array = explode(' ', $orderby);
-    if (!in_array($orderby_array[0], $allowed_keys)) {
+    if (!in_array($orderby_array[0], $allowed_keys, true)) {
         $orderby_array[0] = 'date';
     }
     $orderby = $orderby_array[0] . ' ' . $order;
     if (count($orderby_array) > 1) {
-        for ($i = 1; $i < (count($orderby_array)); $i = $i + 1) {
+        for ($i = 1; $i < (count($orderby_array)); ++$i) {
             // Only allow certain values for safety
-            if (in_array($orderby_array[$i], $allowed_keys)) {
+            if (in_array($orderby_array[$i], $allowed_keys, true)) {
                 $orderby .= ',post_' . $orderby_array[$i] . ' ' . $order;
             }
         }
@@ -202,9 +201,9 @@ if (empty($orderby)) {
 }
 
 if ((!$whichcat) && (!$m) && (!$p) && (!$w) && (!$s) && empty($poststart) && empty($postend)) {
-    if ($what_to_show == 'posts') {
+    if ($what_to_show === 'posts') {
         $limits = ' LIMIT ' . $posts_per_page;
-    } elseif ($what_to_show == 'days') {
+    } elseif ($what_to_show === 'days') {
         $lastpostdate = get_lastpostdate();
         $lastpostdate = mysql2date('Y-m-d 00:00:00', $lastpostdate);
         $lastpostdate = mysql2date('U', $lastpostdate);
@@ -214,14 +213,14 @@ if ((!$whichcat) && (!$m) && (!$p) && (!$w) && (!$s) && empty($poststart) && emp
 }
 
 if (!empty($postend) && ($postend > $poststart) && (!$m) && (!$w) && (!$whichcat) && (!$s) && (!$p)) {
-    if ($what_to_show == 'posts' || ($what_to_show == 'paged' && (!$paged))) {
-        $poststart = intval($poststart);
-        $postend = intval($postend);
+    if ($what_to_show === 'posts' || ($what_to_show === 'paged' && (!$paged))) {
+        $poststart = (int)$poststart;
+        $postend = (int)$postend;
         $posts = $postend - $poststart;
         $limits = ' LIMIT ' . $poststart . ',' . $posts;
-    } elseif ($what_to_show == 'days') {
-        $poststart = intval($poststart);
-        $postend = intval($postend);
+    } elseif ($what_to_show === 'days') {
+        $poststart = (int)$poststart;
+        $postend = (int)$postend;
         $posts = $postend - $poststart;
         $lastpostdate = get_lastpostdate();
         $lastpostdate = mysql2date('Y-m-d 00:00:00', $lastpostdate);
@@ -230,37 +229,33 @@ if (!empty($postend) && ($postend > $poststart) && (!$m) && (!$w) && (!$whichcat
         $otherdate = date('Y-m-d H:i:s', ($lastpostdate - (($postend - 1) * 86400)));
         $where .= ' AND post_date > \'' . $otherdate . '\' AND post_date < \'' . $startdate . '\'';
     }
-} else {
-    if (($what_to_show == 'paged') && (!$p) && (!$more)) {
-        if ($pagenow != 'b2edit.php') {
+} elseif (($what_to_show === 'paged') && (!$p) && (!$more)) {
+    if ($pagenow !== 'b2edit.php') {
+        $pgstrt = '';
+        if ($paged) {
+            $pgstrt = ((int)$paged - 1) * $posts_per_page . ', ';
+        }
+        $limits = 'LIMIT ' . $pgstrt . $posts_per_page;
+    } elseif (($m) || ($w) || ($s) || ($whichcat)) {
+            $limits = '';
+        } else {
             $pgstrt = '';
             if ($paged) {
-                $pgstrt = (intval($paged) - 1) * $posts_per_page . ', ';
+                $pgstrt = ((int)$paged - 1) * $posts_per_page . ', ';
             }
             $limits = 'LIMIT ' . $pgstrt . $posts_per_page;
-        } else {
-            if (($m) || ($p) || ($w) || ($s) || ($whichcat)) {
-                $limits = '';
-            } else {
-                $pgstrt = '';
-                if ($paged) {
-                    $pgstrt = (intval($paged) - 1) * $posts_per_page . ', ';
-                }
-                $limits = 'LIMIT ' . $pgstrt . $posts_per_page;
-            }
         }
-    } elseif (($m) || ($p) || ($w) || ($s) || ($whichcat) || ($author)) {
-        $limits = '';
-    }
+} elseif (($m) || ($p) || ($w) || ($s) || ($whichcat) || ($author)) {
+    $limits = '';
 }
 
-if ($p == 'all') {
+if ($p === 'all') {
     $where = '';
 }
 
 $now = date('Y-m-d H:i:s', (time() + ($time_difference * 3600)));
 
-if ($pagenow != 'b2edit.php') {
+if ($pagenow !== 'b2edit.php') {
     if ((empty($poststart)) || (empty($postend)) || !($postend > $poststart)) {
         $where .= ' AND post_date <= \'' . $now . '\'';
     }
@@ -268,7 +263,7 @@ if ($pagenow != 'b2edit.php') {
     $distinct = 'DISTINCT';
 }
 
-$request = " SELECT $distinct * FROM $tableposts WHERE 1=1" . $where . " ORDER BY post_$orderby $limits";
+$request = " SELECT $distinct * FROM $tableposts WHERE true" . $where . " ORDER BY post_$orderby $limits";
 
 if ($preview) {
     $request = 'SELECT 1-1'; // dummy mysql query for the preview
@@ -276,4 +271,3 @@ if ($preview) {
 
 //echo $request;
 $result = mysqli_query($connexion, $request);
-?>
