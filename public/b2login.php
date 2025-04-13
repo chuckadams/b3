@@ -98,7 +98,7 @@ case "login":
 		}
 		$result = mysqli_query($connexion,$query) or die("Incorrect Login/Password request: ".mysqli_error($connexion));
 
-		$lines = mysql_num_rows($result);
+		$lines = mysqli_num_rows($result);
 		if ($lines<1) {
 			$error="<b>ERROR</b>: wrong login or password";
 			$pwd="";

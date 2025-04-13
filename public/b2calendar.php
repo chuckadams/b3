@@ -125,7 +125,7 @@ while($calendarmonthwithpost == 0) {
 	$arc_sql="SELECT DISTINCT YEAR(post_date), MONTH(post_date), DAYOFMONTH(post_date) FROM $tableposts WHERE MONTH(post_date) = '$thismonth' AND YEAR(post_date) = '$thisyear' ORDER BY post_date DESC";
 	$querycount++;
 	$arc_result=mysqli_query($connexion,$arc_sql) or die($arc_sql."<br />".mysqli_error($connexion));
-	if (mysql_num_rows($arc_result) > 0) {
+	if (mysqli_num_rows($arc_result) > 0) {
 		$daysinmonthwithposts = '-';
 		while($arc_row = mysqli_fetch_array($arc_result)) {
 			$daysinmonthwithposts .= $arc_row["DAYOFMONTH(post_date)"].'-';

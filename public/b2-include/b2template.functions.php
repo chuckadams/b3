@@ -445,7 +445,7 @@ function previous_post($format='%', $previous='previous post: ', $title='yes', $
 
 		$query = @mysqli_query($connexion,$sql);
 		$querycount++;
-		if (($query) && (mysql_num_rows($query))) {
+		if (($query) && (mysqli_num_rows($query))) {
 			$p_info = mysqli_fetch_object($query);
 			$p_title = $p_info->post_title;
 			$p_id = $p_info->ID;
@@ -490,7 +490,7 @@ function next_post($format='%', $next='next post: ', $title='yes', $in_same_cat=
 
 		$query = @mysqli_query($connexion,$sql);
 		$querycount++;
-		if (($query) && (mysql_num_rows($query))) {
+		if (($query) && (mysqli_num_rows($query))) {
 			$p_info = mysqli_fetch_object($query);
 			$p_title = $p_info->post_title;
 			$p_id = $p_info->ID;
@@ -545,7 +545,7 @@ function next_posts_link($label='Next Page >>', $max_page=0) {
 				$nxt_request = substr($request, 0, $pos);
 			}
 			$nxt_result = mysqli_query($connexion,$nxt_request);
-			$numposts = mysql_num_rows($nxt_result);
+			$numposts = mysqli_num_rows($nxt_result);
 			$max_page = ceil($numposts / $posts_per_page);
 		}
 		if (!$paged) $paged = 1;
@@ -601,7 +601,7 @@ function posts_nav_link($sep=' :: ', $prelabel='<< Previous Page', $nxtlabel='Ne
 			$nxt_request = substr($request, 0, $pos);
 		}
 		$nxt_result = mysqli_query($connexion,$nxt_request);
-		$numposts = mysql_num_rows($nxt_result);
+		$numposts = mysqli_num_rows($nxt_result);
 		$max_page = ceil($numposts / $posts_per_page);
 		if ($max_page > 1) {
 			previous_posts_link($prelabel);

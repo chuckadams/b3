@@ -139,7 +139,7 @@ textarea,input,select {
 			// we'll check the author is registered, or if it's a deleted author
 			$sql = "SELECT * FROM $tableusers WHERE user_login = '$post_author'";
 			$result = mysqli_query($connexion,$sql);
-			if (!mysql_num_rows($result)) { // if deleted from GM, we register the author as a level 0 user in b2
+			if (!mysqli_num_rows($result)) { // if deleted from GM, we register the author as a level 0 user in b2
 				$user_ip="127.0.0.1";
 				$user_domain="localhost";
 				$user_browser="server";

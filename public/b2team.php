@@ -143,7 +143,7 @@ default:
 <?php
 	$request = " SELECT * FROM $tableusers WHERE user_level=0 ORDER BY ID";
 	$result = mysqli_query($connexion,$request);
-	if (mysql_num_rows($result)) {
+	if (mysqli_num_rows($result)) {
 ?>
 <br />
 <?php echo $tabletop ?>

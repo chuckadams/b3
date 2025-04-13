@@ -441,7 +441,7 @@ function get_usernumposts($userid) {
 	$sql = "SELECT * FROM $tableposts WHERE post_author = $userid";
 	$result = mysqli_query($connexion,$sql) or die("Your SQL query: <br />$sql<br /><br />MySQL said:<br />".mysqli_error($connexion));
 	$querycount++;
-	return mysql_num_rows($result);
+	return mysqli_num_rows($result);
 }
 
 function get_settings($setting) {
@@ -463,7 +463,7 @@ function get_postdata($postid) {
 	$sql = "SELECT * FROM $tableposts WHERE ID = $postid";
 	$result = mysqli_query($connexion,$sql) or die("Your SQL query: <br />$sql<br /><br />MySQL said:<br />".mysqli_error($connexion));
 	$querycount++;
-	if (mysql_num_rows($result)) {
+	if (mysqli_num_rows($result)) {
 		$myrow = mysqli_fetch_object($result);
 		$postdata = array (
 			'ID' => $myrow->ID, 

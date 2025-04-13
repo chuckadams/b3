@@ -88,7 +88,7 @@ textarea,input,select {
 			// we'll check the author is registered already
 			$sql = "SELECT * FROM $tableusers WHERE user_login = '$post_author'";
 			$result = mysqli_query($connexion,$sql);
-			if (!mysql_num_rows($result)) { // seems s/he's not, so let's register
+			if (!mysqli_num_rows($result)) { // seems s/he's not, so let's register
 				$user_ip="127.0.0.1";
 				$user_domain="localhost";
 				$user_browser="server";

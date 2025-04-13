@@ -545,7 +545,7 @@ function bloggergetusersblogs($m) {
 	$sql = "SELECT user_level FROM $tableusers WHERE user_login = '$user_login' AND user_level > 3";
 	$result = mysqli_query($connexion,$sql) or die($sql."<br />".mysqli_error($connexion));
 
-	$is_admin = mysql_num_rows($result);
+	$is_admin = mysqli_num_rows($result);
 
 	$struct = new xmlrpcval(array("isAdmin" => new xmlrpcval($is_admin,"boolean"),
 									"url" => new xmlrpcval($siteurl."/".$blogfilename),
@@ -969,7 +969,7 @@ function pingback_ping($m) {
 		$sql = 'SELECT post_author FROM '.$tableposts.' WHERE ID = '.$post_ID;
 		$result = mysqli_query($connexion,$sql);
 
-		if (mysql_num_rows($result)) {
+		if (mysqli_num_rows($result)) {
 
 			debug_fwrite($log, 'Post exists'."\n");
 
@@ -977,7 +977,7 @@ function pingback_ping($m) {
 			$sql = 'SELECT * FROM '.$tablecomments.' WHERE comment_post_ID = '.$post_ID.' AND comment_author_url = \''.$pagelinkedfrom.'\' AND comment_content LIKE \'%<pingback />%\'';
 			$result = mysqli_query($connexion,$sql);
 
-			if (mysql_num_rows($result) || (1==1)) {
+			if (mysqli_num_rows($result) || (1==1)) {
 			
 				// very stupid, but gives time to the 'from' server to publish !
 				sleep(1);
