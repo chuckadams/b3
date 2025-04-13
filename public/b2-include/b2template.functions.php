@@ -301,6 +301,8 @@ function the_content_rss($more_link_text='(more...)', $stripteaser=0, $more_file
 	$content = convert_bbcode($content);
 	$content = convert_gmcode($content);
 	$content = convert_chars($content, 'unicode');
+	$excerpt = '';
+
 	if ($cut && !$encode_html) {
 		$encode_html = 2;
 	}
@@ -765,6 +767,7 @@ function comments_number($zero='no comment', $one='1 comment', $more='% comments
 	// original hack by dodo@regretless.com
 	global $id,$postdata,$tablecomments,$c,$querycount,$cache_commentsnumber,$use_cache;
 	$number = generic_ctp_number($id, 'comments');
+	$blah = $zero;
 	if ($number == 0) {
 		$blah = $zero;
 	} elseif ($number == 1) {
@@ -1174,7 +1177,7 @@ function apply_filters($tag, $string) {
 		$b2_filter[$tag] = array_unique($b2_filter[$tag]);
 	}
 	if (isset($b2_filter[$tag])) {
-		$b2_filter[$tags] = (is_string($b2_filter[$tag])) ? array($b2_filter[$tag]) : $b2_filter[$tag];
+		$b2_filter[$tag] = (is_string($b2_filter[$tag])) ? array($b2_filter[$tag]) : $b2_filter[$tag];
 		$functions = $b2_filter[$tag];
 		foreach($functions as $function) {
 			$string = $function($string);
@@ -1185,6 +1188,8 @@ function apply_filters($tag, $string) {
 
 function add_filter($tag, $function_to_add) {
 	global $b2_filter;
+	$new_functions = [];
+
 	if (isset($b2_filter[$tag])) {
 		$functions = $b2_filter[$tag];
 		if (is_array($functions)) {

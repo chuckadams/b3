@@ -1,6 +1,10 @@
 	<?php // Do not delete these lines
 	if (basename($_SERVER["SCRIPT_FILENAME"]) == "b2comments.php")
 		die ("please, do not load this page directly");
+
+  $withcomments ??= false;
+  $c ??= false;
+
 	if (($withcomments) or ($c)) {
 
 		$comment_author = (empty($_COOKIE["comment_author"])) ? "name" : $_COOKIE["comment_author"];

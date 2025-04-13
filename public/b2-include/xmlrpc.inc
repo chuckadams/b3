@@ -1,4 +1,7 @@
-<?php					// -*-c++-*-
+<?php
+
+/** @noinspection PhpIllegalArrayKeyTypeInspection */
+
 // by Edd Dumbill (C) 1999-2001
 // <edd@usefulinc.com>
 // $Id: xmlrpc.inc,v 1.5 2002/08/13 12:08:07 michelvaldrighi Exp $
@@ -53,7 +56,7 @@ if (!function_exists('logIO')) {
 if (!function_exists('xml_parser_create')) {
 // Win 32 fix. From: "Leo West" <lwest@imaginet.fr>
 // Fix for missing extension file. From: "Michel Valdrighi" <m@tidakada.com>
-	if($WINDIR) {
+	if(isset($WINDIR)) {
 		if (@dl("php3_xml.dll")) {
 			define("CANUSEXMLRPC", 1);
 		} else {
@@ -362,7 +365,7 @@ function xmlrpc_cd($parser, $data)
 
 function xmlrpc_dh($parser, $data)
 {
-  global $_xh;
+  global $_xh, $xmlrpc_backslash;
   if (substr($data, 0, 1) == "&" && substr($data, -1, 1) == ";") {
 		if ($_xh[$parser]['lv']==1) {  
 			$_xh[$parser]['qt']=1; 
@@ -750,7 +753,8 @@ class xmlrpcmsg {
 	  $r=new xmlrpcresp(0, $xmlrpcerr["invalid_return"],
 						$xmlrpcstr["invalid_return"]);
 	} else {
-	  eval('$v=' . $_xh[$parser]['st'] . '; $allOK=1;');
+		$v = null;
+	  eval('$v=' . $_xh[$parser]['st'] . '; $allOK=1;'); // OMFG ...
 	  if ($_xh[$parser]['isf']) {
 		$f=$v->structmem("faultCode");
 		$fs=$v->structmem("faultString");
@@ -928,7 +932,7 @@ class xmlrpcval {
 		$rs="";
 		$ar=$o->me;
 		reset($ar);
-		list($typ, $val) = each($ar);
+		[$typ, $val] = each($ar);
 		$rs.="<value>";
 		$rs.=$this->serializedata($typ, $val);
 		$rs.="</value>\n";
@@ -952,7 +956,7 @@ class xmlrpcval {
 		// UNSTABLE
 		global $xmlrpcBoolean, $xmlrpcBase64;
 		reset($this->me);
-		list($a,$b)=each($this->me);
+		[$a,$b]=each($this->me);
 		// contributed by I Sofer, 2001-03-24
 		// add support for nested arrays to scalarval
 		// i've created a new method here, so as to
@@ -981,14 +985,14 @@ class xmlrpcval {
   function scalarval() {
 		global $xmlrpcBoolean, $xmlrpcBase64;
 		reset($this->me);
-		list($a,$b)=each($this->me);
+		[$a,$b]=each($this->me);
 		return $b;
   }
 
   function scalartyp() {
 		global $xmlrpcI4, $xmlrpcInt;
 		reset($this->me);
-		list($a,$b)=each($this->me);
+		[$a,$b]=each($this->me);
 		if ($a==$xmlrpcI4) 
 			$a=$xmlrpcInt;
 		return $a;
@@ -1001,7 +1005,7 @@ class xmlrpcval {
 
   function arraysize() {
 		reset($this->me);
-		list($a,$b)=each($this->me);
+		[$a,$b]=each($this->me);
 		return sizeof($b);
   }
 }

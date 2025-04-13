@@ -83,7 +83,7 @@ echo "settings: OK<br />";
 $query = "CREATE TABLE $tableusers ( ID int(10) unsigned NOT NULL auto_increment, user_login varchar(20) NOT NULL, user_pass varchar(20) NOT NULL, user_firstname varchar(50) NOT NULL, user_lastname varchar(50) NOT NULL, user_nickname varchar(50) NOT NULL, user_icq int(10) unsigned DEFAULT '0' NOT NULL, user_email varchar(100) NOT NULL, user_url varchar(100) NOT NULL, user_ip varchar(15) NOT NULL, user_domain varchar(200) NOT NULL, user_browser varchar(200) NOT NULL, dateYMDhour datetime DEFAULT '0000-00-00 00:00:00' NOT NULL, user_level int(2) unsigned DEFAULT '0' NOT NULL, user_aim varchar(50) NOT NULL, user_msn varchar(100) NOT NULL, user_yim varchar(50) NOT NULL, user_idmode varchar(20) NOT NULL, PRIMARY KEY (ID), UNIQUE ID (ID), UNIQUE (user_login) )";
 $q = mysqli_query($connexion,$query) or db_doh("doh, can't create the table \"$tableusers\" in the database.", $query, mysqli_error($connexion));
 
-$random_password = substr(md5(uniqid(microtime())),0,6);
+$random_password = substr(md5(uniqid(microtime(), true)),0,6);
 
 $query = "INSERT INTO $tableusers (ID, user_login, user_pass, user_firstname, user_lastname, user_nickname, user_icq, user_email, user_url, user_ip, user_domain, user_browser, dateYMDhour, user_level, user_aim, user_msn, user_yim, user_idmode) VALUES ( '1', 'admin', '$random_password', '', '', 'admin', '0', '$admin_email', '', '127.0.0.1', '127.0.0.1', '', '00-00-0000 00:00:01', '10', '', '', '', 'nickname')";
 $q = mysqli_query($connexion,$query) or db_doh("doh, can't set the default user in the table \"$tableusers\" in the database.", $query, mysqli_error($connexion));

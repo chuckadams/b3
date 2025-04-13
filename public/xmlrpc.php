@@ -712,9 +712,6 @@ function bloggergetrecentposts($m) {
 
 			$authordata = get_userdata($postdata["Author_ID"]);
 			switch($authordata["user_idmode"]) {
-				case "nickname":
-					$authorname = $authordata["user_nickname"];
-
 			case "login":
 					$authorname = $authordata["user_login"];
 					break;
@@ -977,7 +974,7 @@ function pingback_ping($m) {
 			$sql = 'SELECT * FROM '.$tablecomments.' WHERE comment_post_ID = '.$post_ID.' AND comment_author_url = \''.$pagelinkedfrom.'\' AND comment_content LIKE \'%<pingback />%\'';
 			$result = mysqli_query($connexion,$sql);
 
-			if (mysqli_num_rows($result) || (1==1)) {
+			if (true) {
 			
 				// very stupid, but gives time to the 'from' server to publish !
 				sleep(1);
@@ -1218,7 +1215,7 @@ function agesorter_compare($a, $b) {
   $a=str_replace("-", "", $a);
   $b=str_replace("-", "", $b);
 
-  if ($agesorter_arr[$a]==$agesorter[$b]) return 0;
+  if ($agesorter_arr[$a]==$agesorter_arr[$b]) return 0;
   return ($agesorter_arr[$a] > $agesorter_arr[$b]) ? -1 : 1;
 }
 

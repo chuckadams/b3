@@ -755,7 +755,8 @@ function trackback($trackback_url, $title, $excerpt, $ID) {
 	$blog_name = urlencode($blogname);
 	$url = urlencode($siteurl.'/'.$blogfilename.$querystring_start.'p'.$querystring_equal.$ID);
 	$query_string = "title=$title&url=$url&blog_name=$blog_name&excerpt=$excerpt";
-	if (strstr($trackback_url, '?')) {
+	$result = null;
+  if (strstr($trackback_url, '?')) {
 		$trackback_url .= "&".$query_string;;
 		$fp = @fopen($trackback_url, 'r');
 		$result = @fread($fp, 4096);
@@ -889,6 +890,7 @@ function make_url_footnote($content) {
 	global $siteurl;
 	preg_match_all('/<a(.+?)href=\"(.+?)\"(.*?)>(.+?)<\/a>/', $content, $matches);
 	$j = 0;
+  $links_summary = '';
 	for ($i=0; $i<count($matches[0]); $i++) {
 		$links_summary = (!$j) ? "\n" : $links_summary;
 		$j++;
@@ -1042,6 +1044,11 @@ function pingback($content, $post_ID) {
 		$headers = '';
 		$gettingHeaders = true;
 		$found_pingback_server = 0;
+    $x_pingback_header_offset = 0;
+    $pingback_link_offset_dquote = 0;
+    $pingback_link_offset_squote = 0;
+    $pingback_server_url = '';
+
 		while (!feof($fp)) {
 			$line = fgets($fp, 4096);
 			if (trim($line) == '') {
@@ -1087,6 +1094,7 @@ function pingback($content, $post_ID) {
 
 			//  the trailing slash marks the end of the server name
 			$host_end = strpos($host_clear, '/');
+      $host_start ??= 0;
 
 			// Another clear cut
 			$host_len = $host_end-$host_start;

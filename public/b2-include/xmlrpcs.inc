@@ -42,6 +42,16 @@
 // XML RPC Server class
 // requires: xmlrpc.inc
 
+$xmlrpcI4 ??= "i4";
+$xmlrpcInt ??= "int";
+$xmlrpcBoolean ??= "boolean";
+$xmlrpcDouble ??= "double";
+$xmlrpcString ??= "string";
+$xmlrpcDateTime ??= "dateTime.iso8601";
+$xmlrpcBase64 ??= "base64";
+$xmlrpcArray ??= "array";
+$xmlrpcStruct ??= "struct";
+
 // listMethods: either a string, or nothing
 $_xmlrpcs_listMethods_sig=array(array($xmlrpcArray, $xmlrpcString), 
 																array($xmlrpcArray));
