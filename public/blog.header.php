@@ -12,47 +12,30 @@ require_once($b2blah . $b2inc . '/b2template.functions.php');
 require_once($b2blah . $b2inc . '/b2vars.php');
 require_once($b2blah . $b2inc . '/b2functions.php');
 
-$b2varstoreset = [
-    'm',
-    'p',
-    'posts',
-    'w',
-    'c',
-    'cat',
-    'withcomments',
-    's',
-    'search',
-    'exact',
-    'sentence',
-    'poststart',
-    'postend',
-    'preview',
-    'debug',
-    'calendar',
-    'page',
-    'paged',
-    'more',
-    'tb',
-    'pb',
-    'author',
-    'order',
-    'orderby',
-];
-
-for ($i = 0; $i < count($b2varstoreset); $i += 1) {
-    $b2var = $b2varstoreset[$i];
-    if (!isset($$b2var)) {
-        if (empty($_POST[$b2var])) {
-            if (empty($_GET[$b2var])) {
-                $$b2var = '';
-            } else {
-                $$b2var = $_GET[$b2var];
-            }
-        } else {
-            $$b2var = $_POST[$b2var];
-        }
-    }
-}
+$author = $_REQUEST['author'] ?? '';
+$c = $_REQUEST['c'] ?? '';
+$calendar = $_REQUEST['calendar'] ?? '';
+$cat = $_REQUEST['cat'] ?? '';
+$debug = $_REQUEST['debug'] ?? '';
+$exact = $_REQUEST['exact'] ?? '';
+$m = $_REQUEST['m'] ?? '';
+$more = $_REQUEST['more'] ?? '';
+$order = $_REQUEST['order'] ?? '';
+$orderby = $_REQUEST['orderby'] ?? '';
+$p = $_REQUEST['p'] ?? '';
+$page = $_REQUEST['page'] ?? '';
+$paged = $_REQUEST['paged'] ?? '';
+$pb = $_REQUEST['pb'] ?? '';
+$postend = $_REQUEST['postend'] ?? '';
+$posts = $_REQUEST['posts'] ?? '';
+$poststart = $_REQUEST['poststart'] ?? '';
+$preview = $_REQUEST['preview'] ?? '';
+$s = $_REQUEST['s'] ?? '';
+$search = $_REQUEST['search'] ?? '';
+$sentence = $_REQUEST['sentence'] ?? '';
+$tb = $_REQUEST['tb'] ?? '';
+$w = $_REQUEST['w'] ?? '';
+$withcomments = $_REQUEST['withcomments'] ?? '';
 
 /* Connecting to the db */
 dbconnect();
