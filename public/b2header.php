@@ -158,7 +158,10 @@ setTimeout("redirect();", 600);
 
 <table width="100%" cellpadding="0" cellspacing="0" align="center">
 <?php
-if ($profile==0) {
+if ($profile === "") {
+  $profile = 0;
+}
+if ($profile===0) {
 ?>
 <tr height="60">
 <td valign="top">
