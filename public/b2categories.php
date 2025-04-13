@@ -48,7 +48,7 @@ case "addcat":
 	$cat_name=addslashes($_POST["cat_name"]);
 
 	$query="INSERT INTO $tablecategories (cat_ID,cat_name) VALUES ('0', '$cat_name')";
-	$result=mysql_query($query) or die("Couldn't add category <b>$cat_name</b>");
+	$result=mysqli_query($connexion,$query) or die("Couldn't add category <b>$cat_name</b>");
 	
 	header("Location: b2categories.php");
 
@@ -70,10 +70,10 @@ case "Delete":
 	die ("Cheatin' uh ?");
 	
 	$query="DELETE FROM $tablecategories WHERE cat_ID=\"$cat_ID\"";
-	$result=mysql_query($query) or die("Couldn't delete category <b>$cat_name</b>".mysqli_error($connexion));
+	$result=mysqli_query($connexion,$query) or die("Couldn't delete category <b>$cat_name</b>".mysqli_error($connexion));
 	
 	$query="UPDATE $tableposts SET post_category='1' WHERE post_category='$cat_ID'";
-	$result=mysql_query($query) or die("Couldn't reset category on posts where category was <b>$cat_name</b>");
+	$result=mysqli_query($connexion,$query) or die("Couldn't reset category on posts where category was <b>$cat_name</b>");
 
 	header("Location: b2categories.php");
 
@@ -114,7 +114,7 @@ case "editedcat":
 	$cat_ID=addslashes($_POST["cat_ID"]);
 
 	$query="UPDATE $tablecategories SET cat_name='$cat_name' WHERE cat_ID=$cat_ID";
-	$result=mysql_query($query) or die("Couldn't edit category <b>$cat_name</b>: ".mysqli_error($connexion));
+	$result=mysqli_query($connexion,$query) or die("Couldn't edit category <b>$cat_name</b>: ".mysqli_error($connexion));
 	
 	header("Location: b2categories.php");
 
@@ -139,7 +139,7 @@ default:
 	<b>Edit</b> a category:<br />
 	<?php
 	$query="SELECT * FROM $tablecategories ORDER BY cat_ID";
-	$result=mysql_query($query);
+	$result=mysqli_query($connexion,$query);
 	echo "<select name=\"cat_ID\">\n";
 	while($row = mysql_fetch_object($result)) {
 		echo "\t<option value=\"".$row->cat_ID."\"";

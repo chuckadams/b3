@@ -92,7 +92,7 @@ textarea,input,select {
 		$user_joindate=addslashes($user_joindate);
 
 		$query = "INSERT INTO $tableusers (user_login,user_pass,user_nickname,user_email,user_url,user_ip,user_domain,user_browser,dateYMDhour,user_level,user_idmode) VALUES ('$user_login','$pass1','$user_nickname','$user_email','$user_url','$user_ip','$user_domain','$user_browser','$user_joindate','1','nickname')";
-		$result = mysql_query($query);
+		$result = mysqli_query($connexion,$query);
 		if ($result==false) {
 			die ("<b>ERROR</b>: couldn't register an user... please contact the <a href=\"mailto:$admin_email\">webmaster</a> !");
 		}
@@ -138,7 +138,7 @@ textarea,input,select {
 			$post_author=trim(addslashes($postinfo[1]));
 			// we'll check the author is registered, or if it's a deleted author
 			$sql = "SELECT * FROM $tableusers WHERE user_login = '$post_author'";
-			$result = mysql_query($sql);
+			$result = mysqli_query($connexion,$sql);
 			if (!mysql_num_rows($result)) { // if deleted from GM, we register the author as a level 0 user in b2
 				$user_ip="127.0.0.1";
 				$user_domain="localhost";
@@ -151,7 +151,7 @@ textarea,input,select {
 				$user_url=addslashes("");
 				$user_joindate=addslashes($user_joindate);
 				$query = "INSERT INTO $tableusers (user_login,user_pass,user_nickname,user_email,user_url,user_ip,user_domain,user_browser,dateYMDhour,user_level,user_idmode) VALUES ('$user_login','$pass1','$user_nickname','$user_email','$user_url','$user_ip','$user_domain','$user_browser','$user_joindate','0','nickname')";
-				$result = mysql_query($query);
+				$result = mysqli_query($connexion,$query);
 				if ($result==false) {
 					die ("<b>ERROR</b>: couldn't register an user... please contact the <a href=\"mailto:$admin_email\">webmaster</a> !");
 				}
@@ -159,7 +159,7 @@ textarea,input,select {
 			}
 
 			$sql = "SELECT * FROM $tableusers WHERE user_login = '$post_author'";
-			$result = mysql_query($sql);
+			$result = mysqli_query($connexion,$sql);
 			$myrow = mysql_fetch_array($result);
 			$post_author_ID=$myrow[0];
 
@@ -189,13 +189,13 @@ textarea,input,select {
 
 			
 			$query = "INSERT INTO $tableposts (post_author,post_date,post_content,post_title,post_category,post_karma) VALUES ('$post_author_ID','$post_date','$post_content','$post_title','1','$post_karma')";
-			$result = mysql_query($query) or die(mysqli_error($connexion));
+			$result = mysqli_query($connexion,$query) or die(mysqli_error($connexion));
 
 			if (!$result)
 				die ("Error in posting... contact the <a href=\"mailto:$admin_email\">webmaster</a>");
 			
 			$sql2 = "SELECT * FROM $tableposts WHERE 1=1 ORDER BY ID DESC LIMIT 1";
-			$result2 = mysql_query($sql2);
+			$result2 = mysqli_query($connexion,$sql2);
 			$myrow2 = mysql_fetch_array($result2);
 			$post_ID=$myrow2[0];
 
@@ -224,7 +224,7 @@ textarea,input,select {
 					$comment_content=addslashes($commentinfo[12]);
 
 					$sql3 = "INSERT INTO $tablecomments (comment_post_ID,comment_author,comment_author_email,comment_author_url,comment_author_IP,comment_date,comment_content) VALUES ('$comment_post_ID','$comment_author','$comment_author_email','$comment_author_url','$comment_author_IP','$comment_date','$comment_content')";
-					$result3 = mysql_query($sql3);
+					$result3 = mysqli_query($connexion,$sql3);
 					if (!$result3)
 						die ("There is an error with the database, it can't store your comment...<br>Contact the <a href=\"mailto:$admin_email\">webmaster</a>");
 				}

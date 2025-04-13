@@ -44,7 +44,7 @@ case "promote":
 	} elseif ($prom == "down") {
 		$sql="UPDATE $tableusers SET user_level=user_level-1 WHERE ID = $id";
 	}
-	$result=mysql_query($sql) or die("Couldn't change $id's level.");
+	$result=mysqli_query($connexion,$sql) or die("Couldn't change $id's level.");
 
 	header("Location: b2team.php");
 
@@ -68,10 +68,10 @@ case "delete":
 	die("Can't delete an user whose level is higher than yours.");
 
 	$sql="DELETE FROM $tableusers WHERE ID = $id";
-	$result=mysql_query($sql) or die("Couldn't delete user #$id.");
+	$result=mysqli_query($connexion,$sql) or die("Couldn't delete user #$id.");
 
 	$sql="DELETE FROM $tableposts WHERE post_author = $id";
-	$result=mysql_query($sql) or die("Couldn't delete user #$id's posts.");
+	$result=mysqli_query($connexion,$sql) or die("Couldn't delete user #$id's posts.");
 
 	header("Location: b2team.php");
 
@@ -107,7 +107,7 @@ default:
 	</tr>
 	<?php
 	$request = " SELECT * FROM $tableusers WHERE user_level>0 ORDER BY ID";
-	$result = mysql_query($request);
+	$result = mysqli_query($connexion,$request);
 	while($row = mysql_fetch_object($result)) {
 		$user_data = get_userdata2($row->ID);
 		echo "<tr>\n<!--".$user_data["user_login"]."-->\n";
@@ -142,7 +142,7 @@ default:
 <?php echo $tablebottom ?>
 <?php
 	$request = " SELECT * FROM $tableusers WHERE user_level=0 ORDER BY ID";
-	$result = mysql_query($request);
+	$result = mysqli_query($connexion,$request);
 	if (mysql_num_rows($result)) {
 ?>
 <br />

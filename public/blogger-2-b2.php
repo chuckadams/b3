@@ -87,7 +87,7 @@ textarea,input,select {
 			$post_author=trim(addslashes($postinfo[1]));
 			// we'll check the author is registered already
 			$sql = "SELECT * FROM $tableusers WHERE user_login = '$post_author'";
-			$result = mysql_query($sql);
+			$result = mysqli_query($connexion,$sql);
 			if (!mysql_num_rows($result)) { // seems s/he's not, so let's register
 				$user_ip="127.0.0.1";
 				$user_domain="localhost";
@@ -100,7 +100,7 @@ textarea,input,select {
 				$user_url=addslashes("");
 				$user_joindate=addslashes($user_joindate);
 				$query = "INSERT INTO $tableusers (user_login,user_pass,user_nickname,user_email,user_url,user_ip,user_domain,user_browser,dateYMDhour,user_level,user_idmode) VALUES ('$user_login','$pass1','$user_nickname','$user_email','$user_url','$user_ip','$user_domain','$user_browser','$user_joindate','1','nickname')";
-				$result = mysql_query($query);
+				$result = mysqli_query($connexion,$query);
 				if ($result==false) {
 					die ("<b>ERROR</b>: couldn't register an user... please contact the <a href=\"mailto:$admin_email\">webmaster</a> !");
 				}
@@ -108,7 +108,7 @@ textarea,input,select {
 			}
 
 			$sql = "SELECT * FROM $tableusers WHERE user_login = '$post_author'";
-			$result = mysql_query($sql);
+			$result = mysqli_query($connexion,$sql);
 			$myrow = mysql_fetch_array($result);
 			$post_author_ID=$myrow[0];
 
@@ -131,7 +131,7 @@ textarea,input,select {
 			$post_content=str_replace("<br>","<br />",$post_content); // the XHTML touch... ;)
 
 			$query = "INSERT INTO $tableposts (ID, post_author,post_date,post_content,post_title,post_category) VALUES ('$post_number','$post_author_ID','$post_date','$post_content','$post_title','1')";
-			$result = mysql_query($query) or die(mysqli_error($connexion));
+			$result = mysqli_query($connexion,$query) or die(mysqli_error($connexion));
 
 			if (!$result)
 				die ("Error in posting... contact the <a href=\"mailto:$admin_email\">webmaster</a>");
@@ -145,7 +145,7 @@ textarea,input,select {
 	/* we've still got a bug that adds some empty posts with the date 0000-00-00 00:00:00
 	   here's the bugfix: */
 	$query="DELETE FROM $tableposts WHERE post_date=\"0000-00-00 00:00:00\"";
-	$result = mysql_query($query) or die(mysqli_error($connexion));
+	$result = mysqli_query($connexion,$query) or die(mysqli_error($connexion));
 
 
 	?>

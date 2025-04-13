@@ -30,7 +30,7 @@ The URL to TrackBack this entry is:<br />
 &nbsp;&nbsp;<em><?php trackback_url() ?></em>
 </p>
 
-	<?php /* do not delete this line */ $queryc = "SELECT * FROM $tablecomments WHERE comment_post_ID = $id AND comment_content LIKE '%<trackback />%' ORDER BY comment_date"; $resultc = mysql_query($queryc); if ($resultc) { ?>
+	<?php /* do not delete this line */ $queryc = "SELECT * FROM $tablecomments WHERE comment_post_ID = $id AND comment_content LIKE '%<trackback />%' ORDER BY comment_date"; $resultc = mysqli_query($connexion,$queryc); if ($resultc) { ?>
 
 <a name="trackbacks"></a>
 <p>&nbsp;</p>

@@ -96,7 +96,7 @@ case "login":
 			$pass_is_md5 = 0;
 			$query =  " SELECT ID, user_login, user_pass FROM $tableusers WHERE user_login = '$user_login' AND user_pass = '$password' ";
 		}
-		$result = mysql_query($query) or die("Incorrect Login/Password request: ".mysqli_error($connexion));
+		$result = mysqli_query($connexion,$query) or die("Incorrect Login/Password request: ".mysqli_error($connexion));
 
 		$lines = mysql_num_rows($result);
 		if ($lines<1) {

@@ -69,7 +69,7 @@ case 'post':
 	}
 
 	$query = "INSERT INTO $tableposts (ID, post_author, post_date, post_content, post_title, post_category) VALUES ('0','$user_ID','$now','$content','".$post_title."','".$post_category."')";
-	$result = mysql_query($query) or mysql_oops($query);
+	$result = mysqli_query($connexion,$query) or mysql_oops($query);
 
 	$post_ID = mysql_insert_id();
 
@@ -178,7 +178,7 @@ case "editpost":
 	}
 
 	$query = "UPDATE $tableposts SET post_content=\"$content\", post_title=\"$post_title\", post_category=\"$post_category\"".$datemodif." WHERE ID=$post_ID";
-	$result = mysql_query($query) or mysql_oops($query);
+	$result = mysqli_query($connexion,$query) or mysql_oops($query);
 
 	if (isset($sleep_after_edit) && $sleep_after_edit > 0) {
 		sleep($sleep_after_edit);
@@ -208,12 +208,12 @@ case "delete":
 	die ("You don't have the right to delete <b>".$authordata[1]."</b>'s posts.");
 
 	$query = "DELETE FROM $tableposts WHERE ID=$post";
-	$result = mysql_query($query) or die("Oops, no post with this ID. <a href=\"b2edit.php\">Go back</a> !");
+	$result = mysqli_query($connexion,$query) or die("Oops, no post with this ID. <a href=\"b2edit.php\">Go back</a> !");
 	if (!$result)
 	die("Error in deleting... contact the <a href=\"mailto:$admin_email\">webmaster</a>...");
 
 	$query = "DELETE FROM $tablecomments WHERE comment_post_ID=$post";
-	$result = mysql_query($query) or die("Oops, no comment associated to that post. <a href=\"b2edit.php\">Go back</a> !");
+	$result = mysqli_query($connexion,$query) or die("Oops, no comment associated to that post. <a href=\"b2edit.php\">Go back</a> !");
 
 	if (isset($sleep_after_edit) && $sleep_after_edit > 0) {
 		sleep($sleep_after_edit);
@@ -260,7 +260,7 @@ case "deletecomment":
 	$commentdata=get_commentdata($comment) or die("Oops, no comment with this ID. <a href=\"b2edit.php\">Go back</a> !");
 
 	$query = "DELETE FROM $tablecomments WHERE comment_ID=$comment";
-	$result = mysql_query($query) or die("Oops, no comment with this ID. <a href=\"b2edit.php\">Go back</a> !");
+	$result = mysqli_query($connexion,$query) or die("Oops, no comment with this ID. <a href=\"b2edit.php\">Go back</a> !");
 
 	header ("Location: b2edit.php?p=$p&c=1#comments"); //?a=dc");
 
@@ -303,7 +303,7 @@ case "editedcomment":
 	$content = format_to_post($content);
 
 	$query = "UPDATE $tablecomments SET comment_content=\"$content\", comment_author=\"$newcomment_author\", comment_author_email=\"$newcomment_author_email\", comment_author_url=\"$newcomment_author_url\"".$datemodif." WHERE comment_ID=$comment_ID";
-	$result = mysql_query($query) or mysql_oops($query);
+	$result = mysqli_query($connexion,$query) or mysql_oops($query);
 
 	header ("Location: b2edit.php?p=$comment_post_ID&c=1#comments"); //?a=ec");
 

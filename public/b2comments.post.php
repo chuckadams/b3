@@ -74,7 +74,7 @@ $url = addslashes($url);
 
 /* flood-protection */
 $query = "SELECT * FROM $tablecomments WHERE comment_author_IP='$user_ip' ORDER BY comment_date DESC LIMIT 1";
-$result = mysql_query($query);
+$result = mysqli_query($connexion,$query);
 $ok=1;
 if (!empty($result)) {
 	while($row = mysql_fetch_object($result)) {
@@ -90,7 +90,7 @@ if (!empty($result)) {
 if ($ok) {
 
 	$query = "INSERT INTO $tablecomments VALUES ('0','$comment_post_ID','$author','$email','$url','$user_ip','$now','$comment','0')";
-	$result = mysql_query($query);
+	$result = mysqli_query($connexion,$query);
 	if (!$result)
 		die ("There is an error with the database, it can't store your comment...<br>Contact the <a href=\"mailto:$admin_email\">webmaster</a>");
 

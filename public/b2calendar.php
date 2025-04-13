@@ -91,7 +91,7 @@ if ($ak_next_month == 13) {
     ++$ak_next_year;
 }
 
-$ak_first_post = mysql_query("SELECT MONTH(MIN(post_date)), YEAR(MIN(post_date)) FROM $tableposts");
+$ak_first_post = mysqli_query($connexion,"SELECT MONTH(MIN(post_date)), YEAR(MIN(post_date)) FROM $tableposts");
 $ak_first_post = mysql_fetch_array($ak_first_post);
 // using text links by default
 	$ak_previous_month_dim = '<span>&lt;</span>&nbsp;&nbsp;';
@@ -124,7 +124,7 @@ $calendarmonthwithpost = 0;
 while($calendarmonthwithpost == 0) {
 	$arc_sql="SELECT DISTINCT YEAR(post_date), MONTH(post_date), DAYOFMONTH(post_date) FROM $tableposts WHERE MONTH(post_date) = '$thismonth' AND YEAR(post_date) = '$thisyear' ORDER BY post_date DESC";
 	$querycount++;
-	$arc_result=mysql_query($arc_sql) or die($arc_sql."<br />".mysqli_error($connexion));
+	$arc_result=mysqli_query($connexion,$arc_sql) or die($arc_sql."<br />".mysqli_error($connexion));
 	if (mysql_num_rows($arc_result) > 0) {
 		$daysinmonthwithposts = '-';
 		while($arc_row = mysql_fetch_array($arc_result)) {
@@ -203,7 +203,7 @@ $k = 1;
 
 // original tooltip hack by Alex King
 if ($ak_use_tooltip_titles == 1) {
-	$ak_days_result = mysql_query("SELECT post_title, post_date FROM $tableposts WHERE YEAR(post_date) = '$thisyear' AND MONTH(post_date) = '$thismonth'");
+	$ak_days_result = mysqli_query($connexion,"SELECT post_title, post_date FROM $tableposts WHERE YEAR(post_date) = '$thisyear' AND MONTH(post_date) = '$thismonth'");
 
 	$ak_day_title_array = array();
 	while($ak_temp = mysql_fetch_array($ak_days_result)) {

@@ -417,7 +417,7 @@ function link_pages($before='<br />', $after='<br />', $next_or_number='number',
 
 
 function previous_post($format='%', $previous='previous post: ', $title='yes', $in_same_cat='no', $limitprev=1, $excluded_categories='') {
-	global $tableposts, $id, $postdata, $siteurl, $blogfilename, $querycount;
+	global $tableposts, $id, $postdata, $siteurl, $blogfilename, $querycount, $connexion;
 	global $p, $posts, $posts_per_page, $s;
 	global $querystring_start, $querystring_equal, $querystring_separator;
 
@@ -443,7 +443,7 @@ function previous_post($format='%', $previous='previous post: ', $title='yes', $
 		$limitprev--;
 		$sql = "SELECT ID,post_title FROM $tableposts WHERE post_date < '$current_post_date' AND post_category > 0 $sqlcat $sql_exclude_cats ORDER BY post_date DESC LIMIT $limitprev,1";
 
-		$query = @mysql_query($sql);
+		$query = @mysqli_query($connexion,$sql);
 		$querycount++;
 		if (($query) && (mysql_num_rows($query))) {
 			$p_info = mysql_fetch_object($query);
@@ -461,7 +461,7 @@ function previous_post($format='%', $previous='previous post: ', $title='yes', $
 }
 
 function next_post($format='%', $next='next post: ', $title='yes', $in_same_cat='no', $limitnext=1, $excluded_categories='') {
-	global $tableposts, $p, $posts, $id, $postdata, $siteurl, $blogfilename, $querycount;
+	global $tableposts, $p, $posts, $id, $postdata, $siteurl, $blogfilename, $querycount, $connexion;
 	global $time_difference;
 	global $querystring_start, $querystring_equal, $querystring_separator;
 	if(($p) || ($posts==1)) {
@@ -488,7 +488,7 @@ function next_post($format='%', $next='next post: ', $title='yes', $in_same_cat=
 		$limitnext--;
 		$sql = "SELECT ID,post_title FROM $tableposts WHERE post_date > '$current_post_date' AND post_date < '$now' AND post_category > 0 $sqlcat $sql_exclude_cats ORDER BY post_date ASC LIMIT $limitnext,1";
 
-		$query = @mysql_query($sql);
+		$query = @mysqli_query($connexion,$sql);
 		$querycount++;
 		if (($query) && (mysql_num_rows($query))) {
 			$p_info = mysql_fetch_object($query);
@@ -537,14 +537,14 @@ function next_posts($max_page = 0) { // original by cfactor at cooltux.org
 }
 
 function next_posts_link($label='Next Page >>', $max_page=0) {
-	global $p, $paged, $result, $request, $posts_per_page, $what_to_show;
+	global $p, $paged, $result, $request, $posts_per_page, $what_to_show, $connexion;
 	if ($what_to_show == 'paged') {
 		if (!$max_page) {
 			$nxt_request = $request;
 			if ($pos = strpos(strtoupper($request), 'LIMIT')) {
 				$nxt_request = substr($request, 0, $pos);
 			}
-			$nxt_result = mysql_query($nxt_request);
+			$nxt_result = mysqli_query($connexion,$nxt_request);
 			$numposts = mysql_num_rows($nxt_result);
 			$max_page = ceil($numposts / $posts_per_page);
 		}
@@ -594,13 +594,13 @@ function previous_posts_link($label='<< Previous Page') {
 }
 
 function posts_nav_link($sep=' :: ', $prelabel='<< Previous Page', $nxtlabel='Next Page >>') {
-	global $p, $what_to_show, $request, $posts_per_page;
+	global $p, $what_to_show, $request, $posts_per_page, $connexion;
 	if (empty($p) && ($what_to_show == 'paged')) {
 		$nxt_request = $request;
 		if ($pos = strpos(strtoupper($request), 'LIMIT')) {
 			$nxt_request = substr($request, 0, $pos);
 		}
-		$nxt_result = mysql_query($nxt_request);
+		$nxt_result = mysqli_query($connexion,$nxt_request);
 		$numposts = mysql_num_rows($nxt_result);
 		$max_page = ceil($numposts / $posts_per_page);
 		if ($max_page > 1) {
@@ -632,11 +632,11 @@ function the_category_unicode() {
 	echo convert_chars($category, 'unicode');
 }
 function get_the_category() {
-	global $id,$postdata,$tablecategories,$querycount,$cache_categories,$use_cache;
+	global $id,$postdata,$tablecategories,$querycount,$cache_categories,$use_cache, $connexion;
 	$cat_ID = $postdata['Category'];
 	if ((empty($cache_categories[$cat_ID])) OR (!$use_cache)) {
 		$query="SELECT cat_name FROM $tablecategories WHERE cat_ID = '$cat_ID'";
-		$result=mysql_query($query);
+		$result=mysqli_query($connexion,$query);
 		$querycount++;
 		$myrow = mysql_fetch_array($result);
 		$cat_name = $myrow[0];
@@ -648,10 +648,10 @@ function get_the_category() {
 }
 
 function get_the_category_by_ID($cat_ID) {
-	global $id,$tablecategories,$querycount,$cache_categories,$use_cache;
+	global $id,$tablecategories,$querycount,$cache_categories,$use_cache, $connexion;
 	if ((!$cache_categories[$cat_ID]) OR (!$use_cache)) {
 		$query="SELECT cat_name FROM $tablecategories WHERE cat_ID = '$cat_ID'";
-		$result=mysql_query($query);
+		$result=mysqli_query($connexion,$query);
 		$querycount++;
 		$myrow = mysql_fetch_array($result);
 		$cat_name = $myrow[0];
@@ -679,9 +679,9 @@ function the_category_head($before='',$after='') {
 
 // out of the b2 loop
 function dropdown_cats($optionall = 1, $all = 'All') {
-	global $cat, $tablecategories, $querycount;
+	global $cat, $tablecategories, $querycount, $connexion;
 	$query="SELECT * FROM $tablecategories";
-	$result=mysql_query($query);
+	$result=mysqli_query($connexion,$query);
 	$querycount++;
 	echo "<select name=\"cat\" class=\"postform\">\n";
 	if (intval($optionall) == 1) {
@@ -698,13 +698,13 @@ function dropdown_cats($optionall = 1, $all = 'All') {
 
 // out of the b2 loop
 function list_cats($optionall = 1, $all = 'All', $sort_column = 'ID', $sort_order = 'asc', $file = 'blah') {
-	global $tablecategories,$querycount;
+	global $tablecategories,$querycount, $connexion;
 	global $pagenow;
 	global $querystring_start, $querystring_equal, $querystring_separator;
 	$file = ($file == 'blah') ? $pagenow : $file;
 	$sort_column = 'cat_'.$sort_column;
 	$query="SELECT * FROM $tablecategories WHERE cat_ID > 0 ORDER BY $sort_column $sort_order";
-	$result=mysql_query($query);
+	$result=mysqli_query($connexion,$query);
 	$querycount++;
 	if (intval($optionall) == 1) {
 		$all = apply_filters('list_cats', $all);
@@ -740,7 +740,7 @@ function generic_ctp_number($post_id, $mode = 'comments') {
 	if (!isset($cache_ctp_number[$post_id]) || (!$use_cache)) {
 		$post_id = intval($post_id);
 		$query = "SELECT * FROM $tablecomments WHERE comment_post_ID = $post_id";
-		$result = mysql_query($query) or die('SQL query: '.$query.'<br />MySQL Error: '.mysqli_error($connexion));
+		$result = mysqli_query($connexion,$query) or die('SQL query: '.$query.'<br />MySQL Error: '.mysqli_error($connexion));
 		$querycount++;
 		$ctp_number = array();
 		while($row = mysql_fetch_object($result)) {
@@ -1051,7 +1051,7 @@ function permalink_anchor($mode = 'id') {
 }
 
 function permalink_link($file='', $mode = 'id') {
-	global $id, $postdata, $pagenow, $cacheweekly;
+	global $id, $postdata, $pagenow, $cacheweekly, $connexion;
 	global $querystring_start, $querystring_equal, $querystring_separator;
 	$file = ($file=='') ? $pagenow : $file;
 	switch(strtolower($mode)) {
@@ -1075,7 +1075,7 @@ function permalink_link($file='', $mode = 'id') {
 		case 'weekly':
 			if((!isset($cacheweekly)) || (empty($cacheweekly[$postdata['Date']]))) {
 				$sql = "SELECT WEEK('".$postdata['Date']."')";
-				$result = mysql_query($sql);
+				$result = mysqli_query($connexion,$sql);
 				$row = mysql_fetch_row($result);
 				$cacheweekly[$postdata['Date']] = $row[0];
 			}

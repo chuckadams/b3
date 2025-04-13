@@ -55,7 +55,7 @@ $now = date('Y-m-d H:i:s',(time() + ($time_difference * 3600)));
 if ($archive_mode == 'monthly') {
 	$arc_sql="SELECT DISTINCT YEAR(post_date), MONTH(post_date) FROM $tableposts WHERE post_date < '$now' AND post_category > 0 ORDER BY post_date DESC";
 	$querycount++;
-	$arc_result=mysql_query($arc_sql) or die($arc_sql.'<br />'.mysqli_error($connexion));
+	$arc_result=mysqli_query($connexion,$arc_sql) or die($arc_sql.'<br />'.mysqli_error($connexion));
 	while($arc_row = mysql_fetch_array($arc_result)) {
 		$arc_year  = $arc_row['YEAR(post_date)'];
 		$arc_month = $arc_row['MONTH(post_date)'];
@@ -67,7 +67,7 @@ if ($archive_mode == 'monthly') {
 } elseif ($archive_mode == 'daily') {
 	$arc_sql="SELECT DISTINCT YEAR(post_date), MONTH(post_date), DAYOFMONTH(post_date) FROM $tableposts WHERE post_date < '$now' AND post_category > 0 ORDER BY post_date DESC";
 	$querycount++;
-	$arc_result=mysql_query($arc_sql) or die($arc_sql.'<br />'.mysqli_error($connexion));
+	$arc_result=mysqli_query($connexion,$arc_sql) or die($arc_sql.'<br />'.mysqli_error($connexion));
 	while($arc_row = mysql_fetch_array($arc_result)) {
 		$arc_year  = $arc_row['YEAR(post_date)'];
 		$arc_month = $arc_row['MONTH(post_date)'];
@@ -84,7 +84,7 @@ if ($archive_mode == 'monthly') {
 	}
 	$arc_sql="SELECT DISTINCT YEAR(post_date), MONTH(post_date), DAYOFMONTH(post_date), WEEK(post_date) FROM $tableposts WHERE post_date < '$now' AND post_category > 0 ORDER BY post_date DESC";
 	$querycount++;
-	$arc_result=mysql_query($arc_sql) or die($arc_sql.'<br />'.mysqli_error($connexion));
+	$arc_result=mysqli_query($connexion,$arc_sql) or die($arc_sql.'<br />'.mysqli_error($connexion));
 	$arc_w_last = '';
 	while($arc_row = mysql_fetch_array($arc_result)) {
 		$arc_year = $arc_row['YEAR(post_date)'];
@@ -104,7 +104,7 @@ if ($archive_mode == 'monthly') {
 } elseif ($archive_mode == 'postbypost') {
 	$requestarc = " SELECT ID,post_date,post_title FROM $tableposts WHERE post_date < '$now' AND post_category > 0 ORDER BY post_date DESC";
 	$querycount++;
-	$resultarc = mysql_query($requestarc);
+	$resultarc = mysqli_query($connexion,$requestarc);
 	while($row=mysql_fetch_object($resultarc)) {
 		if ($row->post_date != '0000-00-00 00:00:00') {
 			echo "<a href=\"$archive_link_p".$row->ID.'">';

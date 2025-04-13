@@ -24,7 +24,7 @@ function veriflog() {
 		return false;
 
 	$query =  " SELECT user_login, user_pass FROM $tableusers WHERE user_login = '$user_login' ";
-	$result = @mysql_query($query) or die("Query: $query<br /><br />Error: ".mysqli_error($connexion));
+	$result = @mysqli_query($connexion,$query) or die("Query: $query<br /><br />Error: ".mysqli_error($connexion));
 
 	$lines = mysql_num_rows($result);
 	if ($lines<1) {

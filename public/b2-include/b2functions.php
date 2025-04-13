@@ -358,7 +358,7 @@ function get_lastpostdate() {
 			$showcatzero = '';
 		}
 		$sql = "SELECT * FROM $tableposts WHERE $showcatzero post_date <= '$now' ORDER BY post_date DESC LIMIT 1";
-		$result = mysql_query($sql) or die("Your SQL query: <br />$sql<br /><br />MySQL said:<br />".mysqli_error($connexion));
+		$result = mysqli_query($connexion,$sql) or die("Your SQL query: <br />$sql<br /><br />MySQL said:<br />".mysqli_error($connexion));
 		$querycount++;
 		$myrow = mysql_fetch_object($result);
 		$lastpostdate = $myrow->post_date;
@@ -384,7 +384,7 @@ function get_userdata($userid) {
 	global $tableusers,$querycount,$cache_userdata,$use_cache, $connexion;
 	if ((empty($cache_userdata[$userid])) OR (!$use_cache)) {
 		$sql = "SELECT * FROM $tableusers WHERE ID = '$userid'";
-		$result = mysql_query($sql) or die("Your SQL query: <br />$sql<br /><br />MySQL said:<br />".mysqli_error($connexion));
+		$result = mysqli_query($connexion,$sql) or die("Your SQL query: <br />$sql<br /><br />MySQL said:<br />".mysqli_error($connexion));
 		$myrow = mysql_fetch_array($result);
 		$querycount++;
 		$cache_userdata[$userid] = $myrow;
@@ -411,7 +411,7 @@ function get_userdatabylogin($user_login) {
 	global $tableusers,$querycount,$cache_userdata,$use_cache, $connexion;
 	if ((empty($cache_userdata["$user_login"])) OR (!$use_cache)) {
 		$sql = "SELECT * FROM $tableusers WHERE user_login = '$user_login'";
-		$result = mysql_query($sql) or die("Your SQL query: <br />$sql<br /><br />MySQL said:<br />".mysqli_error($connexion));
+		$result = mysqli_query($connexion,$sql) or die("Your SQL query: <br />$sql<br /><br />MySQL said:<br />".mysqli_error($connexion));
 		if (!$result)	die($sql."<br /><br />".mysqli_error($connexion));
 		$myrow = mysql_fetch_array($result);
 		$querycount++;
@@ -423,10 +423,10 @@ function get_userdatabylogin($user_login) {
 }
 
 function get_userid($user_login) {
-	global $tableusers,$querycount,$cache_userdata,$use_cache;
+	global $tableusers,$querycount,$cache_userdata,$use_cache, $connexion;
 	if ((empty($cache_userdata["$user_login"])) OR (!$use_cache)) {
 		$sql = "SELECT ID FROM $tableusers WHERE user_login = '$user_login'";
-		$result = mysql_query($sql) or die("No user with the login <i>$user_login</i>");
+		$result = mysqli_query($connexion,$sql) or die("No user with the login <i>$user_login</i>");
 		$myrow = mysql_fetch_array($result);
 		$querycount++;
 		$cache_userdata["$user_login"] = $myrow;
@@ -439,7 +439,7 @@ function get_userid($user_login) {
 function get_usernumposts($userid) {
 	global $tableusers,$tablesettings,$tablecategories,$tableposts,$tablecomments,$querycount, $connexion;
 	$sql = "SELECT * FROM $tableposts WHERE post_author = $userid";
-	$result = mysql_query($sql) or die("Your SQL query: <br />$sql<br /><br />MySQL said:<br />".mysqli_error($connexion));
+	$result = mysqli_query($connexion,$sql) or die("Your SQL query: <br />$sql<br /><br />MySQL said:<br />".mysqli_error($connexion));
 	$querycount++;
 	return mysql_num_rows($result);
 }
@@ -448,7 +448,7 @@ function get_settings($setting) {
 	global $tablesettings,$querycount,$cache_settings,$use_cache, $connexion;
 	if ((empty($cache_settings)) OR (!$use_cache)) {
 		$sql = "SELECT * FROM $tablesettings";
-		$result = mysql_query($sql) or die("Your SQL query: <br />$sql<br /><br />MySQL said:<br />".mysqli_error($connexion));
+		$result = mysqli_query($connexion,$sql) or die("Your SQL query: <br />$sql<br /><br />MySQL said:<br />".mysqli_error($connexion));
 		$querycount++;
 		$myrow = mysql_fetch_object($result);
 		$cache_settings = $myrow;
@@ -461,7 +461,7 @@ function get_settings($setting) {
 function get_postdata($postid) {
 	global $tableusers,$tablesettings,$tablecategories,$tableposts,$tablecomments,$querycount, $connexion;
 	$sql = "SELECT * FROM $tableposts WHERE ID = $postid";
-	$result = mysql_query($sql) or die("Your SQL query: <br />$sql<br /><br />MySQL said:<br />".mysqli_error($connexion));
+	$result = mysqli_query($connexion,$sql) or die("Your SQL query: <br />$sql<br /><br />MySQL said:<br />".mysqli_error($connexion));
 	$querycount++;
 	if (mysql_num_rows($result)) {
 		$myrow = mysql_fetch_object($result);
@@ -496,10 +496,10 @@ function get_postdata2($postid=0) { // less flexible, but saves mysql queries
 }
 
 function get_commentdata($comment_ID,$no_cache=0) { // less flexible, but saves mysql queries
-	global $rowc,$id,$commentdata,$tablecomments,$querycount;
+	global $rowc,$id,$commentdata,$tablecomments,$querycount, $connexion;
 	if ($no_cache) {
 		$query="SELECT * FROM $tablecomments WHERE comment_ID = $comment_ID";
-		$result=mysql_query($query);
+		$result=mysqli_query($connexion,$query);
 		$querycount++;
 		$myrow = mysql_fetch_array($result);
 	} else {
@@ -524,10 +524,10 @@ function get_commentdata($comment_ID,$no_cache=0) { // less flexible, but saves 
 }
 
 function get_catname($cat_ID) {
-	global $tablecategories,$cache_catnames,$use_cache,$querycount;
+	global $tablecategories,$cache_catnames,$use_cache,$querycount, $connexion;
 	if ((!$cache_catnames) || (!$use_cache)) {
 		$sql = "SELECT * FROM $tablecategories";
-		$result = mysql_query($sql) or die('Oops, couldn\'t query the db for categories.');
+		$result = mysqli_query($connexion,$sql) or die('Oops, couldn\'t query the db for categories.');
 		$querycount;
 		while ($row = mysql_fetch_object($result)) {
 			$cache_catnames[$row->cat_ID] = $row->cat_name;
@@ -543,9 +543,9 @@ function profile($user_login) {
 }
 
 function dropdown_categories($blog_ID=1) {
-	global $postdata,$tablecategories,$mode,$querycount;
+	global $postdata,$tablecategories,$mode,$querycount, $connexion;
 	$query="SELECT * FROM $tablecategories";
-	$result=mysql_query($query);
+	$result=mysqli_query($connexion,$query);
 	$querycount++;
 	$width = ($mode=="sidebar") ? "100%" : "170px";
 	echo '<select name="post_category" style="width:'.$width.';" tabindex="2" id="category">';
@@ -853,7 +853,7 @@ function rss_update($blog_ID, $num_posts="", $file="./b2rss.xml") {
 		
 		$now = date('Y-m-d H:i:s',(time() + ($time_difference * 3600)));
 		$sql = "SELECT * FROM $tableposts WHERE post_date <= '$now' AND post_category > 0 ORDER BY post_date DESC LIMIT $num_posts";
-		$result = mysql_query($sql) or die("Your SQL query: <br />$sql<br /><br />MySQL said:<br />".mysqli_error($connexion));
+		$result = mysqli_query($connexion,$sql) or die("Your SQL query: <br />$sql<br /><br />MySQL said:<br />".mysqli_error($connexion));
 
 		while($row = mysql_fetch_object($result)) {
 

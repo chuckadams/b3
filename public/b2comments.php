@@ -8,7 +8,7 @@
 		$comment_author_url = (empty($_COOKIE["comment_author"])) ? "http://url" : trim($_COOKIE["comment_author_url"]);
 
 	$queryc = "SELECT * FROM $tablecomments WHERE comment_post_ID = $id AND comment_content NOT LIKE '%<trackback />%' AND comment_content NOT LIKE '%<pingback />%' ORDER BY comment_date";
-	$resultc = mysql_query($queryc);
+	$resultc = mysqli_query($connexion,$queryc);
 	if ($resultc) {
 	?>
 

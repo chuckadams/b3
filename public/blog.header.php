@@ -281,5 +281,5 @@ if ($preview) {
 }
 
 //echo $request;
-$result = mysql_query($request);
+$result = mysqli_query($connexion,$request);
 ?>

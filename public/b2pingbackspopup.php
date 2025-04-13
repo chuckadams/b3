@@ -25,7 +25,7 @@ $blog=1; include ("blog.header.php"); while($row = mysql_fetch_object($result)) 
 
 <div class="storyContent">
 
-	<?php /* do not delete this line */ $queryc = "SELECT * FROM $tablecomments WHERE comment_post_ID = $id AND comment_content LIKE '%<pingback />%' ORDER BY comment_date"; $resultc = mysql_query($queryc); if ($resultc) { ?>
+	<?php /* do not delete this line */ $queryc = "SELECT * FROM $tablecomments WHERE comment_post_ID = $id AND comment_content LIKE '%<pingback />%' ORDER BY comment_date"; $resultc = mysqli_query($connexion,$queryc); if ($resultc) { ?>
 
 <a name="pingbacks"></a>
 <p>&nbsp;</p>

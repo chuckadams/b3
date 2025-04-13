@@ -90,7 +90,7 @@ case "register":
 
 	/* checking the login isn't already used by another user */
 	$request =  " SELECT user_login FROM $tableusers WHERE user_login = '$user_login'";
-	$result = mysql_query($request,$id) or die ("<b>OOPS</b>: can't check the login...");
+	$result = mysqli_query($connexion,$request,$id) or die ("<b>OOPS</b>: can't check the login...");
 	$lines = mysql_num_rows($result);
 	mysql_free_result($result);
 	if ($lines>=1) {
@@ -106,7 +106,7 @@ case "register":
 	$user_nickname=addslashes($user_nickname);
 
 	$query = "INSERT INTO $tableusers (user_login, user_pass, user_nickname, user_email, user_ip, user_domain, user_browser, dateYMDhour, user_level, user_idmode) VALUES ('$user_login','$pass1','$user_nickname','$user_email','$user_ip','$user_domain','$user_browser',NOW(),'$new_users_can_blog','nickname')";
-	$result = mysql_query($query);
+	$result = mysqli_query($connexion,$query);
 	if ($result==false) {
 		die ("<b>ERROR</b>: couldn't register you... please contact the <a href=\"mailto:$admin_email\">webmaster</a> !".mysqli_error($connexion));
 	}

@@ -3,7 +3,7 @@
 
 	<?php // don't touch these 2 lines
 	$queryc = "SELECT * FROM $tablecomments WHERE comment_post_ID = $id AND comment_content LIKE '%<trackback />%' ORDER BY comment_date";
-	$resultc = mysql_query($queryc); if ($resultc) {
+	$resultc = mysqli_query($connexion,$queryc); if ($resultc) {
 	?>
 
 <a name="trackbacks"></a>
@@ -117,7 +117,7 @@ if ((strlen(''.$tb_id)) && (empty($_GET['__mode'])) && (strlen(''.$url))) {
 	$author = addslashes($author);
 
 	$query = "INSERT INTO $tablecomments VALUES ('0','$comment_post_ID','$author','$email','$url','$user_ip','$now','$comment','0')";
-	$result = mysql_query($query);
+	$result = mysqli_query($connexion,$query);
 	if (!$result) {
 		die ("There is an error with the database, it can't store your comment...<br>Contact the <a href=\"mailto:$admin_email\">webmaster</a>");
 	} else {
