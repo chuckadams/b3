@@ -3,14 +3,10 @@ $use_cache = 1;
 $use_gzipcompression = 1;
 
 /* Including config and functions files */
-require_once(dirname(__FILE__) . '/b2config.php');
-$b2blah = dirname(__FILE__) . '/';
-if ((substr($b2inc, 0, 1) == '/') || (substr($b2inc, 1, 1) == ':')) {
-    $b2blah = './';
-}
-require_once($b2blah . $b2inc . '/b2template.functions.php');
-require_once($b2blah . $b2inc . '/b2vars.php');
-require_once($b2blah . $b2inc . '/b2functions.php');
+require_once(__DIR__ . '/b2config.php');
+require_once(__DIR__ . '/' . $b2inc . '/b2template.functions.php');
+require_once(__DIR__ . '/' . $b2inc . '/b2vars.php');
+require_once(__DIR__ . '/' . $b2inc . '/b2functions.php');
 
 $author = $_REQUEST['author'] ?? '';
 $c = $_REQUEST['c'] ?? '';
