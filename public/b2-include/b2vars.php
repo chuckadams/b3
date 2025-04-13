@@ -76,50 +76,29 @@ $b2_htmltransbis = [
     '&plus;' => '&#43;',
     '&comma;' => '&#44;',
     '&hyphen;' => '&#45;',
-    '&minus;' => '&#45;',
     '&period;' => '&#46;',
     '&sol;' => '&#47;',
     '&colon;' => '&#58;',
     '&semi;' => '&#59;',
-    '&lt;' => '&#60;',
     '&equals;' => '&#61;',
-    '&gt;' => '&#62;',
     '&quest;' => '&#63;',
     '&commat;' => '&#64;',
     '&lsqb;' => '&#91;',
     '&bsol;' => '&#92;',
     '&rsqb;' => '&#93;',
-    '&circ;' => '&#94;',
     '&lowbar;' => '&#95;',
     '&horbar;' => '&#95;',
     '&grave;' => '&#96;',
     '&lcub;' => '&#123;',
     '&verbar;' => '&#124;',
     '&rcub;' => '&#125;',
-    '&tilde;' => '&#126;',
     '&lsquor;' => '&#130;',
     '&ldquor;' => '&#132;',
     '&ldots;' => '&#133;',
-    '&Scaron;' => '&#138;',
-    '&lsaquo;' => '&#139;',
-    '&OElig;' => '&#140;',
-    '&lsquo;' => '&#145;',
     '&rsquor;' => '&#145;',
-    '&rsquo;' => '&#146;',
-    '&ldquo;' => '&#147;',
     '&rdquor;' => '&#147;',
-    '&rdquo;' => '&#148;',
-    '&bull;' => '&#149;',
-    '&ndash;' => '&#150;',
     '&endash;' => '&#150;',
-    '&mdash;' => '&#151;',
     '&emdash;' => '&#151;',
-    '&tilde;' => '&#152;',
-    '&trade;' => '&#153;',
-    '&scaron;' => '&#154;',
-    '&rsaquo;' => '&#155;',
-    '&oelig;' => '&#156;',
-    '&Yuml;' => '&#159;',
     '&nbsp;' => '&#160;',
     '&iexcl;' => '&#161;',
     '&cent;' => '&#162;',
@@ -412,17 +391,17 @@ $b2_htmltranswinuni = [
 ];
 
 # these are used for b2's interface design
-$tabletop = "\t<table cellspacing=\"0\" cellpadding=\"1\" width=\"85%\" border=\"0\" bgcolor=\"#cccccc\" align=\"center\">\n\t<td align=\"left\">\n\t\t<table cellspacing=\"0\" cellpadding=\"15\" width=\"100%\" border=\"0\"bgcolor=\"#ffffff\" align=\"center\">\n\t\t<td align=\"left\">\n";
+$tabletop = "\t<table cellspacing=\"0\" cellpadding=\"1\" width=\"85%\" border=\"0\" bgcolor=\"#cccccc\" align=\"center\">\n\t<td align=\"left\">\n\t\t<table cellspacing=\"0\" cellpadding=\"15\" width=\"100%\" border=\"0\" bgcolor=\"#ffffff\" align=\"center\">\n\t\t<td align=\"left\">\n";
 $tablebottom = "\t\t</td>\n\t</table>\n\t</td>\n\t</table>\n";
 $blankline = '<img src="b2-img/blank.gif" width="10" height="5" border="0" /><br />';
 
 # on which page are we ?
 $PHP_SELF = $_SERVER['PHP_SELF'];
 $pagenow = explode('/', $PHP_SELF);
-$pagenow = trim($pagenow[(sizeof($pagenow) - 1)]);
+$pagenow = trim($pagenow[(count($pagenow) - 1)]);
 $pagenow = explode('?', $pagenow);
 $pagenow = $pagenow[0];
-if (($querystring_start == '/') && ($pagenow != 'b2edit.php')) {
+if (($querystring_start === '/') && ($pagenow !== 'b2edit.php')) {
     $pagenow = $siteurl . '/' . $blogfilename;
 }
 
@@ -436,17 +415,17 @@ $is_NS4 = 0;
 if (!isset($HTTP_USER_AGENT)) {
     $HTTP_USER_AGENT = $_SERVER['HTTP_USER_AGENT'];
 }
-if (preg_match('/Lynx/', $HTTP_USER_AGENT)) {
+if (str_contains($HTTP_USER_AGENT, 'Lynx')) {
     $is_lynx = 1;
-} elseif (preg_match('/Gecko/', $HTTP_USER_AGENT)) {
+} elseif (str_contains($HTTP_USER_AGENT, 'Gecko')) {
     $is_gecko = 1;
-} elseif ((preg_match('/MSIE/', $HTTP_USER_AGENT)) && (preg_match('/Win/', $HTTP_USER_AGENT))) {
+} elseif ((str_contains($HTTP_USER_AGENT, 'MSIE')) && (str_contains($HTTP_USER_AGENT, 'Win'))) {
     $is_winIE = 1;
-} elseif ((preg_match('/MSIE/', $HTTP_USER_AGENT)) && (preg_match('/Mac/', $HTTP_USER_AGENT))) {
+} elseif ((str_contains($HTTP_USER_AGENT, 'MSIE')) && (str_contains($HTTP_USER_AGENT, 'Mac'))) {
     $is_macIE = 1;
-} elseif (preg_match('/Opera/', $HTTP_USER_AGENT)) {
+} elseif (str_contains($HTTP_USER_AGENT, 'Opera')) {
     $is_opera = 1;
-} elseif ((preg_match('/Nav/', $HTTP_USER_AGENT)) || (preg_match('/Mozilla\/4\./', $HTTP_USER_AGENT))) {
+} elseif ((str_contains($HTTP_USER_AGENT, 'Nav')) || (preg_match('/Mozilla\/4\./', $HTTP_USER_AGENT))) {
     $is_NS4 = 1;
 }
 $is_IE = (($is_macIE) || ($is_winIE));
@@ -532,8 +511,8 @@ $b2_gecko_correction['out'] = [
 ];
 
 # server detection
-$is_Apache = strstr($_SERVER['SERVER_SOFTWARE'], 'Apache') ? 1 : 0;
-$is_IIS = strstr($_SERVER['SERVER_SOFTWARE'], 'Microsoft-IIS') ? 1 : 0;
+$is_Apache = str_contains($_SERVER['SERVER_SOFTWARE'], 'Apache') ? 1 : 0;
+$is_IIS = str_contains($_SERVER['SERVER_SOFTWARE'], 'Microsoft-IIS') ? 1 : 0;
 
 # if the config file does not provide the smilies array, let's define it here
 if (!isset($b2smiliestrans)) {
@@ -542,7 +521,6 @@ if (!isset($b2smiliestrans)) {
         ':D' => 'icon_biggrin.gif',
         ':-D' => 'icon_biggrin.gif',
         ':grin:' => 'icon_biggrin.gif',
-        ':)' => 'icon_smile.gif',
         ':-)' => 'icon_smile.gif',
         ':smile:' => 'icon_smile.gif',
         ':(' => 'icon_sad.gif',
@@ -588,9 +566,9 @@ if (!isset($b2smiliestrans)) {
 
 # sorts the smilies' array
 if (!function_exists('smiliescmp')) {
-    function smiliescmp($a, $b)
+    function smiliescmp($a, $b): int
     {
-        if (strlen($a) == strlen($b)) {
+        if (strlen($a) === strlen($b)) {
             return strcmp($a, $b);
         }
         return (strlen($a) > strlen($b)) ? -1 : 1;
@@ -602,8 +580,8 @@ uksort($b2smiliestrans, 'smiliescmp');
 foreach ($b2smiliestrans as $smiley => $img) {
     $b2_smiliessearch[] = $smiley;
     $smiley_masked = '';
-    for ($i = 0; $i < strlen($smiley); $i = $i + 1) {
-        $smiley_masked .= substr($smiley, $i, 1) . chr(160);
+    for ($i = 0; $i < strlen($smiley); ++$i) {
+        $smiley_masked .= $smiley[$i] . chr(160);
     }
     $b2_smiliesreplace[] = "<img src='$smilies_directory/$img' alt='$smiley_masked' />";
 }
@@ -612,5 +590,3 @@ foreach ($b2smiliestrans as $smiley => $img) {
 if (isset($use_smartquotes) && ($use_smartquotes)) {
     add_filter('all', 'phpcurlme');
 }
-
-?>
