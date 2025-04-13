@@ -13,7 +13,7 @@
 # $blogfilename is the name of the default file for your blog
 # $blogname is the name of your blog
 
-$siteurl = 'http://example.com';
+$siteurl = 'https://b2.blog.local';
 $blogfilename = 'index.php';
 $blogname = "my weblog";
 $blogdescription = "babblings !";
@@ -32,7 +32,7 @@ $use_cafelogping = 0;    # set this to 1 if you do have a Cafelog ID
 # $pathserver is where you have uploaded b2: for example, 'http://mydomain.com' (no ending slash !)
 #   by default b2 is set to run in the folder your blog resides, same as $siteurl
 
-$pathserver = 'http://example.com';
+$pathserver = 'https://b2.blog.local';
 
 
 # your email (obvious uh ?)
@@ -43,7 +43,7 @@ $admin_email = 'you@example.com';
 $new_users_can_blog = 1;
 
 
-# set this to 0 or 1, whether you want to allow users to register on your blog.      
+# set this to 0 or 1, whether you want to allow users to register on your blog.
 $users_can_register = 1;
 
 
@@ -54,11 +54,10 @@ $start_of_week = 1;
 
 // ** MySQL settings **
 
-# fill with your database details
-$dbname = 'b2';			// the name of the database
-$dbhost = 'localhost';		// 99% chances you won't need to change this value
-$dbusername = 'user';			// your MySQL username
-$dbpassword = 'pass';		// ...and password
+$dbname = 'b2';
+$dbhost = 'b2-db.blog.local';
+$dbusername = 'b2';
+$dbpassword = 'password';
 
 # database tables' names (change them if you want to have multiple b2's in a single database)
 $tableposts = 'b2posts';
