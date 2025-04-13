@@ -217,7 +217,7 @@ for ($iCount=1; $iCount<=$Count; $iCount++) {
 				$post_title = addslashes(trim($post_title));
 				$content = addslashes(trim($content));
 				$sql = "INSERT INTO $tableposts (post_author, post_date, post_content, post_title, post_category) VALUES ($post_author, '$post_date', '$content', '$post_title', $post_category)";
-				$result = mysql_query($sql) or die('Couldn\'t add post: '.mysql_error());
+				$result = mysql_query($sql) or die('Couldn\'t add post: '.mysqli_error($connexion));
 				$post_ID = mysql_insert_id();
 
 				if (isset($sleep_after_edit) && $sleep_after_edit > 0) {

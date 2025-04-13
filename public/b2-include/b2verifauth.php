@@ -3,12 +3,12 @@
 require_once('b2config.php');
 
 /* connecting the db */
-$connexion = @mysqli_connect($server,$loginsql,$passsql) or die("Can't connect to the database<br>".mysql_error());
+$connexion = @mysqli_connect($server,$loginsql,$passsql) or die("Can't connect to the database<br>");
 mysqli_select_db($connexion,"$base");
 
 /* checking login & pass in the database */
 function veriflog() {
-	global $_COOKIE;
+	global $_COOKIE, $connexion;
 	global $tableusers,$tablesettings,$tablecategories,$tableposts,$tablecomments;
 
 	if (!empty($_COOKIE["cafeloguser"])) {
@@ -24,7 +24,7 @@ function veriflog() {
 		return false;
 
 	$query =  " SELECT user_login, user_pass FROM $tableusers WHERE user_login = '$user_login' ";
-	$result = @mysql_query($query) or die("Query: $query<br /><br />Error: ".mysql_error());
+	$result = @mysql_query($query) or die("Query: $query<br /><br />Error: ".mysqli_error($connexion));
 
 	$lines = mysql_num_rows($result);
 	if ($lines<1) {

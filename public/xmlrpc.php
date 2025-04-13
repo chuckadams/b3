@@ -534,7 +534,7 @@ $bloggergetusersblogs_doc='returns the user\'s blogs - this is a dummy function,
 function bloggergetusersblogs($m) {
 	// this function will have a real purpose with CafeLog's multiple blogs capability
 
-	global $xmlrpcerruser,$siteurl,$blogfilename,$blogname;
+	global $xmlrpcerruser,$siteurl,$blogfilename,$blogname, $connexion;
 	global $tableusers;
 
 	$user_login = $m->getParam(1);
@@ -543,7 +543,7 @@ function bloggergetusersblogs($m) {
 	dbconnect();
 
 	$sql = "SELECT user_level FROM $tableusers WHERE user_login = '$user_login' AND user_level > 3";
-	$result = mysql_query($sql) or die($sql."<br />".mysql_error());
+	$result = mysql_query($sql) or die($sql."<br />".mysqli_error($connexion));
 
 	$is_admin = mysql_num_rows($result);
 
@@ -656,7 +656,7 @@ $bloggergetrecentposts_sig=array(array($xmlrpcString, $xmlrpcString, $xmlrpcStri
 $bloggergetrecentposts_doc='fetches X most recent posts, blogger-api like';
 
 function bloggergetrecentposts($m) {
-	global $xmlrpcerruser,$tableposts;
+	global $xmlrpcerruser,$tableposts, $connexion;
 
 	error_reporting(0); // there is a bug in phpxmlrpc that makes it say there are errors while the output is actually valid, so let's disable errors for that function
 
@@ -685,7 +685,7 @@ function bloggergetrecentposts($m) {
 		$result = mysql_query($sql);
 		if (!$result)
 			return new xmlrpcresp(0, $xmlrpcerruser+2, // user error 2
-           "For some strange yet very annoying reason, the entries couldn't be fetched.".mysql_error());
+           "For some strange yet very annoying reason, the entries couldn't be fetched.".mysqli_error($connexion));
 		
 		$data = new xmlrpcval("","array");
 
@@ -894,7 +894,7 @@ $pingback_ping_doc = 'gets a pingback and registers it as a comment prefixed by 
 
 function pingback_ping($m) {
 	// original code by Mort (http://mort.mine.nu:8080)
-	global $tableposts, $tablecomments, $comments_notify;
+	global $tableposts, $tablecomments, $comments_notify, $connexion;
 	global $siteurl, $blogfilename, $b2_version, $use_pingback;
 	global $_SERVER;
 
@@ -955,7 +955,7 @@ function pingback_ping($m) {
 				// ...or a string #title, a little more complicated
 				$title = preg_replace('/[^a-zA-Z0-9]/', '.', $urltest['fragment']);
 				$sql = "SELECT ID FROM $tableposts WHERE post_title RLIKE '$title'";
-				$result = mysql_query($sql) or die("Query: $sql\n\nError: ".mysql_error());
+				$result = mysql_query($sql) or die("Query: $sql\n\nError: ".mysqli_error($connexion));
 				$blah = mysql_fetch_array($result);
 				$post_ID = $blah['ID'];
 				$way = 'from the fragment (title)';

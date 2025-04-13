@@ -134,7 +134,7 @@ echo " selected";
 		echo "<select name=\"m\" style=\"width:120px;\">";
 		$arc_sql="SELECT DISTINCT YEAR(post_date), MONTH(post_date) FROM $tableposts ORDER BY post_date DESC";
 		$querycount++;
-		$arc_result=mysql_query($arc_sql) or die($arc_sql."<br />".mysql_error());
+		$arc_result=mysql_query($arc_sql) or die($arc_sql."<br />".mysqli_error($connexion));
 		while($arc_row = mysql_fetch_array($arc_result)) {
 			$arc_year  = $arc_row["YEAR(post_date)"];
 			$arc_month = $arc_row["MONTH(post_date)"];
@@ -147,7 +147,7 @@ echo " selected";
 		$archive_day_date_format = "Y/m/d";
 		$arc_sql="SELECT DISTINCT YEAR(post_date), MONTH(post_date), DAYOFMONTH(post_date) FROM $tableposts ORDER BY post_date DESC";
 		$querycount++;
-		$arc_result=mysql_query($arc_sql) or die($arc_sql."<br />".mysql_error());
+		$arc_result=mysql_query($arc_sql) or die($arc_sql."<br />".mysqli_error($connexion));
 		while($arc_row = mysql_fetch_array($arc_result)) {
 			$arc_year  = $arc_row["YEAR(post_date)"];
 			$arc_month = $arc_row["MONTH(post_date)"];
@@ -166,7 +166,7 @@ echo " selected";
 		$archive_week_separator = " - ";
 		$arc_sql="SELECT DISTINCT YEAR(post_date), MONTH(post_date), DAYOFMONTH(post_date), WEEK(post_date) FROM $tableposts ORDER BY post_date DESC";
 		$querycount++;
-		$arc_result=mysql_query($arc_sql) or die($arc_sql."<br />".mysql_error());
+		$arc_result=mysql_query($arc_sql) or die($arc_sql."<br />".mysqli_error($connexion));
 		$arc_w_last = '';
 		while($arc_row = mysql_fetch_array($arc_result)) {
 			$arc_year = $arc_row["YEAR(post_date)"];

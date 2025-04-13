@@ -736,11 +736,11 @@ function list_cats($optionall = 1, $all = 'All', $sort_column = 'ID', $sort_orde
 
 // generic comments/trackbacks/pingbacks numbering
 function generic_ctp_number($post_id, $mode = 'comments') {
-	global $postdata, $tablecomments, $querycount, $cache_ctp_number, $use_cache;
+	global $postdata, $tablecomments, $querycount, $cache_ctp_number, $use_cache, $connexion;
 	if (!isset($cache_ctp_number[$post_id]) || (!$use_cache)) {
 		$post_id = intval($post_id);
 		$query = "SELECT * FROM $tablecomments WHERE comment_post_ID = $post_id";
-		$result = mysql_query($query) or die('SQL query: '.$query.'<br />MySQL Error: '.mysql_error());
+		$result = mysql_query($query) or die('SQL query: '.$query.'<br />MySQL Error: '.mysqli_error($connexion));
 		$querycount++;
 		$ctp_number = array();
 		while($row = mysql_fetch_object($result)) {

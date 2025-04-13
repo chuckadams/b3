@@ -131,7 +131,7 @@ textarea,input,select {
 			$post_content=str_replace("<br>","<br />",$post_content); // the XHTML touch... ;)
 
 			$query = "INSERT INTO $tableposts (ID, post_author,post_date,post_content,post_title,post_category) VALUES ('$post_number','$post_author_ID','$post_date','$post_content','$post_title','1')";
-			$result = mysql_query($query) or die(mysql_error());
+			$result = mysql_query($query) or die(mysqli_error($connexion));
 
 			if (!$result)
 				die ("Error in posting... contact the <a href=\"mailto:$admin_email\">webmaster</a>");
@@ -145,7 +145,7 @@ textarea,input,select {
 	/* we've still got a bug that adds some empty posts with the date 0000-00-00 00:00:00
 	   here's the bugfix: */
 	$query="DELETE FROM $tableposts WHERE post_date=\"0000-00-00 00:00:00\"";
-	$result = mysql_query($query) or die(mysql_error());
+	$result = mysql_query($query) or die(mysqli_error($connexion));
 
 
 	?>

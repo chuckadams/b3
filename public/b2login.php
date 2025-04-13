@@ -42,7 +42,7 @@ for ($i = 0; $i < count($b2varstoreset); $i = $i + 1) {
 }
 
 /* connecting the db */
-$connexion = @mysqli_connect($server,$loginsql,$passsql) or die("Can't connect to the database<br>".mysql_error());
+$connexion = @mysqli_connect($server,$loginsql,$passsql) or die("Can't connect to the database<br>");
 mysqli_select_db($connexion,"$base");
 
 switch($action) {
@@ -74,7 +74,7 @@ case "login":
 	}
 
 	function login() {
-		global $server,$loginsql,$passsql,$base,$log,$pwd,$error,$user_ID;
+		global $server,$loginsql,$passsql,$base,$log,$pwd,$error,$user_ID, $connexion;
 		global $tableusers, $pass_is_md5;
 		$user_login=$log;
 		$password=$pwd;
@@ -96,7 +96,7 @@ case "login":
 			$pass_is_md5 = 0;
 			$query =  " SELECT ID, user_login, user_pass FROM $tableusers WHERE user_login = '$user_login' AND user_pass = '$password' ";
 		}
-		$result = mysql_query($query) or die("Incorrect Login/Password request: ".mysql_error());
+		$result = mysql_query($query) or die("Incorrect Login/Password request: ".mysqli_error($connexion));
 
 		$lines = mysql_num_rows($result);
 		if ($lines<1) {

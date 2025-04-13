@@ -189,7 +189,7 @@ textarea,input,select {
 
 			
 			$query = "INSERT INTO $tableposts (post_author,post_date,post_content,post_title,post_category,post_karma) VALUES ('$post_author_ID','$post_date','$post_content','$post_title','1','$post_karma')";
-			$result = mysql_query($query) or die(mysql_error());
+			$result = mysql_query($query) or die(mysqli_error($connexion));
 
 			if (!$result)
 				die ("Error in posting... contact the <a href=\"mailto:$admin_email\">webmaster</a>");

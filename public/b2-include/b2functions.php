@@ -34,15 +34,16 @@ function get_currentuserinfo() { // a bit like get_userdata(), on steroids
 
 function dbconnect() {
 	global $connexion, $server, $loginsql, $passsql, $base;
-	$connexion = mysqli_connect($server,$loginsql,$passsql) or die("Can't connect to the database server. MySQL said:<br />".mysql_error());
-	$connexionbase = mysqli_select_db($connexion,"$base") or die("Can't connect to the database $base. MySQL said:<br />".mysql_error());
+	$connexion = mysqli_connect($server,$loginsql,$passsql) or die("Can't connect to the database server. MySQL said:<br />".mysqli_error($connexion));
+	$connexionbase = mysqli_select_db($connexion,"$base") or die("Can't connect to the database $base. MySQL said:<br />".mysqli_error($connexion));
 	return(($connexion && $connexionbase));
 }
 
 
 function mysql_oops($query) {
-	$error  = '<p>Oops, MySQL error!</p><p>Your query:<br />'.$query;
-	$error .= '</p><p>MySQL said:<br />'.mysql_error().'</p>';
+    global $connexion;
+    $error  = '<p>Oops, MySQL error!</p><p>Your query:<br />'.$query;
+	$error .= '</p><p>MySQL said:<br />'.mysqli_error($connexion).'</p>';
 	die($error);
 }
 
@@ -348,7 +349,7 @@ function strip_all_but_one_link($text, $mylink) {
 
 
 function get_lastpostdate() {
-	global $tableposts, $cache_lastpostdate, $use_cache, $time_difference, $pagenow;
+	global $tableposts, $cache_lastpostdate, $use_cache, $time_difference, $pagenow, $connexion;
 	if ((!isset($cache_lastpostdate)) OR (!$use_cache)) {
 		$now = date("Y-m-d H:i:s",(time() + ($time_difference * 3600)));
 		if ($pagenow != 'b2edit.php') {
@@ -357,7 +358,7 @@ function get_lastpostdate() {
 			$showcatzero = '';
 		}
 		$sql = "SELECT * FROM $tableposts WHERE $showcatzero post_date <= '$now' ORDER BY post_date DESC LIMIT 1";
-		$result = mysql_query($sql) or die("Your SQL query: <br />$sql<br /><br />MySQL said:<br />".mysql_error());
+		$result = mysql_query($sql) or die("Your SQL query: <br />$sql<br /><br />MySQL said:<br />".mysqli_error($connexion));
 		$querycount++;
 		$myrow = mysql_fetch_object($result);
 		$lastpostdate = $myrow->post_date;
@@ -380,10 +381,10 @@ function user_pass_ok($user_login,$user_pass) {
 }
 
 function get_userdata($userid) {
-	global $tableusers,$querycount,$cache_userdata,$use_cache;
+	global $tableusers,$querycount,$cache_userdata,$use_cache, $connexion;
 	if ((empty($cache_userdata[$userid])) OR (!$use_cache)) {
 		$sql = "SELECT * FROM $tableusers WHERE ID = '$userid'";
-		$result = mysql_query($sql) or die("Your SQL query: <br />$sql<br /><br />MySQL said:<br />".mysql_error());
+		$result = mysql_query($sql) or die("Your SQL query: <br />$sql<br /><br />MySQL said:<br />".mysqli_error($connexion));
 		$myrow = mysql_fetch_array($result);
 		$querycount++;
 		$cache_userdata[$userid] = $myrow;
@@ -407,11 +408,11 @@ function get_userdata2($userid) { // for team-listing
 }
 
 function get_userdatabylogin($user_login) {
-	global $tableusers,$querycount,$cache_userdata,$use_cache;
+	global $tableusers,$querycount,$cache_userdata,$use_cache, $connexion;
 	if ((empty($cache_userdata["$user_login"])) OR (!$use_cache)) {
 		$sql = "SELECT * FROM $tableusers WHERE user_login = '$user_login'";
-		$result = mysql_query($sql) or die("Your SQL query: <br />$sql<br /><br />MySQL said:<br />".mysql_error());
-		if (!$result)	die($sql."<br /><br />".mysql_error());
+		$result = mysql_query($sql) or die("Your SQL query: <br />$sql<br /><br />MySQL said:<br />".mysqli_error($connexion));
+		if (!$result)	die($sql."<br /><br />".mysqli_error($connexion));
 		$myrow = mysql_fetch_array($result);
 		$querycount++;
 		$cache_userdata["$user_login"] = $myrow;
@@ -436,18 +437,18 @@ function get_userid($user_login) {
 }
 
 function get_usernumposts($userid) {
-	global $tableusers,$tablesettings,$tablecategories,$tableposts,$tablecomments,$querycount;
+	global $tableusers,$tablesettings,$tablecategories,$tableposts,$tablecomments,$querycount, $connexion;
 	$sql = "SELECT * FROM $tableposts WHERE post_author = $userid";
-	$result = mysql_query($sql) or die("Your SQL query: <br />$sql<br /><br />MySQL said:<br />".mysql_error());
+	$result = mysql_query($sql) or die("Your SQL query: <br />$sql<br /><br />MySQL said:<br />".mysqli_error($connexion));
 	$querycount++;
 	return mysql_num_rows($result);
 }
 
 function get_settings($setting) {
-	global $tablesettings,$querycount,$cache_settings,$use_cache;
+	global $tablesettings,$querycount,$cache_settings,$use_cache, $connexion;
 	if ((empty($cache_settings)) OR (!$use_cache)) {
 		$sql = "SELECT * FROM $tablesettings";
-		$result = mysql_query($sql) or die("Your SQL query: <br />$sql<br /><br />MySQL said:<br />".mysql_error());
+		$result = mysql_query($sql) or die("Your SQL query: <br />$sql<br /><br />MySQL said:<br />".mysqli_error($connexion));
 		$querycount++;
 		$myrow = mysql_fetch_object($result);
 		$cache_settings = $myrow;
@@ -458,9 +459,9 @@ function get_settings($setting) {
 }
 
 function get_postdata($postid) {
-	global $tableusers,$tablesettings,$tablecategories,$tableposts,$tablecomments,$querycount;
+	global $tableusers,$tablesettings,$tablecategories,$tableposts,$tablecomments,$querycount, $connexion;
 	$sql = "SELECT * FROM $tableposts WHERE ID = $postid";
-	$result = mysql_query($sql) or die("Your SQL query: <br />$sql<br /><br />MySQL said:<br />".mysql_error());
+	$result = mysql_query($sql) or die("Your SQL query: <br />$sql<br /><br />MySQL said:<br />".mysqli_error($connexion));
 	$querycount++;
 	if (mysql_num_rows($result)) {
 		$myrow = mysql_fetch_object($result);
@@ -820,7 +821,7 @@ function trackback_response($error = 0, $error_message = '') {
 // updates the RSS feed !
 function rss_update($blog_ID, $num_posts="", $file="./b2rss.xml") {
 
-	global $use_rss, $b2_version, $querystring_start, $querystring_equal, $querystring_separator;
+	global $use_rss, $b2_version, $querystring_start, $querystring_equal, $querystring_separator, $connexion;
 	global $admin_email,$blogname,$siteurl,$blogfilename,$blogdescription,$posts_per_rss,$rss_language;
 	global $tableposts,$postdata,$row;
 
@@ -852,7 +853,7 @@ function rss_update($blog_ID, $num_posts="", $file="./b2rss.xml") {
 		
 		$now = date('Y-m-d H:i:s',(time() + ($time_difference * 3600)));
 		$sql = "SELECT * FROM $tableposts WHERE post_date <= '$now' AND post_category > 0 ORDER BY post_date DESC LIMIT $num_posts";
-		$result = mysql_query($sql) or die("Your SQL query: <br />$sql<br /><br />MySQL said:<br />".mysql_error());
+		$result = mysql_query($sql) or die("Your SQL query: <br />$sql<br /><br />MySQL said:<br />".mysqli_error($connexion));
 
 		while($row = mysql_fetch_object($result)) {
 
