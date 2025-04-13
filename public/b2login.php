@@ -104,7 +104,7 @@ case "login":
 			$pwd="";
 			return false;
 		} else {
-		$res=mysql_fetch_row($result);
+		$res=mysqli_fetch_row($result);
 		$user_ID=$res[0];
 			if (($pass_is_md5==0 && $res[1]==$user_login && $res[2]==$password) || ($pass_is_md5==1 && $res[1]==$user_login && md5($res[2])==$password)) {
 				return true;

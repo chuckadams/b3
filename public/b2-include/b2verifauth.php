@@ -30,7 +30,7 @@ function veriflog() {
 	if ($lines<1) {
 		return false;
 	} else {
-		$res=mysql_fetch_row($result);
+		$res=mysqli_fetch_row($result);
 		if ($res[0]==$user_login && md5($res[1])==$user_pass_md5) {
 			return true;
 		} else {

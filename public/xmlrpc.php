@@ -244,7 +244,7 @@ function b2_getPostURL($m) {
 					if((!isset($cacheweekly)) || (empty($cacheweekly[$postdata['Date']]))) {
 						$sql = "SELECT WEEK('".$postdata['Date']."')";
 						$result = mysqli_query($connexion,$sql);
-						$row = mysql_fetch_row($result);
+						$row = mysqli_fetch_row($result);
 						$cacheweekly[$postdata['Date']] = $row[0];
 					}
 					$post_URL = $blog_URL.$querystring_start.'m'.$querystring_equal.substr($postdata['Date'],0,4).$querystring_separator.'w'.$querystring_equal.$cacheweekly[$postdata['Date']].'#'.$title;
