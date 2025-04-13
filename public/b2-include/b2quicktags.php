@@ -16,12 +16,12 @@
 <td>
 <input type="button" class="quicktags" accesskey="p" name="addbbcode10" value="&lt;p>" style="width: 40px" onClick="bbstyle(this.form,10)" />
 </td>
-<?php if (basename($_SERVER["SCRIPT_FILENAME"]) != "b2bookmarklet.php") { ?><td>
+<td>
 <input type="button" class="quicktags" accesskey="l" name="addbbcode12" value="&lt;li>" style="width: 40px" onClick="bbstyle(this.form,12)" />
-</td><?php } ?>
-<?php if (basename($_SERVER["SCRIPT_FILENAME"]) != "b2bookmarklet.php") { ?><td>
+</td>
+<td>
 <input type="button" class="quicktags" accesskey="q" name="addbbcode8" value="b-quote" style="width: 60px" onClick="bbstyle(this.form,8)" />
-</td><?php } ?>
+</td>
 <td>
 <input type="button" class="quicktags" accesskey="m" name="addbbcode14" value="image" title="insert an image" style="width: 40px"  onClick="bblink(this.form,14)" />
 </td>

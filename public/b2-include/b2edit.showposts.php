@@ -114,7 +114,7 @@ echo " selected";
 	$query="SELECT * FROM $tablecategories";
 	$result=mysqli_query($connexion,$query);
 	$querycount++;
-	$width = ($mode=="sidebar") ? "100%" : "170px";
+	$width = "170px";
 	while($row = mysqli_fetch_object($result)) {
 		echo "<option value=\"".$row->cat_ID."\"";
 		if ($row->cat_ID == $postdata["Category"])

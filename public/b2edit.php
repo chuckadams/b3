@@ -75,23 +75,7 @@ case 'post':
 	}
 
 	rss_update($blog_ID);
-
-	if (!empty($_POST["mode"])) {
-		switch($_POST["mode"]) {
-			case "bookmarklet":
-				$location="b2bookmarklet.php?a=b";
-				break;
-			case "sidebar":
-				$location="b2sidebar.php?a=b";
-				break;
-			default:
-				$location="b2edit.php";
-				break;
-		}
-	} else {
-		$location="b2edit.php";
-	}
-	header("Location: $location");
+  header("Location: b2edit.php");
 	exit();
 
 break;

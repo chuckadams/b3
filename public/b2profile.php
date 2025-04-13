@@ -237,52 +237,11 @@ case "viewprofile":
 
 break;
 
-
-case 'IErightclick':
-
-	$profile = 1;
-	include ('b2header.php');
-
-  $bookmarklet_tbpb = '';
-	$bookmarklet_height= 300;
-
-	?>
-
-	<div class="menutop">&nbsp;IE one-click bookmarklet</div>
-
-	<table width="100%" cellpadding="20">
-	<tr><td>
-
-	<p>To have a one-click bookmarklet, just copy and paste this<br />into a new text file:</p>
-	<?php
-	$regedit = "REGEDIT4\r\n[HKEY_CURRENT_USER\Software\Microsoft\Internet Explorer\MenuExt\Post To &b2 : ".$blogname."]\r\n@=\"javascript:doc=external.menuArguments.document;Q=doc.selection.createRange().text;void(btw=window.open('".$pathserver."/b2bookmarklet.php?text='+escape(Q)+'".$bookmarklet_tbpb."&popupurl='+escape(doc.location.href)+'&popuptitle='+escape(doc.title),'b2bookmarklet','scrollbars=no,width=480,height=".$bookmarklet_height.",left=100,top=150,status=yes'));btw.focus();\"\r\n\"contexts\"=hex:31\"";
-	?>
-	<pre style="margin: 20px; background-color: #cccccc; border: 1px dashed #333333; padding: 5px; font-size: 12px;"><?php echo $regedit; ?></pre>
-	<p>Save it as b2.reg, and double-click on this file in an Explorer<br />
-	window. Answer Yes to the question, and restart Internet Explorer.<br /><br />
-	That's it, you can now right-click in an IE window and select <br />
-	'Post to b2' to make the bookmarklet appear :)</p>
-
-	<p align="center">
-		<form>
-		<input class="search" type="button" value="1" name="Close this window" />
-		</form>
-	</p>
-	</td></tr>
-	</table>
-	<?php
-
-break;
-
-
 default:
 
 	$profile=1;
 	include ("b2header.php");
 	$profiledata=get_userdata($user_ID);
-
-	$bookmarklet_tbpb  =  '';
-	$bookmarklet_height=  300;
 
 	?>
 
@@ -389,67 +348,7 @@ default:
 	<input type="password" name="pass1" size="16" value="" class="postform" /><br>
 	<input type="password" name="pass2" size="16" value="" class="postform" />
 	</td>
-	</tr>
-<?php
-if ($user_level > 0) {
-?>	<tr>
-<td><br /><strong>bookmarklet</strong><br />add the link to your Favorites/Bookmarks<br />
-<?php
-if ($is_NS4 || $is_gecko) {
-?>
-<a href="javascript:Q=document.selection?document.selection.createRange().text:document.getSelection();void(window.open('<?php echo $path ?>/b2bookmarklet.php?text='+escape(Q)+'<?php echo $bookmarklet_tbpb ?>&popupurl='+escape(location.href)+'&popuptitle='+escape(document.title),'b2 bookmarklet','scrollbars=no,width=480,height=<?php echo $bookmarklet_height ?>,left=100,top=150,status=yes'));">b2 - <?php echo $blogname ?></a>
-<?php
-} else if ($is_winIE) {
-?>
-<a href="javascript:Q='';if(top.frames.length==0)Q=document.selection.createRange().text;void(btw=window.open('<?php echo $path ?>/b2bookmarklet.php?text='+escape(Q)+'<?php echo $bookmarklet_tbpb ?>&popupurl='+escape(location.href)+'&popuptitle='+escape(document.title),'b2bookmarklet','scrollbars=no,width=480,height=<?php echo $bookmarklet_height ?>,left=100,top=150,status=yes'));btw.focus();">b2 - <?php echo $blogname ?></a>
-
-<script type="text/javascript" language="javascript">
-<!--
-function oneclickbookmarklet(blah) {
-	window.open ("b2profile.php?action=IErightclick", "oneclickbookmarklet", "width=500, height=450, location=0, menubar=0, resizable=0, scrollbars=1, status=1, titlebar=0, toolbar=0, screenX=120, left=120, screenY=120, top=120");
-}
-// -->
-</script>
-
-<br /><br />
-One-click bookmarklet:<br />
-<a href="javascript:oneclickbookmarklet(0);">click here</a>
-
-<?php
-} else if ($is_opera) {
-?>
-<a href="javascript:void(window.open('<?php echo $path ?>/b2bookmarklet.php?popupurl='+escape(location.href)+'&popuptitle='+escape(document.title)+'<?php echo $bookmarklet_tbpb ?>','b2bookmarklet','scrollbars=no,width=480,height=<?php echo $bookmarklet_height ?>,left=100,top=150,status=yes'));">b2 - <?php echo $blogname ?></a>
-<?php
-} else if ($is_macIE) {
-?>
-<a href="javascript:Q='';if(top.frames.length==0);void(btw=window.open('<?php echo $path ?>/b2bookmarklet.php?text='+escape(document.getSelection())+'&popupurl='+escape(location.href)+'&popuptitle='+escape(document.title)+'<?php echo $bookmarklet_tbpb ?>','b2bookmarklet','scrollbars=no,width=480,height=<?php echo $bookmarklet_height ?>,left=100,top=150,status=yes'));btw.focus();">b2 - <?php echo $blogname ?></a> <?php
-}
-?>
-<?php if ($is_gecko) { ?>
-<br /><br />
-<script language="JavaScript">
-function addPanel()
-        {
-          if ((typeof window.sidebar == "object") && (typeof window.sidebar.addPanel == "function"))
-            window.sidebar.addPanel("b2 post: <?php echo $blogname ?>","<?php echo $pathserver ?>/b2sidebar.php","");
-          else
-            alert('No Sidebar found!  You must use Mozilla 0.9.4 or later!');
-        }
-</script>
-<strong>SideBar</strong><br />
-Add the <a href="#" onClick="addPanel()">b2 Sidebar</a> !
-<?php } elseif (($is_winIE) || ($is_macIE)) { ?>
-<br /><br />
-<strong>SideBar</strong><br />
-Add this link to your favorites:<br /><a href="javascript:Q='';if(top.frames.length==0)Q=document.selection.createRange().text;void(_search=open('<?php echo $pathserver ?>/b2sidebar.php?text='+escape(Q)+'&popupurl='+escape(location.href)+'&popuptitle='+escape(document.title),'_search'))">b2 Sidebar</a>. 
-<?php } ?>
-	</td>
-	</tr>
-<?php
-}
-?>	</table>
-	</td></tr>
-<tr> 
+  <tr>
 	<td colspan="2" align="center"><br /><input class="search" type="submit" value="Update" name="submit"><br />Note: closes the popup window.</td>
 	</tr>
 	</table>
@@ -460,5 +359,4 @@ Add this link to your favorites:<br /><a href="javascript:Q='';if(top.frames.len
 break;
 }
 
-/* </Profile | My Profile> */
 include($b2inc."/b2footer.php") ?>

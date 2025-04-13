@@ -17,13 +17,6 @@ die ("The admin disabled this function");
 <style type="text/css">
 <!--
 body {
-	background-image: url('<?php
-if ($is_gecko || $is_macIE) {
-?>b2-img/bgbookmarklet1.gif<?php
-} else {
-?>b2-img/bgbookmarklet3.gif<?php
-}
-?>');
 	background-repeat: no-repeat;
 	margin: 30px;
 }
@@ -32,13 +25,7 @@ if (!$is_NS4) {
 ?>
 textarea,input,select {
 	background-color: white;
-/*<?php if ($is_gecko || $is_macIE) { ?>
-	background-image: url('b2-img/bgbookmarklet.png');
-<?php } elseif ($is_winIE) { ?>
-	background-color: #cccccc;
-	filter: alpha(opacity:80);
-<?php } ?>
-*/  border-width: 1px;
+  border-width: 1px;
 	border-color: #cccccc;
 	border-style: solid;
 	padding: 2px;
@@ -88,7 +75,7 @@ function targetopener(blah, closeme, closeonly) {
 <table align="center" width="100%" height="100%" cellpadding="15" cellspacing="0" border="1" style="border-width: 1px; border-color: #cccccc;">
 	<tbody>
 	<tr>
-	<td valign="top" style="background-color: transparent; <?php if ($is_gecko || $is_macIE) { ?>background-image: url('b2-img/bgbookmarklet.png');<?php } elseif ($is_winIE) { ?>background-color: #cccccc; filter: alpha(opacity:60);<?php } ?>;">
+	<td valign="top" style="background-color: transparent;">
 <?php
 
 if (!$_POST["submit"]) {

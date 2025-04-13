@@ -143,12 +143,6 @@ case "login":
 		header("Pragma: no-cache");
 
 		switch($mode) {
-			case "bookmarklet":
-				$location="b2bookmarklet.php?text=$text&popupurl=$popupurl&popuptitle=$popuptitle";
-				break;
-			case "sidebar":
-				$location="sidebar.php?text=$text&popupurl=$popupurl&popuptitle=$popuptitle";
-				break;
 			case "profile":
 				$location="profile.php?text=$text&popupurl=$popupurl&popuptitle=$popuptitle";
 				break;
@@ -347,12 +341,6 @@ if ($error) echo "<div align=\"right\" style=\"padding:4px;\"><font color=\"#FF0
 ?>
 
 <form name="" action="b2login.php" method="post">
-<?php if ($mode=="bookmarklet") { ?>
-<input type="hidden" name="mode" value="<?php echo $mode ?>" />
-<input type="hidden" name="text" value="<?php echo $text ?>" />
-<input type="hidden" name="popupurl" value="<?php echo $popupurl ?>" />
-<input type="hidden" name="popuptitle" value="<?php echo $popuptitle ?>" />
-<?php } ?>
 <input type="hidden" name="redirect_to" value="b2edit.php" />
 <input type="hidden" name="action" value="login" />
 <table width="100" style="background-color: #ffffff">
