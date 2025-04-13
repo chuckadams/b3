@@ -634,7 +634,7 @@ class POP3 {
         if( empty($cmd) )
             return false;
         else
-            return( ereg ("^\+OK", $cmd ) );
+            return( str_starts_with( $cmd, "+OK") );
     }
 
     function strip_clf ($text = "") {

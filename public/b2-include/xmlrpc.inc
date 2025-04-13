@@ -314,8 +314,7 @@ function xmlrpc_ee($parser, $name) {
 	  $_xh[$parser]['params'][]=$_xh[$parser]['st'];
 	  break;
 	case "METHODNAME":
-	  $_xh[$parser]['method']=ereg_replace("^[\n\r\t ]+", "", 
-																				 $_xh[$parser]['ac']);
+	  $_xh[$parser]['method']= ltrim($_xh[$parser]['ac'], " \n\r\t");
 		break;
 	case "BOOLEAN":
 		// special case here: we translate boolean 1 or 0 into PHP
@@ -761,7 +760,7 @@ class xmlrpcmsg {
 		$r=new xmlrpcresp($v);
 	  }
 	}
-	$r->hdrs=split("\r?\n", $_xh[$parser]['ha']);
+	$r->hdrs=preg_split("/\r?\n/", $_xh[$parser]['ha']);
 	return $r;
   }
 
