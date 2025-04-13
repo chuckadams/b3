@@ -541,6 +541,7 @@ function profile($user_login) {
 
 function dropdown_categories($blog_ID=1) {
 	global $postdata,$tablecategories,$mode,$querycount, $connexion;
+  $postdata ??= ['Category' => 1];
 	$query="SELECT * FROM $tablecategories";
 	$result=mysqli_query($connexion,$query);
 	$querycount++;
@@ -557,7 +558,8 @@ function dropdown_categories($blog_ID=1) {
 
 function touch_time($edit=1) {
 	global $month, $postdata, $time_difference;
-  $postdata ??= ['Date' => new DateTime()->format( 'Y-m-d H:i:s' )];
+  $postdata ??= [];
+  $postdata['Date'] ??= date('Y-m-d H:i:s');
 	echo $postdata['Date'];
 	echo '<br /><br /><input type="checkbox" class="checkbox" name="edit_date" value="1" id="timestamp" /><label for="timestamp"> Edit timestamp</label><br />';
 	
