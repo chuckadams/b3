@@ -1100,7 +1100,7 @@ function start_b2(): true
     global $p, $row, $id, $postdata, $authordata, $day, $preview, $page, $pages, $multipage, $more, $numpages;
     if (!$preview) {
         $id = $row->ID;
-        $postdata = get_postdata2($id);
+        $postdata = get_postdata2();
     } else {
         $id = 0;
         $postdata = [

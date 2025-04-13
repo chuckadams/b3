@@ -79,7 +79,7 @@ switch ($action) {
             sleep($sleep_after_edit);
         }
 
-        rss_update($blog_ID);
+        rss_update();
         header("Location: b2edit.php");
         exit();
 
@@ -157,7 +157,7 @@ switch ($action) {
             sleep($sleep_after_edit);
         }
 
-        rss_update($blog_ID);
+        rss_update();
 //	pingWeblogs($blog_ID);
 
         $location = "Location: b2edit.php";
@@ -195,7 +195,7 @@ switch ($action) {
             sleep($sleep_after_edit);
         }
 
-        rss_update($blog_ID);
+        rss_update();
 //	pingWeblogs($blog_ID);
 
         header("Location: b2edit.php");
