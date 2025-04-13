@@ -742,7 +742,7 @@ function generic_ctp_number($post_id, $mode = 'comments') {
 		$query = "SELECT * FROM $tablecomments WHERE comment_post_ID = $post_id";
 		$result = mysqli_query($connexion,$query) or die('SQL query: '.$query.'<br />MySQL Error: '.mysqli_error($connexion));
 		$querycount++;
-		$ctp_number = array();
+		$ctp_number = ['trackbacks' => 0, 'pingbacks' => 0, 'comments' => 0, 'ctp' => 0];
 		while($row = mysqli_fetch_object($result)) {
 			if (substr($row->comment_content, 0, 13) == '<trackback />') {
 				$ctp_number['trackbacks']++;
