@@ -1,6 +1,5 @@
 <?php
 $use_cache = 1;
-$use_gzipcompression = 1;
 
 /* Including config and functions files */
 require_once(__DIR__ . '/b2config.php');
@@ -267,10 +266,6 @@ if ($pagenow != 'b2edit.php') {
     }
     $where .= ' AND post_category > 0';
     $distinct = 'DISTINCT';
-    if ($use_gzipcompression) {
-        // gzipping the output of the script
-        gzip_compression();
-    }
 }
 
 $request = " SELECT $distinct * FROM $tableposts WHERE 1=1" . $where . " ORDER BY post_$orderby $limits";
