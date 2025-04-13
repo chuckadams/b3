@@ -239,7 +239,7 @@ for($i = $calendarfirst; $i<($calendarlast+86400); $i = $i + 86400) {
 		$k = $k + 1;
 		echo $calendarcellstart;
 		$calendarblah = '-'.date('j',$i).'-';
-		$calendarthereisapost = ereg($calendarblah, $daysinmonthwithposts);
+		$calendarthereisapost = str_contains($daysinmonthwithposts, $calendarblah);
 		$calendartoday = (date('Ymd',$i) == date('Ymd', (time() + ($time_difference * 3600))));
 
 		if ($calendarthereisapost) {

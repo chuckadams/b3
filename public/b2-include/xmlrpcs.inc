@@ -69,7 +69,7 @@ function _xmlrpcs_methodSignature($server, $m) {
 
 	$methName=$m->getParam(0);
 	$methName=$methName->scalarval();
-	if (ereg("^system\.", $methName)) {
+	if (str_starts_with($methName, "system.")) {
 		$dmap=$_xmlrpcs_dmap; $sysCall=1;
 	} else {
 		$dmap=$server->dmap; $sysCall=0;
@@ -106,7 +106,7 @@ function _xmlrpcs_methodHelp($server, $m) {
 
 	$methName=$m->getParam(0);
 	$methName=$methName->scalarval();
-	if (ereg("^system\.", $methName)) {
+	if (str_starts_with($methName, "system.")) {
 		$dmap=$_xmlrpcs_dmap; $sysCall=1;
 	} else {
 		$dmap=$server->dmap; $sysCall=0;
@@ -258,7 +258,7 @@ class xmlrpc_server {
 		// xmlrpc_debugmsg($plist);
 	  // now to deal with the method
 		$methName=$_xh[$parser]['method'];
-		if (ereg("^system\.", $methName)) {
+		if (str_starts_with($methName, "system.")) {
 			$dmap=$_xmlrpcs_dmap; $sysCall=1;
 		} else {
 			$dmap=$this->dmap; $sysCall=0;

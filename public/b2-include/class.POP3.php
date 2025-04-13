@@ -281,7 +281,7 @@ class POP3 {
         $MsgArray = array();
 
         $line = fgets($fp,$buffer);
-        while ( !ereg("^\.\r\n",$line))
+        while ( !str_starts_with($line, ".\r\n"))
         {
             $MsgArray[$count] = $line;
             $count++;
@@ -348,7 +348,7 @@ class POP3 {
             if($msgC > $Total) { break; }
             $line = fgets($fp,$this->BUFFER);
             $line = $this->strip_clf($line);
-            if(ereg("^\.",$line))
+            if(str_starts_with($line, "."))
             {
                 $this->ERROR = _("POP3 pop_list:") . ' ' . _("Premature end of list");
                 return false;
@@ -394,7 +394,7 @@ class POP3 {
         $MsgArray = array();
 
         $line = fgets($fp,$buffer);
-        while ( !ereg("^\.\r\n",$line))
+        while ( !str_starts_with($line, ".\r\n"))
         {
             $MsgArray[$count] = $line;
             $count++;
@@ -581,8 +581,8 @@ class POP3 {
             $line = "";
             $count = 1;
             $line = fgets($fp,$buffer);
-            while ( !ereg("^\.\r\n",$line)) {
-                if(ereg("^\.\r\n",$line)) {
+            while ( !str_starts_with($line, ".\r\n")) {
+                if(str_starts_with($line, ".\r\n")) {
                     break;
                 }
                 list ($msg,$msgUidl) = explode(" ",$line);

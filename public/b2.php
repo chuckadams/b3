@@ -1,15 +1,11 @@
 <?php /* Don't remove this line, it calls the b2 function files ! */ $blog=1; include ("blog.header.php"); ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-"http://www.w3.org/TR/xhtml/DTD/xhtml-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml/DTD/xhtml-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title><?php echo $blogname ?></title>
 
 <!-- Change charset if needed(?)  But please do not remove this metatag -->
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<meta http-equiv="reply-to" content="you@somewhere.zzz" />
-<meta http-equiv="imagetoolbar" content="no" />
-<meta content="TRUE" name="MSSmartTagsPreventParsing" />
 <link rel="alternate" type="application/rdf+xml" title="RDF" href="<?php bloginfo('rdf_url'); ?>" />
 <link rel="alternate" type="application/rss+xml" title="RSS" href="<?php bloginfo('rss2_url'); ?>" />
 <link rel="pingback" href="<?php bloginfo('pingback_url'); ?>" />
@@ -40,7 +36,7 @@
 
 
 	<!-- // this is just the end of the motor - don't touch that line either :) -->
-	<?php } ?> 
+	<?php } ?>
 
 <div align="right">[powered by <a href="http://cafelog.com" target="_blank"><b>b2</b></a>.]<br />
 <br />

@@ -123,7 +123,7 @@ echo " checked" ?> tabindex="7" id="autobr" /><label for="autobr"> Auto-BR (conv
 ('post','content','');" class="search" tabindex="9"/>
 <?php } ?>
 
-<?php if ( ($use_fileupload) && ($user_level >= $fileupload_minlevel) && ((ereg(" ".$user_login." ", $fileupload_allowedusers)) || (trim($fileupload_allowedusers)=="")) ) { ?>
+<?php if ( ($use_fileupload) && ($user_level >= $fileupload_minlevel) && ((str_contains($fileupload_allowedusers, " ".$user_login." ")) || (trim($fileupload_allowedusers)=="")) ) { ?>
 <input type="button" value="upload a file/image" onclick="launchupload();" class="search"  tabindex="10" />
 <?php }
 
