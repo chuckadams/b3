@@ -4,7 +4,7 @@ require_once('b2config.php');
 
 /* connecting the db */
 $connexion = @mysqli_connect($server,$loginsql,$passsql) or die("Can't connect to the database<br>".mysql_error());
-mysql_select_db("$base");
+mysqli_select_db($connexion,"$base");
 
 /* checking login & pass in the database */
 function veriflog() {

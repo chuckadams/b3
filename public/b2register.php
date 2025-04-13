@@ -86,7 +86,7 @@ case "register":
 		die ("<b>OOPS</b>: can't connect to the server !".mysql_error());
 	}
 
-	mysql_select_db("$base") or die ("<b>OOPS</b>: can't select the database $base : ".mysql_error());
+	mysqli_select_db($id,"$base") or die ("<b>OOPS</b>: can't select the database $base : ".mysql_error());
 
 	/* checking the login isn't already used by another user */
 	$request =  " SELECT user_login FROM $tableusers WHERE user_login = '$user_login'";

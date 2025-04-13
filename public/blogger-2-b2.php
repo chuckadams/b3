@@ -55,7 +55,7 @@ textarea,input,select {
 <?php
 
 	$connexion = mysqli_connect($server,$loginsql,$passsql) or die ("Oops, MySQL connection error ! Couldn't connect to $server with the username $loginsql");  
-	$bdd = mysql_select_db($dbname,$connexion) or die ("Oops, can't find any database named $dbname here !"); 
+	$bdd = mysqli_select_db($connexion,$dbname) or die ("Oops, can't find any database named $dbname here !"); 
 
 ?>
 <li>importing posts and users<br /><ul><?php

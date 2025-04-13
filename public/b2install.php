@@ -15,7 +15,7 @@ function mysql_doh($msg,$sql,$error) {
 }
 
 $connexion = mysqli_connect($server,$loginsql,$passsql) or die("Can't connect to the database<br>".mysql_error());
-$dbconnexion = mysql_select_db($base, $connexion);
+$dbconnexion = mysqli_select_db($connexion,$base);
 
 if (!$dbconnexion) {
 	echo mysql_error();

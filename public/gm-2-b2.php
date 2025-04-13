@@ -72,7 +72,7 @@ textarea,input,select {
 	$userbase = file("gm-authors.cgi");
 
 	$connexion = mysqli_connect($server,$loginsql,$passsql) or die ("Oops, MySQL connection error ! Couldn't connect to $server with the username $loginsql");  
-	$bdd = mysql_select_db($dbname,$connexion) or die ("Oops, can't find any database named $dbname here !"); 
+	$bdd = mysqli_select_db($connexion,$dbname) or die ("Oops, can't find any database named $dbname here !"); 
 
 	foreach($userbase as $user) {
 		$userdata=explode("|", $user);
