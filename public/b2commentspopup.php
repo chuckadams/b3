@@ -15,7 +15,6 @@ $blog = 1; include("blog.header.php"); while($row = mysqli_fetch_object($result)
     @import url(layout2b.css);
   </style>
   <link rel="stylesheet" type="text/css" media="print" href="print.css"/>
-  <link rel="alternate" type="application/rdf+xml" title="RDF" href="<?php bloginfo('rdf_url'); ?>"/>
   <link rel="alternate" type="application/rss+xml" title="RSS" href="<?php bloginfo('rss2_url'); ?>"/>
 </head>
 <body>

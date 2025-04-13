@@ -47,9 +47,6 @@ function get_bloginfo($show = '')
 		case "description":
 			$output = $blogdescription;
 			break;
-		case "rdf_url":
-			$output = $siteurl . '/b2rdf.php';
-			break;
 		case "rss_url":
 			$output = $siteurl . '/b2rss.php';
 			break;

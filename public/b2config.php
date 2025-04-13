@@ -114,7 +114,7 @@ $fileupload_allowedusers = '';
 
 // ** RSS syndication options **
 
-# these options are used by b2rdf.php (1.0), b2rss.php (0.92), and b2rss2.php (2.0)
+# these options are used by b2rss.php (0.92), and b2rss2.php (2.0)
 #  note: if you don't want to syndicate your news, you can delete these files
 
 # number of last posts to syndicate
