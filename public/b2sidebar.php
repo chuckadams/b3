@@ -48,27 +48,6 @@ if ($a=="b") {
 <head>
 <title>b2 > sidebar</title>
 <link rel="stylesheet" href="<?php echo $b2inc; ?>/b2.css" type="text/css">
-<?php
-if ($use_spellchecker) {
-?><script type="text/javascript" language="javascript">
-<!--
-function DoSpell(formname, subject, body)
-{
-document.SPELLDATA.formname.value=formname
-document.SPELLDATA.subjectname.value=subject
-document.SPELLDATA.messagebodyname.value=body
-document.SPELLDATA.companyID.value="custom\\http://cafelog.com"
-document.SPELLDATA.language.value=1033
-document.SPELLDATA.opener.value="<?php echo $pathserver ?>/sproxy.pl"
-document.SPELLDATA.formaction.value="http://www.spellchecker.com/spell/startspelling.asp "
-window.open("<?php echo $pathserver ?>/b2spell.php","Spell",
-"toolbar=no,directories=no,location=yes,resizable=yes,width=620,height=400,top=100,left=100")
-}
-//-->
-</script><?php
-}
-?>
-
 <style type="text/css">
 <!--
 body {
@@ -124,13 +103,6 @@ textarea,input,select {
 
 <input type="submit" name="submit" value="Blog this !" class="search" tabindex="3" /> 
 
-<?php if ($use_spellchecker) { ?>
-<!--<input type = "button" value = "Spell Check" onclick="var f=document.forms[0]; doSpell( 'en', f.post_content, '<?php echo $spellchecker_url ?>/sproxy.cgi', true);" class="search" tabindex="5" />-->
-<input type="button" value="Spellcheck" onclick="DoSpell
-('post','content','');" class="search" tabindex="9"/>
-
-<?php } ?>
-
 <script language="JavaScript">
 //				document.blog.post_content.focus();
 //-->
@@ -141,17 +113,6 @@ textarea,input,select {
 </div>
 
 </form>
-
-<!-- this is for the spellchecker -->
-<form name="SPELLDATA"><div>
-<input name="formname" type="hidden" value="">
-<input name="messagebodyname" type="hidden" value="">
-<input name="subjectname" type="hidden" value="">
-<input name="companyID" type="hidden" value="">
-<input name="language" type="hidden" value="">
-<input name="opener" type="hidden" value="">
-<input name="formaction" type="hidden" value="">
-</div></form>
 
 </body>
 </html><?php

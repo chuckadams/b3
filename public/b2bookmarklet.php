@@ -28,48 +28,6 @@ window.close()
 <head>
 <title>b2 > bookmarklet</title>
 <link rel="stylesheet" href="<?php echo $b2inc; ?>/b2.css" type="text/css">
-<?php
-if ($use_spellchecker) {
-?><script type="text/javascript" language="javascript">
-<!--
-
-function DoSpell(formname, subject, body) {
-	document.SPELLDATA.formname.value=formname
-	document.SPELLDATA.subjectname.value=subject
-	document.SPELLDATA.messagebodyname.value=body
-	document.SPELLDATA.companyID.value="custom\\http://cafelog.com"
-	document.SPELLDATA.language.value=1033
-	document.SPELLDATA.opener.value="sproxy.pl"
-	document.SPELLDATA.formaction.value="http://www.spellchecker.com/spell/startspelling.asp "
-	window.open("b2spell.php","Spell",
-	"toolbar=no,directories=no,location=yes,urlbar=yes,resizable=yes,width=620,height=600,top=100,left=100")
-}
-
-function preview(form) {
-	var preview_date = "<?php echo date("Y-m-d H:i:s"); ?>";
-	var preview_userid = "<?php echo $user_ID ?>";
-	var preview_title = form.post_title.value;
-	var preview_category = form.post_category.value;
-	var preview_content = form.content.value;
-	var preview_autobr = form.post_autobr.value;
-	preview_date = escape(preview_date);
-	preview_userid = escape(preview_userid);
-	preview_title = escape(preview_title);
-	preview_category = escape(preview_category);
-	preview_content = escape(preview_content);
-	preview_autobr = escape(preview_autobr);
-	window.open ("<?php echo "$siteurl/$blogfilename" ?>?preview=1&preview_date="+preview_date +"&preview_userid="+preview_userid +"&preview_title="+preview_title +"&preview_category="+preview_category +"&preview_content="+preview_content +"&preview_autobr="+preview_autobr ,"Preview", "location=0,menubar=1,resizable=1,scrollbars=yes,status=1,toolbar=0");
-}
-
-function launchupload() {
-	window.open ("b2upload.php", "b2upload", "width=380,height=360,location=0,menubar=0,resizable=1,scrollbars=yes,status=1,toolbar=0");
-}
-
-//-->
-</script>
-<?php
-}
-?>
 <style type="text/css">
 <!--
 body {
@@ -190,12 +148,6 @@ preg_match("/\%u[1-9A-F][1-9A-F][1-9A-F][1-9A-F]/is", $text, $stufftofix);
 
 <input type="submit" name="submit" value="Blog this !" class="search" tabindex="3" /> 
 
-<?php if ($use_spellchecker) { ?>
-<!--<input type = "button" value = "Spell Check" onclick="var f=document.forms[0]; doSpell( 'en', f.post_content, '<?php echo $spellchecker_url ?>/sproxy.cgi', true);" class="search" tabindex="5" />-->
-<input type="button" value="Spellcheck" onclick="DoSpell
-('post','content','');" class="search" />
-<?php } ?>
-
 <?php if ( ($use_fileupload) && ($user_level >= $fileupload_minlevel) && ((str_contains($fileupload_allowedusers, " ".$user_login." ")) || (trim($fileupload_allowedusers)=="")) ) { ?>
 <input type="button" value="upload a file" onclick="launchupload();" class="search" />
 <?php } ?>
@@ -212,17 +164,6 @@ window.focus();
 </div>
 
 </form>
-
-<!-- this is for the spellchecker -->
-<form name="SPELLDATA"><div>
-<input name="formname" type="hidden" value="">
-<input name="messagebodyname" type="hidden" value="">
-<input name="subjectname" type="hidden" value="">
-<input name="companyID" type="hidden" value="">
-<input name="language" type="hidden" value="">
-<input name="opener" type="hidden" value="">
-<input name="formaction" type="hidden" value="">
-</div></form>
 
 </body>
 </html><?php

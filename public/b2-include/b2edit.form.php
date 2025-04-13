@@ -107,11 +107,6 @@ echo " checked" ?> tabindex="7" id="autobr" /><label for="autobr"> Auto-BR (conv
 
 <input type="submit" name="submit" value="<?php echo $submitbutton_text ?>" class="search" style="font-weight: bold;" tabindex="5" /> 
 
-<?php if ($use_spellchecker) { ?>
-<input type="button" value="Spellcheck" onclick="DoSpell
-('post','content','');" class="search" tabindex="9"/>
-<?php } ?>
-
 <?php if ( ($use_fileupload) && ($user_level >= $fileupload_minlevel) && ((str_contains($fileupload_allowedusers, " ".$user_login." ")) || (trim($fileupload_allowedusers)=="")) ) { ?>
 <input type="button" value="upload a file/image" onclick="launchupload();" class="search"  tabindex="10" />
 <?php }
