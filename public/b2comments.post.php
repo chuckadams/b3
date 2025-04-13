@@ -77,7 +77,7 @@ $query = "SELECT * FROM $tablecomments WHERE comment_author_IP='$user_ip' ORDER 
 $result = mysqli_query($connexion,$query);
 $ok=1;
 if (!empty($result)) {
-	while($row = mysql_fetch_object($result)) {
+	while($row = mysqli_fetch_object($result)) {
 		$then=$row->comment_date;
 	}
 	$time_lastcomment=mysql2date("U","$then");

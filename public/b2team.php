@@ -108,7 +108,7 @@ default:
 	<?php
 	$request = " SELECT * FROM $tableusers WHERE user_level>0 ORDER BY ID";
 	$result = mysqli_query($connexion,$request);
-	while($row = mysql_fetch_object($result)) {
+	while($row = mysqli_fetch_object($result)) {
 		$user_data = get_userdata2($row->ID);
 		echo "<tr>\n<!--".$user_data["user_login"]."-->\n";
 		$email = $user_data["user_email"];
@@ -161,7 +161,7 @@ default:
 	<?php } ?>
 	</tr>
 	<?php
-	while($row = mysql_fetch_object($result)) {
+	while($row = mysqli_fetch_object($result)) {
 		$user_data = get_userdata2($row->ID);
 		echo "<tr>\n<!--".$user_data["user_login"]."-->\n";
 		$email = $user_data["user_email"];

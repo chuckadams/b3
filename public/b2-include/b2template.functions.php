@@ -446,7 +446,7 @@ function previous_post($format='%', $previous='previous post: ', $title='yes', $
 		$query = @mysqli_query($connexion,$sql);
 		$querycount++;
 		if (($query) && (mysql_num_rows($query))) {
-			$p_info = mysql_fetch_object($query);
+			$p_info = mysqli_fetch_object($query);
 			$p_title = $p_info->post_title;
 			$p_id = $p_info->ID;
 			$string = '<a href="'.$blogfilename.$querystring_start.'p'.$querystring_equal.$p_id.$querystring_separator.'more'.$querystring_equal.'1'.$querystring_separator.'c'.$querystring_equal.'1">'.$previous;
@@ -491,7 +491,7 @@ function next_post($format='%', $next='next post: ', $title='yes', $in_same_cat=
 		$query = @mysqli_query($connexion,$sql);
 		$querycount++;
 		if (($query) && (mysql_num_rows($query))) {
-			$p_info = mysql_fetch_object($query);
+			$p_info = mysqli_fetch_object($query);
 			$p_title = $p_info->post_title;
 			$p_id = $p_info->ID;
 			$string = '<a href="'.$blogfilename.$querystring_start.'p'.$querystring_equal.$p_id.$querystring_separator.'more'.$querystring_equal.'1'.$querystring_separator.'c'.$querystring_equal.'1">'.$next;
@@ -687,7 +687,7 @@ function dropdown_cats($optionall = 1, $all = 'All') {
 	if (intval($optionall) == 1) {
 		echo "\t<option value=\"all\">$all</option>\n";
 	}
-	while($row = mysql_fetch_object($result)) {
+	while($row = mysqli_fetch_object($result)) {
 		echo "\t<option value=\"".$row->cat_ID."\"";
 		if ($row->cat_ID == $cat)
 			echo ' selected="selected"';
@@ -710,7 +710,7 @@ function list_cats($optionall = 1, $all = 'All', $sort_column = 'ID', $sort_orde
 		$all = apply_filters('list_cats', $all);
 		echo "\t<a href=\"".$file.$querystring_start.'cat'.$querystring_equal.'all">'.$all."</a><br />\n";
 	}
-	while($row = mysql_fetch_object($result)) {
+	while($row = mysqli_fetch_object($result)) {
 		$cat_name = $row->cat_name;
 		$cat_name = apply_filters('list_cats', $cat_name);
 		echo "\t<a href=\"".$file.$querystring_start.'cat'.$querystring_equal.$row->cat_ID.'">';
@@ -743,7 +743,7 @@ function generic_ctp_number($post_id, $mode = 'comments') {
 		$result = mysqli_query($connexion,$query) or die('SQL query: '.$query.'<br />MySQL Error: '.mysqli_error($connexion));
 		$querycount++;
 		$ctp_number = array();
-		while($row = mysql_fetch_object($result)) {
+		while($row = mysqli_fetch_object($result)) {
 			if (substr($row->comment_content, 0, 13) == '<trackback />') {
 				$ctp_number['trackbacks']++;
 			} elseif (substr($row->comment_content, 0, 12) == '<pingback />') {

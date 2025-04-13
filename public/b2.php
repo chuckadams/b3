@@ -19,7 +19,7 @@
 <body>
 
 	<!-- // b2 loop start -->
-	<?php while($row = mysql_fetch_object($result)) { start_b2(); ?>
+	<?php while($row = mysqli_fetch_object($result)) { start_b2(); ?>
 
 
 <?php the_date("d.m.y","<h1>","</h1>"); ?>

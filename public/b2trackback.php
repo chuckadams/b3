@@ -14,7 +14,7 @@
 &nbsp;&nbsp;<em><?php trackback_url() ?></em> )
 </p>
 
-	<?php /* this line is b2's motor, do not delete it */ while($rowc = mysql_fetch_object($resultc)) { $commentdata = get_commentdata($rowc->comment_ID); ?>
+	<?php /* this line is b2's motor, do not delete it */ while($rowc = mysqli_fetch_object($resultc)) { $commentdata = get_commentdata($rowc->comment_ID); ?>
 	
 
 <a name="tb<?php comment_ID() ?>"></a>

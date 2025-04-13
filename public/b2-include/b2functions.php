@@ -360,7 +360,7 @@ function get_lastpostdate() {
 		$sql = "SELECT * FROM $tableposts WHERE $showcatzero post_date <= '$now' ORDER BY post_date DESC LIMIT 1";
 		$result = mysqli_query($connexion,$sql) or die("Your SQL query: <br />$sql<br /><br />MySQL said:<br />".mysqli_error($connexion));
 		$querycount++;
-		$myrow = mysql_fetch_object($result);
+		$myrow = mysqli_fetch_object($result);
 		$lastpostdate = $myrow->post_date;
 		$cache_lastpostdate = $lastpostdate;
 //		echo $lastpostdate;
@@ -450,7 +450,7 @@ function get_settings($setting) {
 		$sql = "SELECT * FROM $tablesettings";
 		$result = mysqli_query($connexion,$sql) or die("Your SQL query: <br />$sql<br /><br />MySQL said:<br />".mysqli_error($connexion));
 		$querycount++;
-		$myrow = mysql_fetch_object($result);
+		$myrow = mysqli_fetch_object($result);
 		$cache_settings = $myrow;
 	} else {
 		$myrow = $cache_settings;
@@ -464,7 +464,7 @@ function get_postdata($postid) {
 	$result = mysqli_query($connexion,$sql) or die("Your SQL query: <br />$sql<br /><br />MySQL said:<br />".mysqli_error($connexion));
 	$querycount++;
 	if (mysql_num_rows($result)) {
-		$myrow = mysql_fetch_object($result);
+		$myrow = mysqli_fetch_object($result);
 		$postdata = array (
 			'ID' => $myrow->ID, 
 			'Author_ID' => $myrow->post_author, 
@@ -529,7 +529,7 @@ function get_catname($cat_ID) {
 		$sql = "SELECT * FROM $tablecategories";
 		$result = mysqli_query($connexion,$sql) or die('Oops, couldn\'t query the db for categories.');
 		$querycount;
-		while ($row = mysql_fetch_object($result)) {
+		while ($row = mysqli_fetch_object($result)) {
 			$cache_catnames[$row->cat_ID] = $row->cat_name;
 		}
 	}
@@ -549,7 +549,7 @@ function dropdown_categories($blog_ID=1) {
 	$querycount++;
 	$width = ($mode=="sidebar") ? "100%" : "170px";
 	echo '<select name="post_category" style="width:'.$width.';" tabindex="2" id="category">';
-	while($row = mysql_fetch_object($result)) {
+	while($row = mysqli_fetch_object($result)) {
 		echo "<option value=\"".$row->cat_ID."\"";
 		if ($row->cat_ID == $postdata["Category"])
 			echo " selected";
@@ -855,7 +855,7 @@ function rss_update($blog_ID, $num_posts="", $file="./b2rss.xml") {
 		$sql = "SELECT * FROM $tableposts WHERE post_date <= '$now' AND post_category > 0 ORDER BY post_date DESC LIMIT $num_posts";
 		$result = mysqli_query($connexion,$sql) or die("Your SQL query: <br />$sql<br /><br />MySQL said:<br />".mysqli_error($connexion));
 
-		while($row = mysql_fetch_object($result)) {
+		while($row = mysqli_fetch_object($result)) {
 
 			$id = $row->ID;
 			$postdata=get_postdata2($id);

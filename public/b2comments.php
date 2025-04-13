@@ -19,7 +19,7 @@
 <div><strong><span style="color: #0099CC">::</span> comments</strong></div>
 <p>&nbsp;</p>
 
-	<?php /* this line is b2's motor, do not delete it */ $wxcvbn_c=0; while($rowc = mysql_fetch_object($resultc)) { $wxcvbn_c++; $commentdata = get_commentdata($rowc->comment_ID); ?>
+	<?php /* this line is b2's motor, do not delete it */ $wxcvbn_c=0; while($rowc = mysqli_fetch_object($resultc)) { $wxcvbn_c++; $commentdata = get_commentdata($rowc->comment_ID); ?>
 
 <a name="c<?php comment_ID() ?>"></a>
 	

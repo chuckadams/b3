@@ -105,7 +105,7 @@ if ($archive_mode == 'monthly') {
 	$requestarc = " SELECT ID,post_date,post_title FROM $tableposts WHERE post_date < '$now' AND post_category > 0 ORDER BY post_date DESC";
 	$querycount++;
 	$resultarc = mysqli_query($connexion,$requestarc);
-	while($row=mysql_fetch_object($resultarc)) {
+	while($row=mysqli_fetch_object($resultarc)) {
 		if ($row->post_date != '0000-00-00 00:00:00') {
 			echo "<a href=\"$archive_link_p".$row->ID.'">';
 			$arc_title = stripslashes($row->post_title);

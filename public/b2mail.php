@@ -193,7 +193,7 @@ for ($iCount=1; $iCount<=$Count; $iCount++) {
 			continue;
 		}
 
-		$row = mysql_fetch_object($result);
+		$row = mysqli_fetch_object($result);
 		$user_level = $row->user_level;
 		$post_author = $row->ID;
 

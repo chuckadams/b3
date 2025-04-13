@@ -160,7 +160,7 @@ function b2getcategories($m) {
 		$result = mysqli_query($connexion,$sql) or die($sql);
 
 		$i = 0;
-		while($row = mysql_fetch_object($result)) {
+		while($row = mysqli_fetch_object($result)) {
 			$cat_name = $row->cat_name;
 			$cat_ID = $row->cat_ID;
 
@@ -690,7 +690,7 @@ function bloggergetrecentposts($m) {
 		$data = new xmlrpcval("","array");
 
 		$i = 0;
-		while($row = mysql_fetch_object($result)) {
+		while($row = mysqli_fetch_object($result)) {
 			$postdata = array(
 				"ID" => $row->ID, 
 				"Author_ID" => $row->post_author, 

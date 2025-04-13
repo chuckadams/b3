@@ -115,7 +115,7 @@ echo " selected";
 	$result=mysqli_query($connexion,$query);
 	$querycount++;
 	$width = ($mode=="sidebar") ? "100%" : "170px";
-	while($row = mysql_fetch_object($result)) {
+	while($row = mysqli_fetch_object($result)) {
 		echo "<option value=\"".$row->cat_ID."\"";
 		if ($row->cat_ID == $postdata["Category"])
 			echo " selected";
@@ -188,7 +188,7 @@ echo " selected";
 		$requestarc = " SELECT ID,post_date,post_title FROM $tableposts ORDER BY post_date DESC";
 		$querycount++;
 		$resultarc = mysqli_query($connexion,$requestarc);
-		while($row=mysql_fetch_object($resultarc)) {
+		while($row=mysqli_fetch_object($resultarc)) {
 			if ($row->post_date != "0000-00-00 00:00:00") {
 				echo "<option value=\"".$row->ID."\">";
 				if (strip_tags($row->post_title)) {
@@ -215,7 +215,7 @@ echo " selected";
 	// these lines are b2's "motor", do not alter nor remove them
 	include("blog.header.php");
 
-	while($row = mysql_fetch_object($result)) {
+	while($row = mysqli_fetch_object($result)) {
 		$posts_per_page = 10;
 	start_b2(); ?>
 		<tr>
@@ -257,7 +257,7 @@ echo " selected";
 					<p><b><font color="#ff3300">::</font> comments</b></p>
 
 					<?php
-					while($rowc = mysql_fetch_object($resultc)) {
+					while($rowc = mysqli_fetch_object($resultc)) {
 						$commentdata = get_commentdata($rowc->comment_ID);
 					?>
 				

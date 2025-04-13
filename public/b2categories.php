@@ -141,7 +141,7 @@ default:
 	$query="SELECT * FROM $tablecategories ORDER BY cat_ID";
 	$result=mysqli_query($connexion,$query);
 	echo "<select name=\"cat_ID\">\n";
-	while($row = mysql_fetch_object($result)) {
+	while($row = mysqli_fetch_object($result)) {
 		echo "\t<option value=\"".$row->cat_ID."\"";
 		if ($row->cat_ID == $cat)
 			echo " selected";

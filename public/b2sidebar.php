@@ -19,7 +19,7 @@ die ("Cheatin' uh ?");
 
 $request = " SELECT * FROM $tablesettings ";
 $result = mysqli_query($connexion,$request);
-while($row = mysql_fetch_object($result)) {
+while($row = mysqli_fetch_object($result)) {
 	$time_difference=$row->time_difference;
 	$autobr=$row->AutoBR;
 }
