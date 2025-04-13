@@ -268,44 +268,6 @@ $querystring_start = '?';
 $querystring_equal = '=';
 $querystring_separator = '&amp;';
 
-
-
-
-// ** Configuration for b2mail.php ** (skip this if you don't intend to blog via email)
-
-# mailserver settings
-$mailserver_url = 'mail.example.com';
-$mailserver_login = 'login@example.com';
-$mailserver_pass = 'password';
-$mailserver_port = 110;
-
-# by default posts will have this category
-$default_category = 1;
-
-# subject prefix
-$subjectprefix = 'blog:';
-
-# body terminator string (starting from this string, everything will be ignored, including this string)
-$bodyterminator = "___";
-
-# set this to 1 to run in test mode
-$thisisforfunonly = 0;
-
-
-### Special Configuration for some phone email services
-
-# some mobile phone email services will send identical subject & content on the same line
-# if you use such a service, set $use_phoneemail to 1, and indicate a separator string
-# when you compose your message, you'll type your subject then the separator string
-# then you type your login:password, then the separator, then content
-
-$use_phoneemail = 0;
-$phoneemail_separator = ':::';
-
-
-
-
-
 /* Stop editing */
 
 
