@@ -364,9 +364,6 @@ function get_the_content($more_link_text='(more...)', $stripteaser=0, $more_file
 			$output .= ' <a href="'.$file.$querystring_start.'p'.$querystring_equal.$id.$querystring_separator.'more'.$querystring_equal.'1#more'.$id.'">'.$more_link_text.'</a>';
 		}
 	}
-	if ($preview) { // preview fix for javascript bug with foreign languages
-		$output =  preg_replace('/\%u([0-9A-F]{4,4})/e',  "'&#'.base_convert('\\1',16,10).';'", $output);
-	}
 	return($output);
 }
 

@@ -132,16 +132,6 @@ $text = stripslashes($text);
 
 /* big funky fixes for browsers' javascript bugs */
 
-if (($is_macIE) && (!isset($IEMac_bookmarklet_fix))) {
-	$popuptitle = preg_replace($b2_macIE_correction["in"],$b2_macIE_correction["out"],$popuptitle);
-	$text = preg_replace($b2_macIE_correction["in"],$b2_macIE_correction["out"],$text);
-}
-
-if (($is_winIE) && (!isset($IEWin_bookmarklet_fix))) {
-	$popuptitle =  preg_replace("/\%u([0-9A-F]{4,4})/e",  "'&#'.base_convert('\\1',16,10).';'", $popuptitle);
-	$text =  preg_replace("/\%u([0-9A-F]{4,4})/e",  "'&#'.base_convert('\\1',16,10).';'", $text);
-}
-
 if (($is_gecko) && (!isset($Gecko_bookmarklet_fix))) {
 	$popuptitle = preg_replace($b2_gecko_correction["in"],$b2_gecko_correction["out"],$popuptitle);
 	$text = preg_replace($b2_gecko_correction["in"],$b2_gecko_correction["out"],$text);

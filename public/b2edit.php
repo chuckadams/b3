@@ -40,12 +40,12 @@ case 'post':
 	$standalone = 1;
 	require_once('./b2header.php');
 
-	$post_autobr = intval($_POST["post_autobr"]);
-	$post_pingback = intval($_POST["post_pingback"]);
+	$post_autobr = intval($_POST["post_autobr"] ?? 0);
+	$post_pingback = intval($_POST["post_pingback"] ?? 0);
 	$content = balanceTags($_POST["content"]);
 	$content = format_to_post($content);
 	$post_title = addslashes($_POST["post_title"]);
-	$post_category = intval($_POST["post_category"]);
+	$post_category = intval($_POST["post_category"] ?? 1);
 
 	if ($user_level == 0)
 	die ("Cheatin' uh ?");

@@ -273,11 +273,6 @@ $request = " SELECT $distinct * FROM $tableposts WHERE 1=1".$where." ORDER BY po
 
 if ($preview) {
 	$request = 'SELECT 1-1'; // dummy mysql query for the preview
-	// little funky fix for IEwin, rawk on that code
-	$is_winIE = ((preg_match('/MSIE/',$HTTP_USER_AGENT)) && (preg_match('/Win/',$HTTP_USER_AGENT)));
-	if (($is_winIE) && (!isset($IEWin_bookmarklet_fix))) {
-		$preview_content =  preg_replace('/\%u([0-9A-F]{4,4})/e',  "'&#'.base_convert('\\1',16,10).';'", $preview_content);
-	}
 }
 
 //echo $request;
