@@ -155,35 +155,6 @@ $rss_encoded_html = 0;
 $rss_excerpt_length = 50;
 
 
-
-// ** Weblogs.com ping **
-
-# set this to 1 if you want your site to be listed on http://weblogs.com when you add a new post
-$use_weblogsping = 0;
-
-
-// ** Blo.gs ping **
-
-# set this to 1 if you want your site to be listed on http://blo.gs when you add a new post
-$use_blodotgsping = 0;
-
-# if you ping blo.gs, this is the URL that will be sent to it (enter your blog's URL):
-$blodotgsping_url = 'http://example.com';
-
-
-
-// ** Trackback / PingBack **
-
-# set this to 0 or 1, whether you want to allow your posts to be trackback'able or not
-# note: setting it to zero would also disable sending trackbacks
-$use_trackback = 0;
-
-# set this to 0 or 1, whether you want to allow your posts to be pingback'able or not
-# note: setting it to zero would also disable sending pingbacks
-$use_pingback = 0;
-
-
-
 // ** Comments options **
 
 # set this to 1 to require e-mail and name, or 0 to allow comments without e-mail/name

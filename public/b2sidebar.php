@@ -122,10 +122,6 @@ textarea,input,select {
 
 <input type="checkbox" name="post_autobr" value="1" <?php if ($autobr) echo " checked" ?> tabindex="4" class="checkbox" id="autobr" /><label for="autobr"> Auto-BR</label><br />
 
-<?php if ($use_pingback) { ?>
-<input type="checkbox" class="checkbox" name="post_pingback" value="1" checked="checked" tabindex="5" id="pingback" /><label for="pingback"> PingBack</label>
-<?php } ?>
-
 <input type="submit" name="submit" value="Blog this !" class="search" tabindex="3" /> 
 
 <?php if ($use_spellchecker) { ?>

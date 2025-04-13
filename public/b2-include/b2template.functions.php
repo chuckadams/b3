@@ -57,9 +57,6 @@ function get_bloginfo($show='') {
 		case "rss2_url":
 			$output = $siteurl.'/b2rss2.php';
 			break;
-		case "pingback_url":
-			$output = $pathserver.'/xmlrpc.php';
-			break;
 		case "admin_email":
 			$output = $admin_email;
 			break;

@@ -12,16 +12,8 @@ switch($action) {
 		$toprow_title = "New Post";
 		$form_action = "post";
 		$form_extra = "";
-		if ($use_pingback) {
-			$form_pingback = '<input type="checkbox" class="checkbox" name="post_pingback" value="1" checked="checked" tabindex="7" id="pingback" /><label for="pingback"> PingBack the URLs in this post</label><br />';
-		} else {
-			$form_pingback = '';
-		}
-		if ($use_trackback) {
-			$form_trackback = '<br /><br /><label for="trackback"><b>TrackBack</b> an URL:</label><br /><input type="text" name="trackback_url" style="width: 415px" id="trackback" />';
-		} else {
-			$form_trackback = '';
-		}
+    $form_pingback = '';
+    $form_trackback = '';
 		$colspan = 3;
 		break;
 	case "edit":

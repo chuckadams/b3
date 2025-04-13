@@ -243,9 +243,8 @@ case 'IErightclick':
 	$profile = 1;
 	include ('b2header.php');
 
-	$bookmarklet_tbpb  = ($use_trackback) ? '&trackback=1' : '';
-	$bookmarklet_tbpb .= ($use_pingback)  ? '&pingback=1'  : '';
-	$bookmarklet_height= ($use_trackback) ? 340 : 300;
+  $bookmarklet_tbpb = '';
+	$bookmarklet_height= 300;
 
 	?>
 
@@ -282,9 +281,8 @@ default:
 	include ("b2header.php");
 	$profiledata=get_userdata($user_ID);
 
-	$bookmarklet_tbpb  = ($use_trackback) ? '&trackback=1' : '';
-	$bookmarklet_tbpb .= ($use_pingback)  ? '&pingback=1'  : '';
-	$bookmarklet_height= ($use_trackback) ? 340 : 300;
+	$bookmarklet_tbpb  =  '';
+	$bookmarklet_height=  300;
 
 	?>
 
