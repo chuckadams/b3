@@ -813,7 +813,7 @@ function trackback_response($error = 0, $error_message = '') {
 // updates the RSS feed !
 function rss_update($blog_ID, $num_posts="", $file="./b2rss.xml") {
 
-	global $use_rss, $b2_version, $querystring_start, $querystring_equal, $querystring_separator, $connexion;
+	global $use_rss, $b2_version, $querystring_start, $querystring_equal, $querystring_separator, $connexion, $time_difference;
 	global $admin_email,$blogname,$siteurl,$blogfilename,$blogdescription,$posts_per_rss,$rss_language;
 	global $tableposts,$postdata,$row;
 
