@@ -81,7 +81,7 @@ case "register":
 		die ("<b>ERROR</b>: the email address isn't correct");
 	}
 
-	$id=mysql_connect($server,$loginsql,$passsql);
+	$id=mysqli_connect($server,$loginsql,$passsql);
 	if ($id==false)	{
 		die ("<b>OOPS</b>: can't connect to the server !".mysql_error());
 	}

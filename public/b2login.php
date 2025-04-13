@@ -42,7 +42,7 @@ for ($i = 0; $i < count($b2varstoreset); $i = $i + 1) {
 }
 
 /* connecting the db */
-$connexion = @mysql_connect($server,$loginsql,$passsql) or die("Can't connect to the database<br>".mysql_error());
+$connexion = @mysqli_connect($server,$loginsql,$passsql) or die("Can't connect to the database<br>".mysql_error());
 mysql_select_db("$base");
 
 switch($action) {

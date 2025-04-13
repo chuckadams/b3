@@ -34,7 +34,7 @@ function get_currentuserinfo() { // a bit like get_userdata(), on steroids
 
 function dbconnect() {
 	global $connexion, $server, $loginsql, $passsql, $base;
-	$connexion = mysql_connect($server,$loginsql,$passsql) or die("Can't connect to the database server. MySQL said:<br />".mysql_error());
+	$connexion = mysqli_connect($server,$loginsql,$passsql) or die("Can't connect to the database server. MySQL said:<br />".mysql_error());
 	$connexionbase = mysql_select_db("$base") or die("Can't connect to the database $base. MySQL said:<br />".mysql_error());
 	return(($connexion && $connexionbase));
 }
