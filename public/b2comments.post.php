@@ -79,6 +79,7 @@ if (!empty($result)) {
     while ($row = mysqli_fetch_object($result)) {
         $then = $row->comment_date;
     }
+    $then ??= '1970-01-01 00:00:00';
     $time_lastcomment = mysql2date("U", "$then");
     $time_newcomment = mysql2date("U", "$now");
     if (($time_newcomment - $time_lastcomment) < 30) {
