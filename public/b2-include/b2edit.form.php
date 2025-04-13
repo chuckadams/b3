@@ -1,6 +1,10 @@
 <?php
 echo $tabletop;
 
+$action ??= $_POST['action'] ?? $_GET['action'] ?? '';
+$user_ID ??= 69696969696969; // silly value but it should already be set
+$edited_post_title ??= '';
+
 switch($action) {
 	case "post":
 		$submitbutton_text = "Blog this !";
