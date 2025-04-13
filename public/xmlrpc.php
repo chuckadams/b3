@@ -107,7 +107,7 @@ function b2newpost($m) {
 			return new xmlrpcresp(0, $xmlrpcerruser+2, // user error 2
            "For some strange yet very annoying reason, your entry couldn't be posted.");
 
-		$post_ID = mysql_insert_id();
+		$post_ID = mysqli_insert_id($connexion);
 
 		if (!isset($blog_ID)) { $blog_ID = 1; }
 
@@ -335,7 +335,7 @@ function bloggernewpost($m) {
 			return new xmlrpcresp(0, $xmlrpcerruser+2, // user error 2
            "For some strange yet very annoying reason, your entry couldn't be posted.");
 
-		$post_ID = mysql_insert_id();
+		$post_ID = mysqli_insert_id($connexion);
 
 		if (!isset($blog_ID)) { $blog_ID = 1; }
 

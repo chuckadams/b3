@@ -71,7 +71,7 @@ case 'post':
 	$query = "INSERT INTO $tableposts (ID, post_author, post_date, post_content, post_title, post_category) VALUES ('0','$user_ID','$now','$content','".$post_title."','".$post_category."')";
 	$result = mysqli_query($connexion,$query) or mysql_oops($query);
 
-	$post_ID = mysql_insert_id();
+	$post_ID = mysqli_insert_id($connexion);
 
 	if (isset($sleep_after_edit) && $sleep_after_edit > 0) {
 		sleep($sleep_after_edit);
