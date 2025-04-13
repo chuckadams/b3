@@ -199,8 +199,8 @@ for ($iCount=1; $iCount<=$Count; $iCount++) {
 
 		if ($user_level > 0) {
 
-			$post_title = xmlrpc_getposttitle($content);
-			$post_category = xmlrpc_getpostcategory($content);
+			$post_title = getposttitle($content);
+			$post_category = getpostcategory($content);
 
 			if ($post_title == '') {
 				$post_title = $subject;

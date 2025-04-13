@@ -908,7 +908,7 @@ function make_url_footnote($content) {
 }
 
 
-function xmlrpc_getposttitle($content) {
+function getposttitle($content) {
 	global $post_default_title;
 	if (preg_match('/<title>(.+?)<\/title>/is', $content, $matchtitle)) {
 		$post_title = $matchtitle[0];
@@ -920,7 +920,7 @@ function xmlrpc_getposttitle($content) {
 	return($post_title);
 }
 	
-function xmlrpc_getpostcategory($content) {
+function getpostcategory($content) {
 	global $post_default_category;
 	if (preg_match('/<category>(.+?)<\/category>/is', $content, $matchcat)) {
 		$post_category = $matchcat[0];
@@ -933,7 +933,7 @@ function xmlrpc_getpostcategory($content) {
 	return($post_category);
 }
 
-function xmlrpc_removepostdata($content) {
+function removepostdata($content) {
 	$content = preg_replace('/<title>(.+?)<\/title>/si', '', $content);
 	$content = preg_replace('/<category>(.+?)<\/category>/si', '', $content);
 	$content = trim($content);

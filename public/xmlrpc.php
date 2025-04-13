@@ -319,10 +319,10 @@ function bloggernewpost($m) {
            "Sorry, level 0 users can not post");
 		}
 
-		$post_title = addslashes(xmlrpc_getposttitle($content));
-		$post_category = xmlrpc_getpostcategory($content);
+		$post_title = addslashes(getposttitle($content));
+		$post_category = getpostcategory($content);
 
-		$content = xmlrpc_removepostdata($content);
+		$content = removepostdata($content);
 		$content = format_to_post($content);
 
 		$time_difference = get_settings("time_difference");
@@ -415,10 +415,10 @@ function bloggereditpost($m) {
 
 		$content = $newcontent;
 
-		$post_title = addslashes(xmlrpc_getposttitle($content));
-		$post_category = xmlrpc_getpostcategory($content);
+		$post_title = addslashes(getposttitle($content));
+		$post_category = getpostcategory($content);
 
-		$content = xmlrpc_removepostdata($content);
+		$content = removepostdata($content);
 		$content = format_to_post($content);
 
 		$sql = "UPDATE $tableposts SET post_content='$content', post_title='$post_title', post_category='$post_category' WHERE ID = '$post_ID'";
