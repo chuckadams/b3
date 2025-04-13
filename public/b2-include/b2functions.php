@@ -199,14 +199,14 @@ function convert_chars($content, $flag = "html")
             switch ($flag) {
                 case "unicode":
                     //				$j = str_replace("&","&#38;",$j);
-                    if (($jord >= 128) || ($j == "&") || (($jord >= 128) && ($jord <= 159))) {
+                    if (($jord >= 128) || ($j === "&") || (($jord >= 128) && ($jord <= 159))) {
                         $j = "&#" . $jord . ";";
                     }
                     break;
                 case "html":
                     if (($jord >= 128) || (($jord >= 128) && ($jord <= 159))) {
                         $j = "&#" . $jord . ";"; // $j = htmlentities($j);
-                    } elseif (($j == "&") && ($jnext != "#")) {
+                    } elseif (($j === "&") && ($jnext !== "#")) {
                         $j = "&amp;";
                     }
                     break;
@@ -214,7 +214,7 @@ function convert_chars($content, $flag = "html")
                     if ($jord >= 128) {
                         $j = "&#" . $jord . ";"; // $j = htmlentities($j);
                         //					$j = htmlentities($j);
-                    } elseif (($j == "&") && ($jnext != "#")) {
+                    } elseif (($j === "&") && ($jnext !== "#")) {
                         $j = "&#38;";
                     }
                     break;
@@ -354,51 +354,32 @@ function strip_all_but_one_link($text, $mylink)
 
 function get_lastpostdate()
 {
-    global $tableposts, $cache_lastpostdate, $use_cache, $time_difference, $pagenow, $connexion, $querycount;
-    if ((!isset($cache_lastpostdate)) or (!$use_cache)) {
-        $now = date("Y-m-d H:i:s", (time() + ($time_difference * 3600)));
-        if ($pagenow != 'b2edit.php') {
-            $showcatzero = 'post_category > 0 AND';
-        } else {
-            $showcatzero = '';
-        }
-        $sql = "SELECT * FROM $tableposts WHERE $showcatzero post_date <= '$now' ORDER BY post_date DESC LIMIT 1";
-        $result = mysqli_query($connexion, $sql) or die("Your SQL query: <br />$sql<br /><br />MySQL said:<br />" . mysqli_error($connexion));
-        $querycount++;
-        $myrow = mysqli_fetch_object($result);
-        $lastpostdate = $myrow->post_date;
-        $cache_lastpostdate = $lastpostdate;
-//		echo $lastpostdate;
+    global $tableposts, $time_difference, $pagenow, $connexion, $querycount;
+    $now = date("Y-m-d H:i:s", (time() + ($time_difference * 3600)));
+    if ($pagenow !== 'b2edit.php') {
+        $showcatzero = 'post_category > 0 AND';
     } else {
-        $lastpostdate = $cache_lastpostdate;
+        $showcatzero = '';
     }
-    return ($lastpostdate);
+    $sql = "SELECT * FROM $tableposts WHERE $showcatzero post_date <= '$now' ORDER BY post_date DESC LIMIT 1";
+    $result = mysqli_query($connexion, $sql) or die("Your SQL query: <br />$sql<br /><br />MySQL said:<br />" . mysqli_error($connexion));
+    $querycount++;
+    return mysqli_fetch_object($result)->post_date;
 }
 
 function user_pass_ok($user_login, $user_pass)
 {
-    global $cache_userdata, $use_cache;
-    if ((empty($cache_userdata[$user_login])) or (!$use_cache)) {
-        $userdata = get_userdatabylogin($user_login);
-    } else {
-        $userdata = $cache_userdata[$user_login];
-    }
-    return ($user_pass == $userdata['user_pass']);
+    $userdata = get_userdatabylogin($user_login);
+    return $user_pass === $userdata['user_pass'];
 }
 
 function get_userdata($userid)
 {
-    global $tableusers, $querycount, $cache_userdata, $use_cache, $connexion;
-    if ((empty($cache_userdata[$userid])) or (!$use_cache)) {
-        $sql = "SELECT * FROM $tableusers WHERE ID = '$userid'";
-        $result = mysqli_query($connexion, $sql) or die("Your SQL query: <br />$sql<br /><br />MySQL said:<br />" . mysqli_error($connexion));
-        $myrow = mysqli_fetch_array($result);
-        $querycount++;
-        $cache_userdata[$userid] = $myrow;
-    } else {
-        $myrow = $cache_userdata[$userid];
-    }
-    return ($myrow);
+    global $tableusers, $querycount, $connexion;
+    $sql = "SELECT * FROM $tableusers WHERE ID = '$userid'";
+    $result = mysqli_query($connexion, $sql) or die("Your SQL query: <br />$sql<br /><br />MySQL said:<br />" . mysqli_error($connexion));
+    $querycount++;
+    return mysqli_fetch_array($result);
 }
 
 function get_userdata2($userid)
@@ -417,40 +398,25 @@ function get_userdata2($userid)
 
 function get_userdatabylogin($user_login)
 {
-    global $tableusers, $querycount, $cache_userdata, $use_cache, $connexion;
-    if ((empty($cache_userdata["$user_login"])) or (!$use_cache)) {
-        $sql = "SELECT * FROM $tableusers WHERE user_login = '$user_login'";
-        $result = mysqli_query($connexion, $sql) or die("Your SQL query: <br />$sql<br /><br />MySQL said:<br />" . mysqli_error($connexion));
-        if (!$result) {
-            die($sql . "<br /><br />" . mysqli_error($connexion));
-        }
-        $myrow = mysqli_fetch_array($result);
-        $querycount++;
-        $cache_userdata["$user_login"] = $myrow;
-    } else {
-        $myrow = $cache_userdata["$user_login"];
-    }
-    return ($myrow);
+    global $tableusers, $querycount, $connexion;
+    $sql = "SELECT * FROM $tableusers WHERE user_login = '$user_login'";
+    $result = mysqli_query($connexion, $sql) or die("Your SQL query: <br />$sql<br /><br />MySQL said:<br />" . mysqli_error($connexion));
+    $querycount++;
+    return mysqli_fetch_array($result);
 }
 
 function get_userid($user_login)
 {
-    global $tableusers, $querycount, $cache_userdata, $use_cache, $connexion;
-    if ((empty($cache_userdata["$user_login"])) or (!$use_cache)) {
-        $sql = "SELECT ID FROM $tableusers WHERE user_login = '$user_login'";
-        $result = mysqli_query($connexion, $sql) or die("No user with the login <i>$user_login</i>");
-        $myrow = mysqli_fetch_array($result);
-        $querycount++;
-        $cache_userdata["$user_login"] = $myrow;
-    } else {
-        $myrow = $cache_userdata["$user_login"];
-    }
-    return ($myrow[0]);
+    global $tableusers, $querycount, $connexion;
+    $sql = "SELECT ID FROM $tableusers WHERE user_login = '$user_login'";
+    $result = mysqli_query($connexion, $sql) or die("No user with the login <i>$user_login</i>");
+    $querycount++;
+    return mysqli_fetch_array($result)[0];
 }
 
 function get_usernumposts($userid)
 {
-    global $tableusers, $tablesettings, $tablecategories, $tableposts, $tablecomments, $querycount, $connexion;
+    global $tableposts, $querycount, $connexion;
     $sql = "SELECT * FROM $tableposts WHERE post_author = $userid";
     $result = mysqli_query($connexion, $sql) or die("Your SQL query: <br />$sql<br /><br />MySQL said:<br />" . mysqli_error($connexion));
     $querycount++;
@@ -459,17 +425,11 @@ function get_usernumposts($userid)
 
 function get_settings($setting)
 {
-    global $tablesettings, $querycount, $cache_settings, $use_cache, $connexion;
-    if ((empty($cache_settings)) or (!$use_cache)) {
-        $sql = "SELECT * FROM $tablesettings";
-        $result = mysqli_query($connexion, $sql) or die("Your SQL query: <br />$sql<br /><br />MySQL said:<br />" . mysqli_error($connexion));
-        $querycount++;
-        $myrow = mysqli_fetch_object($result);
-        $cache_settings = $myrow;
-    } else {
-        $myrow = $cache_settings;
-    }
-    return ($myrow->$setting);
+    global $tablesettings, $querycount, $connexion;
+    $sql = "SELECT * FROM $tablesettings";
+    $result = mysqli_query($connexion, $sql) or die("Your SQL query: <br />$sql<br /><br />MySQL said:<br />" . mysqli_error($connexion));
+    $querycount++;
+    return mysqli_fetch_object($result)->$setting;
 }
 
 function get_postdata($postid)
@@ -522,22 +482,17 @@ function get_commentdata($comment_ID)
 
 function get_catname($cat_ID)
 {
-    global $tablecategories, $cache_catnames, $use_cache, $querycount, $connexion;
-    if ((!$cache_catnames) || (!$use_cache)) {
-        $sql = "SELECT * FROM $tablecategories";
-        $result = mysqli_query($connexion, $sql) or die('Oops, couldn\'t query the db for categories.');
-        $querycount;
-        while ($row = mysqli_fetch_object($result)) {
-            $cache_catnames[$row->cat_ID] = $row->cat_name;
-        }
-    }
-    $cat_name = $cache_catnames[$cat_ID];
-    return ($cat_name);
+    global $tablecategories, $querycount, $connexion;
+    $sql = "SELECT * FROM $tablecategories where cat_ID = $cat_ID";
+    $result = mysqli_query($connexion, $sql) or die('Oops, couldn\'t query the db for categories.');
+    $querycount++;
+    return mysqli_fetch_object($result)->cat_name;
 }
 
 function profile($user_login)
 {
     global $user_data;
+    /** @noinspection UnnecessaryLabelJS (false positive) */
     echo "<a href=\"#\" OnClick=\"javascript:window.open('b2profile.php?user="
         . $user_data["user_login"]
         . "','Profile','toolbar=0,status=1,location=0,directories=0,menuBar=1,scrollbars=1,resizable=0,width=480,height=320,left=100,top=100');\">$user_login</a>";
@@ -591,8 +546,10 @@ function touch_time($edit = 1)
             $ii = "$i";
         }
         echo ">" . $month["$ii"] . "</option>\n";
-    } ?>
-  </select>
+    }
+    echo "</select>";
+    ?>
+
   <input type="text" name="aa" value="<?php echo $aa ?>" size="4" maxlength="5"/> @
   <input type="text" name="hh" value="<?php echo $hh ?>" size="2" maxlength="2"/> :
   <input type="text" name="mn" value="<?php echo $mn ?>" size="2" maxlength="2"/> :
@@ -602,7 +559,6 @@ function touch_time($edit = 1)
 
 function alert_error($msg)
 { // displays a warning box with an error message (original by KYank)
-    global $$_SERVER;
     ?>
   <html>
   <head>
@@ -694,7 +650,7 @@ function rss_update($blog_ID, $num_posts = "", $file = "./b2rss.xml")
     }
 
     if ($use_rss) {
-        $num_posts = ($num_posts == "") ? $posts_per_rss : 5;
+        $nposts = ($num_posts == "") ? $posts_per_rss : 5;
 
         $date_now = gmdate("D, d M Y H:i:s") . " GMT";
 
@@ -715,7 +671,7 @@ function rss_update($blog_ID, $num_posts = "", $file = "./b2rss.xml")
         $rss .= "\t\t<language>$rss_language</language>\n";
 
         $now = date('Y-m-d H:i:s', (time() + ($time_difference * 3600)));
-        $sql = "SELECT * FROM $tableposts WHERE post_date <= '$now' AND post_category > 0 ORDER BY post_date DESC LIMIT $num_posts";
+        $sql = "SELECT * FROM $tableposts WHERE post_date <= '$now' AND post_category > 0 ORDER BY post_date DESC LIMIT $nposts";
         $result = mysqli_query($connexion, $sql) or die("Your SQL query: <br />$sql<br /><br />MySQL said:<br />" . mysqli_error($connexion));
 
         while ($row = mysqli_fetch_object($result)) {
@@ -742,7 +698,7 @@ function rss_update($blog_ID, $num_posts = "", $file = "./b2rss.xml")
         $rss .= "\t</channel>\n";
         $rss .= "</rss>";
 
-        $f = @fopen("$file", "w+");
+        $f = @fopen("$file", "wb+");
         if ($f) {
             @fwrite($f, $rss);
             @fclose($f);
@@ -770,7 +726,7 @@ function make_url_footnote($content)
         $link_url = $matches[2][$i];
         $link_text = $matches[4][$i];
         $content = str_replace($link_match, $link_text . ' ' . $link_number, $content);
-        $link_url = (strtolower(substr($link_url, 0, 7)) != 'http://') ? $siteurl . $link_url : $link_url;
+        $link_url = (strtolower(substr($link_url, 0, 7)) !== 'http://') ? $siteurl . $link_url : $link_url;
         $links_summary .= "\n" . $link_number . ' ' . $link_url;
     }
     $content = strip_tags($content);
@@ -816,8 +772,7 @@ function debug_fopen($filename, $mode)
 {
     global $debug;
     if ($debug == 1) {
-        $fp = fopen($filename, $mode);
-        return $fp;
+        return fopen($filename, $mode);
     } else {
         return false;
     }
@@ -894,7 +849,7 @@ function balanceTags($text, $is_comment = 0)
         $tagqueue = '';
 
         // Pop or Push
-        if ($regex[1][0] == "/") { // End Tag
+        if ($regex[1][0] === "/") { // End Tag
             $tag = strtolower(substr($regex[1], 1));
 
             // if too many closing tags
@@ -928,7 +883,7 @@ function balanceTags($text, $is_comment = 0)
             // Tag Cleaning
 
             // Push if not img or br or hr
-            if ($tag != 'br' && $tag != 'img' && $tag != 'hr') {
+            if ($tag !== 'br' && $tag !== 'img' && $tag !== 'hr') {
                 $stacksize = array_push($tagstack, $tag);
             }
 

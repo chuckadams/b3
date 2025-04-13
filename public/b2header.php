@@ -6,9 +6,6 @@ require_once($b2inc . "/b2verifauth.php");
 require_once($b2inc . "/b2vars.php");
 require_once($b2inc . "/b2functions.php");
 
-if (!isset($use_cache)) {
-    $use_cache = 1;
-}
 if (!isset($blogID)) {
     $blog_ID = 1;
 }

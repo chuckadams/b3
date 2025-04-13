@@ -1,6 +1,4 @@
 <?php
-$use_cache = 1;
-
 /* Including config and functions files */
 require_once(__DIR__ . '/b2config.php');
 require_once(__DIR__ . '/' . $b2inc . '/b2template.functions.php');
