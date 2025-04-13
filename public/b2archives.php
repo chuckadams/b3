@@ -43,7 +43,7 @@ if (!$archive_date_format_over_ride) {
 	$archive_week_end_date_format   = $dateformat;
 }
 
-if (basename($HTTP_SERVER_VARS['SCRIPT_FILENAME']) == 'b2archives.php')
+if (basename($_SERVER['SCRIPT_FILENAME']) == 'b2archives.php')
 	include ('blog.header.php');
 
 if (!isset($querycount)) {

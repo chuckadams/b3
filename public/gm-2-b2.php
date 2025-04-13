@@ -11,14 +11,14 @@ $b2varstoreset = array('action', 'gmpath', 'archivespath');
 for ($i=0; $i<count($b2varstoreset); $i += 1) {
 	$b2var = $b2varstoreset[$i];
 	if (!isset($$b2var)) {
-		if (empty($HTTP_POST_VARS["$b2var"])) {
-			if (empty($HTTP_GET_VARS["$b2var"])) {
+		if (empty($_POST["$b2var"])) {
+			if (empty($_GET["$b2var"])) {
 				$$b2var = '';
 			} else {
-				$$b2var = $HTTP_GET_VARS["$b2var"];
+				$$b2var = $_GET["$b2var"];
 			}
 		} else {
-			$$b2var = $HTTP_POST_VARS["$b2var"];
+			$$b2var = $_POST["$b2var"];
 		}
 	}
 }

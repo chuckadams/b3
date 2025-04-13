@@ -1,11 +1,11 @@
 	<?php // Do not delete these lines
-	if (basename($HTTP_SERVER_VARS["SCRIPT_FILENAME"]) == "b2comments.php")
+	if (basename($_SERVER["SCRIPT_FILENAME"]) == "b2comments.php")
 		die ("please, do not load this page directly");
 	if (($withcomments) or ($c)) {
 
-		$comment_author = (empty($HTTP_COOKIE_VARS["comment_author"])) ? "name" : $HTTP_COOKIE_VARS["comment_author"];
-		$comment_author_email = (empty($HTTP_COOKIE_VARS["comment_author"])) ? "email" : trim($HTTP_COOKIE_VARS["comment_author_email"]);
-		$comment_author_url = (empty($HTTP_COOKIE_VARS["comment_author"])) ? "http://url" : trim($HTTP_COOKIE_VARS["comment_author_url"]);
+		$comment_author = (empty($_COOKIE["comment_author"])) ? "name" : $_COOKIE["comment_author"];
+		$comment_author_email = (empty($_COOKIE["comment_author"])) ? "email" : trim($_COOKIE["comment_author_email"]);
+		$comment_author_url = (empty($_COOKIE["comment_author"])) ? "http://url" : trim($_COOKIE["comment_author_url"]);
 
 	$queryc = "SELECT * FROM $tablecomments WHERE comment_post_ID = $id AND comment_content NOT LIKE '%<trackback />%' AND comment_content NOT LIKE '%<pingback />%' ORDER BY comment_date";
 	$resultc = mysql_query($queryc);
@@ -50,7 +50,7 @@
 
 <form action="<?php echo $siteurl; ?>/b2comments.post.php" method="post">
 	<input type="hidden" name="comment_post_ID" value="<?php echo $id; ?>" />
-	<input type="hidden" name="redirect_to" value="<?php echo htmlspecialchars($HTTP_SERVER_VARS["REQUEST_URI"]); ?>" />
+	<input type="hidden" name="redirect_to" value="<?php echo htmlspecialchars($_SERVER["REQUEST_URI"]); ?>" />
 
 	<p class="commentfield">
 	name<br />

@@ -14,23 +14,23 @@ function add_magic_quotes($array) {
 } 
 
 if (!get_magic_quotes_gpc()) {
-	$HTTP_GET_VARS    = add_magic_quotes($HTTP_GET_VARS);
-	$HTTP_POST_VARS   = add_magic_quotes($HTTP_POST_VARS);
-	$HTTP_COOKIE_VARS = add_magic_quotes($HTTP_COOKIE_VARS);
+	$_GET    = add_magic_quotes($_GET);
+	$_POST   = add_magic_quotes($_POST);
+	$_COOKIE = add_magic_quotes($_COOKIE);
 }
 
 $b2varstoreset = array('action','safe_mode','withcomments','c','posts','poststart','postend','content','edited_post_title','comment_error','profile', 'trackback_url');
 for ($i=0; $i<count($b2varstoreset); $i += 1) {
 	$b2var = $b2varstoreset[$i];
 	if (!isset($$b2var)) {
-		if (empty($HTTP_POST_VARS["$b2var"])) {
-			if (empty($HTTP_GET_VARS["$b2var"])) {
+		if (empty($_POST["$b2var"])) {
+			if (empty($_GET["$b2var"])) {
 				$$b2var = '';
 			} else {
-				$$b2var = $HTTP_GET_VARS["$b2var"];
+				$$b2var = $_GET["$b2var"];
 			}
 		} else {
-			$$b2var = $HTTP_POST_VARS["$b2var"];
+			$$b2var = $_POST["$b2var"];
 		}
 	}
 }
@@ -42,23 +42,23 @@ case 'post':
 	$standalone = 1;
 	require_once('./b2header.php');
 
-	$post_autobr = intval($HTTP_POST_VARS["post_autobr"]);
-	$post_pingback = intval($HTTP_POST_VARS["post_pingback"]);
-	$content = balanceTags($HTTP_POST_VARS["content"]);
+	$post_autobr = intval($_POST["post_autobr"]);
+	$post_pingback = intval($_POST["post_pingback"]);
+	$content = balanceTags($_POST["content"]);
 	$content = format_to_post($content);
-	$post_title = addslashes($HTTP_POST_VARS["post_title"]);
-	$post_category = intval($HTTP_POST_VARS["post_category"]);
+	$post_title = addslashes($_POST["post_title"]);
+	$post_category = intval($_POST["post_category"]);
 
 	if ($user_level == 0)
 	die ("Cheatin' uh ?");
 
-	if (($user_level > 4) && (!empty($HTTP_POST_VARS["edit_date"]))) {
-		$aa = $HTTP_POST_VARS["aa"];
-		$mm = $HTTP_POST_VARS["mm"];
-		$jj = $HTTP_POST_VARS["jj"];
-		$hh = $HTTP_POST_VARS["hh"];
-		$mn = $HTTP_POST_VARS["mn"];
-		$ss = $HTTP_POST_VARS["ss"];
+	if (($user_level > 4) && (!empty($_POST["edit_date"]))) {
+		$aa = $_POST["aa"];
+		$mm = $_POST["mm"];
+		$jj = $_POST["jj"];
+		$hh = $_POST["hh"];
+		$mn = $_POST["mn"];
+		$ss = $_POST["ss"];
 		$jj = ($jj > 31) ? 31 : $jj;
 		$hh = ($hh > 23) ? $hh - 24 : $hh;
 		$mn = ($mn > 59) ? $mn - 60 : $mn;
@@ -85,18 +85,18 @@ case 'post':
 		pingback($content, $post_ID);
 	}
 
-	if (!empty($HTTP_POST_VARS['trackback_url'])) {
+	if (!empty($_POST['trackback_url'])) {
 		$excerpt = (strlen(strip_tags($content)) > 255) ? substr(strip_tags($content), 0, 252).'...' : strip_tags($content);
 		$excerpt = stripslashes($excerpt);
-		$trackback_urls = explode(',', $HTTP_POST_VARS['trackback_url']);
+		$trackback_urls = explode(',', $_POST['trackback_url']);
 		foreach($trackback_urls as $tb_url) {
 			$tb_url = trim($tb_url);
 			trackback($tb_url, stripslashes($post_title), $excerpt, $post_ID);
 		}
 	}
 
-	if (!empty($HTTP_POST_VARS["mode"])) {
-		switch($HTTP_POST_VARS["mode"]) {
+	if (!empty($_POST["mode"])) {
+		switch($_POST["mode"]) {
 			case "bookmarklet":
 				$location="b2bookmarklet.php?a=b";
 				break;
@@ -119,7 +119,7 @@ case "edit":
 
 	$standalone=0;
 	require_once ("./b2header.php");
-	$post = $HTTP_GET_VARS["post"];
+	$post = $_GET["post"];
 	if ($user_level > 0) {
 		$postdata=get_postdata($post) or die("Oops, no post with this ID. <a href=\"b2edit.php\">Go back</a> !");
 		$authordata = get_userdata($postdata["Author_ID"]);
@@ -154,20 +154,20 @@ case "editpost":
 	if (!isset($blog_ID)) {
 		$blog_ID = 1;
 	}
-	$post_ID = $HTTP_POST_VARS["post_ID"];
-	$post_category = intval($HTTP_POST_VARS["post_category"]);
-	$post_autobr = intval($HTTP_POST_VARS["post_autobr"]);
-	$content = balanceTags($HTTP_POST_VARS["content"]);
+	$post_ID = $_POST["post_ID"];
+	$post_category = intval($_POST["post_category"]);
+	$post_autobr = intval($_POST["post_autobr"]);
+	$content = balanceTags($_POST["content"]);
 	$content = format_to_post($content);
-	$post_title = addslashes($HTTP_POST_VARS["post_title"]);
+	$post_title = addslashes($_POST["post_title"]);
 
-	if (($user_level > 4) && (!empty($HTTP_POST_VARS["edit_date"]))) {
-		$aa = $HTTP_POST_VARS["aa"];
-		$mm = $HTTP_POST_VARS["mm"];
-		$jj = $HTTP_POST_VARS["jj"];
-		$hh = $HTTP_POST_VARS["hh"];
-		$mn = $HTTP_POST_VARS["mn"];
-		$ss = $HTTP_POST_VARS["ss"];
+	if (($user_level > 4) && (!empty($_POST["edit_date"]))) {
+		$aa = $_POST["aa"];
+		$mm = $_POST["mm"];
+		$jj = $_POST["jj"];
+		$hh = $_POST["hh"];
+		$mn = $_POST["mn"];
+		$ss = $_POST["ss"];
 		$jj = ($jj > 31) ? 31 : $jj;
 		$hh = ($hh > 23) ? $hh - 24 : $hh;
 		$mn = ($mn > 59) ? $mn - 60 : $mn;
@@ -200,7 +200,7 @@ case "delete":
 	if ($user_level == 0)
 	die ("Cheatin' uh ?");
 
-	$post = $HTTP_GET_VARS['post'];
+	$post = $_GET['post'];
 	$postdata=get_postdata($post) or die("Oops, no post with this ID. <a href=\"b2edit.php\">Go back</a> !");
 	$authordata = get_userdata($postdata["Author_ID"]);
 
@@ -237,7 +237,7 @@ case "editcomment":
 		die ("Cheatin' uh ?");
 	}
 
-	$comment = $HTTP_GET_VARS['comment'];
+	$comment = $_GET['comment'];
 	$commentdata = get_commentdata($comment,1) or die("Oops, no comment with this ID. <a href=\"javascript:history.go(-1)\">Go back</a> !");
 	$content = $commentdata["comment_content"];
 	$content = format_to_edit($content);
@@ -255,8 +255,8 @@ case "deletecomment":
 	if ($user_level == 0)
 		die ("Cheatin' uh ?");
 
-	$comment = $HTTP_GET_VARS['comment'];
-	$p = $HTTP_GET_VARS['p'];
+	$comment = $_GET['comment'];
+	$p = $_GET['p'];
 	$commentdata=get_commentdata($comment) or die("Oops, no comment with this ID. <a href=\"b2edit.php\">Go back</a> !");
 
 	$query = "DELETE FROM $tablecomments WHERE comment_ID=$comment";
@@ -274,23 +274,23 @@ case "editedcomment":
 	if ($user_level == 0)
 		die ("Cheatin' uh ?");
 
-	$comment_ID = $HTTP_POST_VARS['comment_ID'];
-	$comment_post_ID = $HTTP_POST_VARS['comment_post_ID'];
-	$newcomment_author = $HTTP_POST_VARS['newcomment_author'];
-	$newcomment_author_email = $HTTP_POST_VARS['newcomment_author_email'];
-	$newcomment_author_url = $HTTP_POST_VARS['newcomment_author_url'];
+	$comment_ID = $_POST['comment_ID'];
+	$comment_post_ID = $_POST['comment_post_ID'];
+	$newcomment_author = $_POST['newcomment_author'];
+	$newcomment_author_email = $_POST['newcomment_author_email'];
+	$newcomment_author_url = $_POST['newcomment_author_url'];
 	$newcomment_author = addslashes($newcomment_author);
 	$newcomment_author_email = addslashes($newcomment_author_email);
 	$newcomment_author_url = addslashes($newcomment_author_url);
-	$post_autobr = $HTTP_POST_VARS["post_autobr"];
+	$post_autobr = $_POST["post_autobr"];
 
-	if (($user_level > 4) && (!empty($HTTP_POST_VARS["edit_date"]))) {
-		$aa = $HTTP_POST_VARS["aa"];
-		$mm = $HTTP_POST_VARS["mm"];
-		$jj = $HTTP_POST_VARS["jj"];
-		$hh = $HTTP_POST_VARS["hh"];
-		$mn = $HTTP_POST_VARS["mn"];
-		$ss = $HTTP_POST_VARS["ss"];
+	if (($user_level > 4) && (!empty($_POST["edit_date"]))) {
+		$aa = $_POST["aa"];
+		$mm = $_POST["mm"];
+		$jj = $_POST["jj"];
+		$hh = $_POST["hh"];
+		$mn = $_POST["mn"];
+		$ss = $_POST["ss"];
 		$jj = ($jj > 31) ? 31 : $jj;
 		$hh = ($hh > 23) ? $hh - 24 : $hh;
 		$mn = ($mn > 59) ? $mn - 60 : $mn;

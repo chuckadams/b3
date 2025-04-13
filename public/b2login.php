@@ -19,9 +19,9 @@ if (!function_exists('add_magic_quotes')) {
 }
 
 if (!get_magic_quotes_gpc()) {
-	$HTTP_GET_VARS    = add_magic_quotes($HTTP_GET_VARS);
-	$HTTP_POST_VARS   = add_magic_quotes($HTTP_POST_VARS);
-	$HTTP_COOKIE_VARS = add_magic_quotes($HTTP_COOKIE_VARS);
+	$_GET    = add_magic_quotes($_GET);
+	$_POST   = add_magic_quotes($_POST);
+	$_COOKIE = add_magic_quotes($_COOKIE);
 }
 
 $b2varstoreset = array('action','mode','error','text','popupurl','popuptitle');
@@ -29,14 +29,14 @@ $b2varstoreset = array('action','mode','error','text','popupurl','popuptitle');
 for ($i = 0; $i < count($b2varstoreset); $i = $i + 1) {
 	$b2var = $b2varstoreset[$i];
 	if (!isset($$b2var)) {
-		if (empty($HTTP_POST_VARS["$b2var"])) {
-			if (empty($HTTP_GET_VARS["$b2var"])) {
+		if (empty($_POST["$b2var"])) {
+			if (empty($_GET["$b2var"])) {
 				$$b2var = '';
 			} else {
-				$$b2var = $HTTP_GET_VARS["$b2var"];
+				$$b2var = $_GET["$b2var"];
 			}
 		} else {
-			$$b2var = $HTTP_POST_VARS["$b2var"];
+			$$b2var = $_POST["$b2var"];
 		}
 	}
 }
@@ -67,10 +67,10 @@ break;
 
 case "login":
 
-	if(!empty($HTTP_POST_VARS)) {
-		$log = $HTTP_POST_VARS["log"];
-		$pwd = $HTTP_POST_VARS["pwd"];
-		$redirect_to = $HTTP_POST_VARS["redirect_to"];
+	if(!empty($_POST)) {
+		$log = $_POST["log"];
+		$pwd = $_POST["pwd"];
+		$redirect_to = $_POST["redirect_to"];
 	}
 
 	function login() {
@@ -136,7 +136,7 @@ case "login":
 		} else {
 			setcookie("cafelogpass",md5($user_pass),time()+31536000);
 		}
-		if (empty($HTTP_COOKIE_VARS["cafelogblogid"])) {
+		if (empty($_COOKIE["cafelogblogid"])) {
 			setcookie("cafelogblogid","1",time()+31536000);
 		}
 		header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
@@ -243,7 +243,7 @@ break;
 
 case "retrievepassword":
 
-	$user_login = $HTTP_POST_VARS["user_login"];
+	$user_login = $_POST["user_login"];
 	$user_data = get_userdatabylogin($user_login);
 	$user_email = $user_data["user_email"];
 	$user_pass = $user_data["user_pass"];
@@ -268,9 +268,9 @@ break;
 
 default:
 
-	if((!empty($HTTP_COOKIE_VARS["cafeloguser"])) && (!empty($HTTP_COOKIE_VARS["cafelogpass"]))) {
-		$user_login = $HTTP_COOKIE_VARS["cafeloguser"];
-		$user_pass_md5 = $HTTP_COOKIE_VARS["cafelogpass"];
+	if((!empty($_COOKIE["cafeloguser"])) && (!empty($_COOKIE["cafelogpass"]))) {
+		$user_login = $_COOKIE["cafeloguser"];
+		$user_pass_md5 = $_COOKIE["cafelogpass"];
 	}
 
 	function checklogin() {
@@ -287,7 +287,7 @@ default:
 	} 
 
 	if ( !(checklogin()) ) {
-		if (!empty($HTTP_COOKIE_VARS["cafeloguser"])) {
+		if (!empty($_COOKIE["cafeloguser"])) {
 			$error="Error: wrong login/password"; //, or your session has expired.";
 		}
 	} else {

@@ -8,12 +8,12 @@ mysql_select_db("$base");
 
 /* checking login & pass in the database */
 function veriflog() {
-	global $HTTP_COOKIE_VARS;
+	global $_COOKIE;
 	global $tableusers,$tablesettings,$tablecategories,$tableposts,$tablecomments;
 
-	if (!empty($HTTP_COOKIE_VARS["cafeloguser"])) {
-		$user_login = $HTTP_COOKIE_VARS["cafeloguser"];
-		$user_pass_md5 = $HTTP_COOKIE_VARS["cafelogpass"];
+	if (!empty($_COOKIE["cafeloguser"])) {
+		$user_login = $_COOKIE["cafeloguser"];
+		$user_pass_md5 = $_COOKIE["cafelogpass"];
 	} else {
 		return false;
 	}
@@ -45,7 +45,7 @@ function veriflog() {
 		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 		header("Cache-Control: no-cache, must-revalidate");
 		header("Pragma: no-cache");
-		if (!empty($HTTP_COOKIE_VARS["cafeloguser"])) {
+		if (!empty($_COOKIE["cafeloguser"])) {
 			$error="<b>Error</b>: wrong login or password";
 		}
 		include("b2login.php");
