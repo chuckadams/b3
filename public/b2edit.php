@@ -17,7 +17,7 @@ $_GET    = add_magic_quotes($_GET);
 $_POST   = add_magic_quotes($_POST);
 $_COOKIE = add_magic_quotes($_COOKIE);
 
-$b2varstoreset = array('action','safe_mode','withcomments','c','posts','poststart','postend','content','edited_post_title','comment_error','profile', 'trackback_url');
+$b2varstoreset = array('action','safe_mode','withcomments','c','posts','poststart','postend','content','edited_post_title','comment_error','profile');
 for ($i=0; $i<count($b2varstoreset); $i += 1) {
 	$b2var = $b2varstoreset[$i];
 	if (!isset($$b2var)) {
@@ -41,7 +41,6 @@ case 'post':
 	require_once('./b2header.php');
 
 	$post_autobr = intval($_POST["post_autobr"] ?? 0);
-	$post_pingback = intval($_POST["post_pingback"] ?? 0);
 	$content = balanceTags($_POST["content"]);
 	$content = format_to_post($content);
 	$post_title = addslashes($_POST["post_title"]);
@@ -76,22 +75,6 @@ case 'post':
 	}
 
 	rss_update($blog_ID);
-	pingWeblogs($blog_ID);
-	pingCafelog($cafelogID, $post_title, $post_ID);
-	pingBlogs($blog_ID);
-	if ($post_pingback) {
-		pingback($content, $post_ID);
-	}
-
-	if (!empty($_POST['trackback_url'])) {
-		$excerpt = (strlen(strip_tags($content)) > 255) ? substr(strip_tags($content), 0, 252).'...' : strip_tags($content);
-		$excerpt = stripslashes($excerpt);
-		$trackback_urls = explode(',', $_POST['trackback_url']);
-		foreach($trackback_urls as $tb_url) {
-			$tb_url = trim($tb_url);
-			trackback($tb_url, stripslashes($post_title), $excerpt, $post_ID);
-		}
-	}
 
 	if (!empty($_POST["mode"])) {
 		switch($_POST["mode"]) {

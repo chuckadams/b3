@@ -11,7 +11,7 @@
 		$comment_author_email = (empty($_COOKIE["comment_author"])) ? "email" : trim($_COOKIE["comment_author_email"]);
 		$comment_author_url = (empty($_COOKIE["comment_author"])) ? "http://url" : trim($_COOKIE["comment_author_url"]);
 
-	$queryc = "SELECT * FROM $tablecomments WHERE comment_post_ID = $id AND comment_content NOT LIKE '%<trackback />%' AND comment_content NOT LIKE '%<pingback />%' ORDER BY comment_date";
+	$queryc = "SELECT * FROM $tablecomments WHERE comment_post_ID = $id ORDER BY comment_date";
 	$resultc = mysqli_query($connexion,$queryc);
 	if ($resultc) {
 	?>
@@ -41,7 +41,6 @@
 
 	<?php /* end of the loop, don't delete */ } if (!$wxcvbn_c) { ?>
 
-<!-- this is displayed if there are no pingbacks so far -->
 <p>No Comment on this post so far.</p>
 
 	<?php /* if you delete this the sky will fall on your head */ } ?>

@@ -17,7 +17,6 @@
 <link rel="stylesheet" type="text/css" media="print" href="print.css" />
 <link rel="alternate" type="application/rdf+xml" title="RDF" href="<?php bloginfo('rdf_url'); ?>" />
 <link rel="alternate" type="application/rss+xml" title="RSS" href="<?php bloginfo('rss2_url'); ?>" />
-<link rel="pingback" href="<?php bloginfo('pingback_url'); ?>" />
 <?php comments_popup_script() ?>
 
 </head>
@@ -44,19 +43,9 @@
 <div class="rightFlush">
 <?php link_pages("<br />Pages: ","<br />","number") ?> 
 <?php comments_popup_link("Comments (0)", "Comments (1)", "Comments (%)") ?> 
-<?php trackback_popup_link("TrackBack (0)", "TrackBack (1)", "TrackBack (%)") ?> 
-<?php pingback_popup_link("PingBack (0)", "PingBack (1)", "PingBack (%)") ?>
-
-<?php trackback_rdf() ?>
 
 <!-- this includes the comments and a form to add a new comment -->
 <?php include ("b2comments.php"); ?>
-
-<!-- this includes the trackbacks -->
-<?php include ("b2trackback.php"); ?>
-
-<!-- this includes the pingbacks -->
-<?php include ("b2pingbacks.php"); ?>
 
 </div>
 

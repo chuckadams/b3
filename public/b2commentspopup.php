@@ -30,7 +30,7 @@ $comment_author = (empty($_COOKIE["comment_author"])) ? "name" : $_COOKIE["comme
 $comment_author_email = (empty($_COOKIE["comment_author"])) ? "email" : trim($_COOKIE["comment_author_email"]);
 $comment_author_url = (empty($_COOKIE["comment_author"])) ? "http://url" : trim($_COOKIE["comment_author_url"]);
 
-$queryc = "SELECT * FROM $tablecomments WHERE comment_post_ID = $id AND comment_content NOT LIKE '%<trackback />%' ORDER BY comment_date";
+$queryc = "SELECT * FROM $tablecomments WHERE comment_post_ID = $id ORDER BY comment_date";
 $resultc = mysqli_query($connexion,$queryc);
 if ($resultc) {
 ?>

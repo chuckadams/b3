@@ -12,8 +12,6 @@ switch($action) {
 		$toprow_title = "New Post";
 		$form_action = "post";
 		$form_extra = "";
-    $form_pingback = '';
-    $form_trackback = '';
 		$colspan = 3;
 		break;
 	case "edit":
@@ -22,8 +20,6 @@ switch($action) {
 		$form_action = "editpost";
 		$form_extra = "\" />\n<input type=\"hidden\" name=\"post_ID\" value=\"$post";
 		$colspan = 2;
-		$form_pingback = '<input type="hidden" name="post_pingback" value="0" />';
-		$form_trackback = '';
 		break;
 	case "editcomment":
 		$submitbutton_text ="Edit this !";
@@ -31,8 +27,6 @@ switch($action) {
 		$form_action = "editedcomment";
 		$form_extra = "\" />\n<input type=\"hidden\" name=\"comment_ID\" value=\"$comment\" />\n<input type=\"hidden\" name=\"comment_post_ID\" value=\"".$commentdata["comment_post_ID"];
 		$colspan = 3;
-		$form_pingback = '<input type="hidden" name="post_pingback" value="0" />';
-		$form_trackback = '';
 		break;
 }
 
@@ -107,8 +101,6 @@ if ($action != 'editcomment') {
 if ($autobr)
 echo " checked" ?> tabindex="7" id="autobr" /><label for="autobr"> Auto-BR (converts line-breaks into &lt;br /> tags)</label><br />
 
-<?php echo $form_pingback ?>
-
 <?php if ($use_preview) { ?>
 <input type="button" value="preview" onclick="preview(this.form);" class="search" tabindex="8" />
 <?php } ?>
@@ -123,8 +115,6 @@ echo " checked" ?> tabindex="7" id="autobr" /><label for="autobr"> Auto-BR (conv
 <?php if ( ($use_fileupload) && ($user_level >= $fileupload_minlevel) && ((str_contains($fileupload_allowedusers, " ".$user_login." ")) || (trim($fileupload_allowedusers)=="")) ) { ?>
 <input type="button" value="upload a file/image" onclick="launchupload();" class="search"  tabindex="10" />
 <?php }
-
-echo $form_trackback;
 
 // if the level is 5+, allow user to edit the timestamp - not on 'new post' screen though
 #if (($user_level > 4) && ($action != "post"))

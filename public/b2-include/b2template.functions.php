@@ -418,7 +418,7 @@ function previous_post($format='%', $previous='previous post: ', $title='yes', $
 	global $querystring_start, $querystring_equal, $querystring_separator;
 
 	if(($p) || ($posts_per_page==1)) {
-		
+
 		$current_post_date = $postdata['Date'];
 		$current_category = $postdata['Category'];
 
@@ -461,7 +461,7 @@ function next_post($format='%', $next='next post: ', $title='yes', $in_same_cat=
 	global $time_difference;
 	global $querystring_start, $querystring_equal, $querystring_separator;
 	if(($p) || ($posts==1)) {
-		
+
 		$current_post_date = $postdata['Date'];
 		$current_category = $postdata['Category'];
 
@@ -514,10 +514,10 @@ function next_posts($max_page = 0) { // original by cfactor at cooltux.org
 			$qstr = preg_replace("/&paged=\d{0,}/","",$qstr);
 			$qstr = preg_replace("/paged=\d{0,}/","",$qstr);
 		} elseif (stristr($_SERVER['REQUEST_URI'], $_SERVER['SCRIPT_NAME'] )) {
-			if ('' != $qstr = str_replace($_SERVER['SCRIPT_NAME'], '', 
+			if ('' != $qstr = str_replace($_SERVER['SCRIPT_NAME'], '',
 											$_SERVER['REQUEST_URI']) ) {
 				$qstr = preg_replace("/^\//", "", $qstr);
-				$qstr = preg_replace("/paged\/\d{0,}\//", "", $qstr);		
+				$qstr = preg_replace("/paged\/\d{0,}\//", "", $qstr);
 				$qstr = preg_replace("/paged\/\d{0,}/", "", $qstr);
 				$qstr = preg_replace("/\/$/", "", $qstr);
 			}
@@ -564,10 +564,10 @@ function previous_posts() { // original by cfactor at cooltux.org
 			$qstr = preg_replace("/&paged=\d{0,}/","",$qstr);
 			$qstr = preg_replace("/paged=\d{0,}/","",$qstr);
 		} elseif (stristr($_SERVER['REQUEST_URI'], $_SERVER['SCRIPT_NAME'] )) {
-			if ('' != $qstr = str_replace($_SERVER['SCRIPT_NAME'], '', 
+			if ('' != $qstr = str_replace($_SERVER['SCRIPT_NAME'], '',
 											$_SERVER['REQUEST_URI']) ) {
 				$qstr = preg_replace("/^\//", "", $qstr);
-				$qstr = preg_replace("/paged\/\d{0,}\//", "", $qstr);		
+				$qstr = preg_replace("/paged\/\d{0,}\//", "", $qstr);
 				$qstr = preg_replace("/paged\/\d{0,}/", "", $qstr);
 				$qstr = preg_replace("/\/$/", "", $qstr);
 			}
@@ -578,7 +578,7 @@ function previous_posts() { // original by cfactor at cooltux.org
 			($qstr == '' ? '' : $qstr.$querystring_separator) .
 			'paged'.$querystring_equal.$nextpage;
 	}
-} 
+}
 
 function previous_posts_link($label='<< Previous Page') {
 	global $p, $paged, $what_to_show;
@@ -731,7 +731,6 @@ function list_cats($optionall = 1, $all = 'All', $sort_column = 'ID', $sort_orde
 
 /***** Comment tags *****/
 
-// generic comments/trackbacks/pingbacks numbering
 function generic_ctp_number($post_id, $mode = 'comments') {
 	global $postdata, $tablecomments, $querycount, $cache_ctp_number, $use_cache, $connexion;
 	if (!isset($cache_ctp_number[$post_id]) || (!$use_cache)) {
@@ -739,22 +738,16 @@ function generic_ctp_number($post_id, $mode = 'comments') {
 		$query = "SELECT * FROM $tablecomments WHERE comment_post_ID = $post_id";
 		$result = mysqli_query($connexion,$query) or die('SQL query: '.$query.'<br />MySQL Error: '.mysqli_error($connexion));
 		$querycount++;
-		$ctp_number = ['trackbacks' => 0, 'pingbacks' => 0, 'comments' => 0, 'ctp' => 0];
-		while($row = mysqli_fetch_object($result)) {
-			if (substr($row->comment_content, 0, 13) == '<trackback />') {
-				$ctp_number['trackbacks']++;
-			} elseif (substr($row->comment_content, 0, 12) == '<pingback />') {
-				$ctp_number['pingbacks']++;
-			} else {
-				$ctp_number['comments']++;
-			}
+		$ctp_number = ['comments' => 0, 'ctp' => 0];
+		while(mysqli_fetch_object($result)) {
+			$ctp_number['comments']++;
 			$ctp_number['ctp']++;
 		}
 		$cache_ctp_number[$post_id] = $ctp_number;
 	} else {
 		$ctp_number = $cache_ctp_number[$post_id];
 	}
-	if (($mode != 'comments') && ($mode != 'trackbacks') && ($mode != 'pingbacks') && ($mode != 'ctp')) {
+	if (($mode != 'comments') && ($mode != 'ctp')) {
 		$mode = 'ctp';
 	}
 	return $ctp_number[$mode];
@@ -762,8 +755,8 @@ function generic_ctp_number($post_id, $mode = 'comments') {
 
 function comments_number($zero='no comment', $one='1 comment', $more='% comments') {
 	// original hack by dodo@regretless.com
-	global $id,$postdata,$tablecomments,$c,$querycount,$cache_commentsnumber,$use_cache;
-	$number = generic_ctp_number($id, 'comments');
+	global $id;
+	$number = generic_ctp_number($id);
 	$blah = $zero;
 	if ($number == 0) {
 		$blah = $zero;
@@ -785,13 +778,11 @@ function comments_link($file='') {
 	echo $file.$querystring_start.'p'.$querystring_equal.$id.$querystring_separator.'c'.$querystring_equal.'1#comments';
 }
 
-function comments_popup_script($width=400, $height=400, $file='b2commentspopup.php', $trackbackfile='b2trackbackpopup.php', $pingbackfile='b2pingbackspopup.php') {
-	global $b2commentspopupfile, $b2trackbackpopupfile, $b2pingbackpopupfile, $b2commentsjavascript;
+function comments_popup_script($width=400, $height=400, $file='b2commentspopup.php') {
+	global $b2commentspopupfile, $b2commentsjavascript;
 	$b2commentspopupfile = $file;
-	$b2trackbackpopupfile = $trackbackfile;
-	$b2pingbackpopupfile = $pingbackfile;
 	$b2commentsjavascript = 1;
-	$javascript = "<script language=\"javascript\" type=\"text/javascript\">\n<!--\nfunction b2open (macagna) {\n    window.open(macagna, '_blank', 'width=$width,height=$height,scrollbars=yes,status=yes');\n}\n//-->\n</script>\n";
+	$javascript = "<script language=\"javascript\" type=\"text/javascript\">\n\nfunction b2open (macagna) {\n    window.open(macagna, '_blank', 'width=$width,height=$height,scrollbars=yes,status=yes');\n}\n//-->\n</script>\n";
 	echo $javascript;
 }
 
@@ -869,8 +860,6 @@ function comment_author_IP() {
 function comment_text() {
 	global $commentdata;
 	$comment = stripslashes($commentdata['comment_content']);
-	$comment = str_replace('<trackback />', '', $comment);
-	$comment = str_replace('<pingback />', '', $comment);
 	$comment = convert_chars($comment);
 	$comment = convert_bbcode($comment);
 	$comment = convert_gmcode($comment);
@@ -900,136 +889,6 @@ function comment_time($d='') {
 }
 
 /***** // Comment tags *****/
-
-
-
-/***** TrackBack tags *****/
-
-function trackback_url($display = 1) {
-	global $pathserver, $id;
-	$tb_url = $pathserver.'/b2trackback.php/'.$id;
-	if ($display) {
-		echo $tb_url;
-	} else {
-		return $tb_url;
-	}
-}
-
-function trackback_number($zero='no trackback', $one='1 trackback', $more='% trackbacks') {
-	global $id, $tablecomments, $tb, $querycount, $cache_trackbacknumber, $use_cache;
-	$number = generic_ctp_number($id, 'trackbacks');
-	if ($number == 0) {
-		$blah = $zero;
-	} elseif ($number == 1) {
-		$blah = $one;
-	} elseif ($number  > 1) {
-		$n = $number;
-		$more=str_replace('%', $n, $more);
-		$blah = $more;
-	}
-	echo $blah;
-}
-
-function trackback_link($file='') {
-	global $id,$pagenow;
-	global $querystring_start, $querystring_equal, $querystring_separator;
-	if ($file == '')	$file = $pagenow;
-	if ($file == '/')	$file = '';
-	echo $file.$querystring_start.'p'.$querystring_equal.$id.$querystring_separator.'tb'.$querystring_equal.'1#trackback';
-}
-
-function trackback_popup_link($zero='no trackback', $one='1 trackback', $more='% trackbacks', $CSSclass='') {
-	global $id, $b2trackbackpopupfile, $b2commentsjavascript;
-	global $querystring_start, $querystring_equal, $querystring_separator, $siteurl;
-	echo '<a href="'.$siteurl.'/';
-	if ($b2commentsjavascript) {
-		echo $b2trackbackpopupfile.$querystring_start.'p'.$querystring_equal.$id.$querystring_separator.'tb'.$querystring_equal.'1';
-		echo '" onclick="b2open(this.href); return false"';
-	} else {
-		// if comments_popup_script() is not in the template, display simple comment link
-		trackback_link();
-		echo '"';
-	}
-	if (!empty($CSSclass)) {
-		echo ' class="'.$CSSclass.'"';
-	}
-	echo '>';
-	trackback_number($zero, $one, $more);
-	echo '</a>';
-}
-
-function trackback_rdf($timezone=0) {
-	global $pathserver, $id, $_SERVER;
-	if (!stristr($_SERVER['HTTP_USER_AGENT'], 'W3C_Validator')) {
-		echo '<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" '."\n";
-		echo '    xmlns:dc="http://purl.org/dc/elements/1.1/"'."\n";
-		echo '    xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">'."\n";
-		echo '<rdf:Description'."\n";
-		echo '    rdf:about="';
-		permalink_single();
-		echo '"'."\n";
-		echo '    dc:identifier="';
-		permalink_single();
-		echo '"'."\n";
-		echo '    dc:title="'.addslashes(get_the_title()).'"'."\n";
-		echo '    trackback:ping="'.trackback_url(0).'"'." />\n";
-		echo '</rdf:RDF>';
-	}
-}
-
-/***** // TrackBack tags *****/
-
-
-
-/***** PingBack tags *****/
-
-function pingback_number($zero='no pingback', $one='1 pingback', $more='% pingbacks') {
-	global $id, $tablecomments, $tb, $querycount, $cache_pingbacknumber, $use_cache;
-	$number = generic_ctp_number($id, 'pingbacks');
-	if ($number == 0) {
-		$blah = $zero;
-	} elseif ($number == 1) {
-		$blah = $one;
-	} elseif ($number  > 1) {
-		$n = $number;
-		$more=str_replace('%', $n, $more);
-		$blah = $more;
-	}
-	echo $blah;
-}
-
-function pingback_link($file='') {
-	global $id,$pagenow;
-	global $querystring_start, $querystring_equal, $querystring_separator;
-	if ($file == '')	$file = $pagenow;
-	if ($file == '/')	$file = '';
-	echo $file.$querystring_start.'p'.$querystring_equal.$id.$querystring_separator.'pb'.$querystring_equal.'1#pingbacks';
-}
-
-function pingback_popup_link($zero='no pingback', $one='1 pingback', $more='% pingbacks', $CSSclass='') {
-	global $id, $b2pingbackpopupfile, $b2commentsjavascript;
-	global $querystring_start, $querystring_equal, $querystring_separator, $siteurl;
-	echo '<a href="'.$siteurl.'/';
-	if ($b2commentsjavascript) {
-		echo $b2pingbackpopupfile.$querystring_start.'p'.$querystring_equal.$id.$querystring_separator.'pb'.$querystring_equal.'1';
-		echo '" onclick="b2open(this.href); return false"';
-	} else {
-		// if comments_popup_script() is not in the template, display simple comment link
-		pingback_link();
-		echo '"';
-	}
-	if (!empty($CSSclass)) {
-		echo ' class="'.$CSSclass.'"';
-	}
-	echo '>';
-	pingback_number($zero, $one, $more);
-	echo '</a>';
-}
-
-
-
-/***** // PingBack tags *****/
-
 
 
 /***** Permalink tags *****/
@@ -1117,7 +976,7 @@ function start_b2() {
 	} else {
 		$id = 0;
 		$postdata = array (
-			'ID' => 0, 
+			'ID' => 0,
 			'Author_ID' => $_GET['preview_userid'],
 			'Date' => $_GET['preview_date'],
 			'Content' => $_GET['preview_content'],

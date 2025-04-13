@@ -182,11 +182,6 @@ preg_match("/\%u[1-9A-F][1-9A-F][1-9A-F][1-9A-F]/is", $text, $stufftofix);
 <td align="left" width="90">
 <input type="checkbox" name="post_autobr" value="1" <?php if ($autobr) echo " checked" ?> tabindex="4" class="checkbox" id="autobr" /><label for="autobr"> Auto-BR</label>
 </td>
-<?php if ($pingback) { ?>
-<td align="left">
-<input type="checkbox" class="checkbox" name="post_pingback" value="1" checked="checked" tabindex="7" id="pingback" /><label for="pingback"> PingBack</label>
-</td>
-<?php } ?>
 </table>
 
 <?php if ($use_preview) { ?>
@@ -213,15 +208,6 @@ window.focus();
 </script>
 </td>
 </tr>
-<?php if ($trackback) { ?>
-<tr>
-<td width="40">&nbsp;</td>
-<td width="415" align="left" height="40">
-<b>TrackBack</b> an URL:<br />
-<input type="text" name="trackback_url" style="width: 415px" />
-</td>
-</tr>
-<?php } ?>
 </table>
 </div>
 
