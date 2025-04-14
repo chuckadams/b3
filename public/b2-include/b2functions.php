@@ -22,7 +22,7 @@ if (!function_exists('_')) {
 
 function get_currentuserinfo(): void
 { // a bit like get_userdata(), on steroids
-    global $_COOKIE, $user_login, $userdata, $user_level, $user_ID, $user_nickname, $user_email, $user_url, $user_pass_md5;
+    global $user_login, $userdata, $user_level, $user_ID, $user_nickname, $user_email, $user_url, $user_pass_md5;
     // *** retrieving user's data from cookies and db - no spoofing
     $user_login = $_COOKIE["cafeloguser"];
     $userdata = get_userdatabylogin($user_login);
@@ -528,68 +528,51 @@ function touch_time($edit = 1): void
         }
         echo ">" . $month[$ii] . "</option>\n";
     }
-    echo "</select>";
-    ?>
-
-  <input type="text" name="aa" value="<?= $aa ?>" size="4" maxlength="5"/> @
-  <input type="text" name="hh" value="<?= $hh ?>" size="2" maxlength="2"/> :
-  <input type="text" name="mn" value="<?= $mn ?>" size="2" maxlength="2"/> :
-  <input type="text" name="ss" value="<?= $ss ?>" size="2" maxlength="2"/>
-    <?php
+    echo <<<HTML
+        </select>
+        <input type="text" name="aa" value="$aa" size="4" maxlength="5"/> @
+        <input type="text" name="hh" value="$hh" size="2" maxlength="2"/> :
+        <input type="text" name="mn" value="$mn" size="2" maxlength="2"/> :
+        <input type="text" name="ss" value="$ss" size="2" maxlength="2"/>
+        HTML;
 }
 
-function alert_error($msg): void
-{ // displays a warning box with an error message (original by KYank)
-    ?>
-  <html>
-  <head>
-    <script language="JavaScript">
-      <!--
-      alert("<?= $msg ?>")
-      history.back()
-      //-->
-    </script>
-  </head>
-  <body>
-  <!-- this is for non-JS browsers (actually we should never reach that code, but hey, just in case...) -->
-  <?= $msg ?><br/>
-  <a href="<?= $_SERVER["HTTP_REFERER"] ?>">go back</a>
-  </body>
-  </html>
-    <?php
+function alert_error($msg): never
+{
+    echo <<<HTML
+        <html>
+        <head>
+          <script>
+            alert("$msg")
+            history.back()
+          </script>
+        </head>
+        </html>
+        HTML;
     exit;
 }
 
 function alert_confirm($msg): void
-{ // asks a question - if the user clicks Cancel then it brings them back one page
-    ?>
-  <script language="JavaScript">
-    <!--
-    if (!confirm("<?= $msg ?>")) {
-      history.back()
-    }
-    //-->
-  </script>
-    <?php
+{
+    echo <<<HTML
+        <script>
+          if (!confirm("$msg")) history.back()
+        </script>
+        HTML;
 }
 
-function redirect_js($url, $title = "..."): void
+function redirect_js($url, $title = "..."): never
 {
-    ?>
-  <script language="JavaScript">
-    <!--
-    function redirect() {
-      window.location = "<?= $url ?>"
-    }
-
-    setTimeout("redirect();", 100)
-    //-->
-  </script>
-  <p>Redirecting you : <b><?= $title ?></b><br/>
-    <br/>
-    If nothing happens, click <a href="<?= $url ?>">here</a>.</p>
-    <?php
-    exit();
+    echo <<<HTML
+        <script>
+          setTimeout(() => window.location.assign("$url"), 100)
+        </script>
+        <p>Redirecting you : <b>$title</b>
+        <br/>
+        <br/>
+        If nothing happens, click <a href="$url">here</a>.</p>
+        HTML;
+    exit;
 }
 
 // functions to count the page generation time (from phpBB2)
@@ -869,5 +852,3 @@ function balanceTags($text, $is_comment = 0)
     # b2 fix for the bug with HTML comments
     return str_replace(["< !--", "<    !--"], ["<!--", "< !--"], $newtext);
 }
-
-?>
