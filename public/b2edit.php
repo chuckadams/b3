@@ -1,4 +1,7 @@
 <?php
+
+/** @noinspection DuplicatedCode */
+
 $title = "Post / Edit";
 /* <Edit> */
 
@@ -18,21 +21,31 @@ $_GET = add_magic_quotes($_GET);
 $_POST = add_magic_quotes($_POST);
 $_COOKIE = add_magic_quotes($_COOKIE);
 
-$b2varstoreset = ['action', 'safe_mode', 'withcomments', 'c', 'posts', 'poststart', 'postend', 'content', 'edited_post_title', 'comment_error', 'profile'];
-for ($i = 0; $i < count($b2varstoreset); $i += 1) {
-    $b2var = $b2varstoreset[$i];
-    if (!isset($$b2var)) {
-        if (empty($_POST["$b2var"])) {
-            if (empty($_GET["$b2var"])) {
-                $$b2var = '';
-            } else {
-                $$b2var = $_GET["$b2var"];
-            }
-        } else {
-            $$b2var = $_POST["$b2var"];
-        }
-    }
-}
+$b2varstoreset = [
+    'action',
+    'safe_mode',
+    'withcomments',
+    'c',
+    'posts',
+    'poststart',
+    'postend',
+    'content',
+    'edited_post_title',
+    'comment_error',
+    'profile',
+];
+
+$action = $_REQUEST['action'] ?? '';
+$safe_mode = $_REQUEST['safe_mode'] ?? '';
+$withcomments = $_REQUEST['withcomments'] ?? '';
+$c = $_REQUEST['c'] ?? '';
+$posts = $_REQUEST['posts'] ?? '';
+$poststart = $_REQUEST['poststart'] ?? '';
+$postend = $_REQUEST['postend'] ?? '';
+$content = $_REQUEST['content'] ?? '';
+$edited_post_title = $_REQUEST['edited_post_title'] ?? '';
+$comment_error = $_REQUEST['comment_error'] ?? '';
+$profile = $_REQUEST['profile'] ?? '';
 
 switch ($action) {
     case 'post':
@@ -40,13 +53,13 @@ switch ($action) {
         $standalone = 1;
         require_once('./b2header.php');
 
-        $post_autobr = intval($_POST["post_autobr"] ?? 0);
+        $post_autobr = (int)($_POST["post_autobr"] ?? 0);
         $content = balanceTags($_POST["content"]);
         $content = format_to_post($content);
         $post_title = addslashes($_POST["post_title"]);
-        $post_category = intval($_POST["post_category"] ?? 1);
+        $post_category = (int)($_POST["post_category"] ?? 1);
 
-        if ($user_level == 0) {
+        if ($user_level === 0) {
             die ("Cheatin' uh ?");
         }
 
@@ -83,8 +96,6 @@ switch ($action) {
         header("Location: b2edit.php");
         exit();
 
-        break;
-
     case "edit":
 
         $standalone = 0;
@@ -107,7 +118,7 @@ switch ($action) {
             ?>
 
           Since you're a newcomer, you'll have to wait for an admin to raise your level to 1, in order to be authorized to post.<br/>You can also
-          <a href="mailto:<?php echo $admin_email ?>?subject=b2-promotion">e-mail the admin</a> to ask for a promotion.
+          <a href="mailto:<?= $admin_email ?>?subject=b2-promotion">e-mail the admin</a> to ask for a promotion.
           <br/>When you're promoted, just reload this page and you'll be able to blog. :)
 
             <?php
@@ -120,7 +131,7 @@ switch ($action) {
         $standalone = 1;
         require_once("./b2header.php");
 
-        if ($user_level == 0) {
+        if ($user_level === 0) {
             die ("Cheatin' uh ?");
         }
 
@@ -128,8 +139,8 @@ switch ($action) {
             $blog_ID = 1;
         }
         $post_ID = $_POST["post_ID"];
-        $post_category = intval($_POST["post_category"]);
-        $post_autobr = intval($_POST["post_autobr"]);
+        $post_category = (int)$_POST["post_category"];
+        $post_autobr = (int)$_POST["post_autobr"];
         $content = balanceTags($_POST["content"]);
         $content = format_to_post($content);
         $post_title = addslashes($_POST["post_title"]);
@@ -170,7 +181,7 @@ switch ($action) {
         $standalone = 1;
         require_once("./b2header.php");
 
-        if ($user_level == 0) {
+        if ($user_level === 0) {
             die ("Cheatin' uh ?");
         }
 
@@ -184,9 +195,6 @@ switch ($action) {
 
         $query = "DELETE FROM $tableposts WHERE ID=$post";
         $result = mysqli_query($connexion, $query) or die("Oops, no post with this ID. <a href=\"b2edit.php\">Go back</a> !");
-        if (!$result) {
-            die("Error in deleting... contact the <a href=\"mailto:$admin_email\">webmaster</a>...");
-        }
 
         $query = "DELETE FROM $tablecomments WHERE comment_post_ID=$post";
         $result = mysqli_query($connexion, $query) or die("Oops, no comment associated to that post. <a href=\"b2edit.php\">Go back</a> !");
@@ -209,12 +217,12 @@ switch ($action) {
 
         get_currentuserinfo();
 
-        if ($user_level == 0) {
+        if ($user_level === 0) {
             die ("Cheatin' uh ?");
         }
 
         $comment = $_GET['comment'];
-        $commentdata = get_commentdata($comment, 1) or die("Oops, no comment with this ID. <a href=\"javascript:history.go(-1)\">Go back</a> !");
+        $commentdata = get_commentdata($comment) or die("Oops, no comment with this ID. <a href=\"javascript:history.go(-1)\">Go back</a> !");
         $content = $commentdata["comment_content"];
         $content = format_to_edit($content);
 
@@ -228,7 +236,7 @@ switch ($action) {
         $standalone = 1;
         require_once("./b2header.php");
 
-        if ($user_level == 0) {
+        if ($user_level === 0) {
             die ("Cheatin' uh ?");
         }
 
@@ -248,7 +256,7 @@ switch ($action) {
         $standalone = 1;
         require_once("./b2header.php");
 
-        if ($user_level == 0) {
+        if ($user_level === 0) {
             die ("Cheatin' uh ?");
         }
 
@@ -303,10 +311,9 @@ switch ($action) {
         } else {
             echo $tabletop; ?>
           Since you're a newcomer, you'll have to wait for an admin to raise your level to 1, in order to be authorized to post.<br/>You can also
-          <a href="mailto:<?php echo $admin_email ?>?subject=b2-promotion">e-mail the admin</a> to ask for a promotion.
+          <a href="mailto:<?= $admin_email ?>?subject=b2-promotion">e-mail the admin</a> to ask for a promotion.
           <br/>When you're promoted, just reload this page and you'll be able to blog. :)
-            <?php
-            echo $tablebottom;
+            <?= $tablebottom;
             echo "<br /><br />";
         }
 
