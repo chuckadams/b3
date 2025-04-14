@@ -396,11 +396,10 @@ $tablebottom = "\t\t</td>\n\t</table>\n\t</td>\n\t</table>\n";
 $blankline = '<img src="b2-img/blank.gif" width="10" height="5" border="0" /><br />';
 
 # on which page are we ?
-$PHP_SELF = $_SERVER['PHP_SELF'];
-$pagenow = explode('/', $PHP_SELF);
-$pagenow = trim($pagenow[(count($pagenow) - 1)]);
-$pagenow = explode('?', $pagenow);
-$pagenow = $pagenow[0];
+$_pagenow = explode('/', $_SERVER['PHP_SELF']);
+$pagenow = trim(array_pop($_pagenow));
+$_pagenow = explode('?', $pagenow);
+$pagenow = array_shift($_pagenow);
 if (($querystring_start === '/') && ($pagenow !== 'b2edit.php')) {
     $pagenow = $siteurl . '/' . $blogfilename;
 }
