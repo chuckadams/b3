@@ -1,12 +1,15 @@
-<?php // Do not delete these lines
-if (basename($_SERVER["SCRIPT_FILENAME"]) == "b2comments.php") {
+<?php
+
+/** @noinspection DuplicatedCode */
+
+if (basename($_SERVER["SCRIPT_FILENAME"]) === "b2comments.php") {
     die ("please, do not load this page directly");
 }
 
 $withcomments ??= false;
 $c ??= false;
 
-if (($withcomments) or ($c)) {
+if (($withcomments) || ($c)) {
     $comment_author = (empty($_COOKIE["comment_author"])) ? "name" : $_COOKIE["comment_author"];
     $comment_author_email = (empty($_COOKIE["comment_author"])) ? "email" : trim($_COOKIE["comment_author_email"]);
     $comment_author_url = (empty($_COOKIE["comment_author"])) ? "http://url" : trim($_COOKIE["comment_author_url"]);
@@ -33,7 +36,7 @@ if (($withcomments) or ($c)) {
 
           <!-- comment -->
           <p>
-            <b><?php comment_author() ?><?php comment_author_email_link("email", " - ", "") ?><?php comment_author_url_link("url", " - ", "") ?></b>
+            <b><?php comment_author() ?><?php comment_author_email_link("email", " - ") ?><?php comment_author_url_link("url", " - ") ?></b>
             <br/>
               <?php comment_text() ?>
             <br/>
@@ -58,31 +61,31 @@ if (($withcomments) or ($c)) {
 
       <!-- form to add a comment -->
 
-      <form action="<?php echo $siteurl; ?>/b2comments.post.php" method="post">
-        <input type="hidden" name="comment_post_ID" value="<?php echo $id; ?>"/>
-        <input type="hidden" name="redirect_to" value="<?php echo htmlspecialchars($_SERVER["REQUEST_URI"]); ?>"/>
+      <form action="<?= $siteurl ?>/b2comments.post.php" method="post">
+        <input type="hidden" name="comment_post_ID" value="<?= $id ?>"/>
+        <input type="hidden" name="redirect_to" value="<?= htmlspecialchars($_SERVER["REQUEST_URI"]) ?>"/>
 
         <p class="commentfield">
           name<br/>
           <input
-              type="text" name="author" class="textarea" value="<?php echo $comment_author ?>" size="20" tabindex="1"
-              onfocus="this.value=(this.value=='name') ? '' : this.value;" onblur="this.value=(this.value=='') ? 'name' : this.value;"
+              type="text" name="author" class="textarea" value="<?= $comment_author ?>" size="20" tabindex="1"
+              onfocus="this.value=(this.value==='name') ? '' : this.value;" onblur="this.value=(this.value==='') ? 'name' : this.value;"
           />
         </p>
 
         <p class="commentfield">
           email<br/>
           <input
-              type="text" name="email" class="textarea" value="<?php echo $comment_author_email ?>" size="20" tabindex="2"
-              onfocus="this.value=(this.value=='email') ? '' : this.value;" onblur="this.value=(this.value=='') ? 'email' : this.value;"
+              type="text" name="email" class="textarea" value="<?= $comment_author_email ?>" size="20" tabindex="2"
+              onfocus="this.value=(this.value==='email') ? '' : this.value;" onblur="this.value=(this.value==='') ? 'email' : this.value;"
           />
         </p>
 
         <p class="commentfield">
           url<br/>
           <input
-              type="text" name="url" class="textarea" value="<?php echo $comment_author_url ?>" size="20" tabindex="3"
-              onfocus="this.value=(this.value=='http://url') ? '' : this.value;" onblur="this.value=(this.value=='') ? 'http://url' : this.value;"
+              type="text" name="url" class="textarea" value="<?= $comment_author_url ?>" size="20" tabindex="3"
+              onfocus="this.value=(this.value==='http://url') ? '' : this.value;" onblur="this.value=(this.value==='') ? 'http://url' : this.value;"
           />
         </p>
 
@@ -90,7 +93,7 @@ if (($withcomments) or ($c)) {
           your comment<br/>
           <textarea
               cols="40" rows="4" name="comment" tabindex="4" class="textarea"
-              onfocus="this.value=(this.value=='comment') ? '' : this.value;" onblur="this.value=(this.value=='') ? 'comment' : this.value;"
+              onfocus="this.value=(this.value==='comment') ? '' : this.value;" onblur="this.value=(this.value==='') ? 'comment' : this.value;"
           >comment</textarea>
         </p>
 
