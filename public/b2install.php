@@ -7,7 +7,7 @@
 <?php
 include("b2config.php");
 
-function db_doh($msg, $sql, $error)
+function db_doh($msg, $sql, $error): never
 {
     echo "<p>$msg</p>";
     echo "<p>query:<br />$sql</p>";
@@ -61,7 +61,7 @@ $query = "CREATE TABLE $tablecomments ( comment_ID int(11) unsigned NOT NULL aut
 $q = mysqli_query($connexion, $query) or db_doh("doh, can't create the table \"$tablecomments\" in the database.", $query, mysqli_error($connexion));
 
 $now = date('Y-m-d H:i:s');
-$query = "INSERT INTO $tablecomments (comment_post_ID, comment_author, comment_author_email, comment_author_url, comment_author_IP, comment_date, comment_content) VALUES ('1', 'miss b2', 'missb2@example.com', 'http://example.com', '127.0.0.1', '$now', 'Hi, this is a comment.<br />To delete a comment, just log in, and view the posts\' comments, there you will have the option to edit or delete them.')";
+$query = "INSERT INTO $tablecomments (comment_post_ID, comment_author, comment_author_email, comment_author_url, comment_author_IP, comment_date, comment_content) VALUES ('1', 'miss b2', 'missb2@example.com', 'http://example.com', '127.0.0.1', '$now', 'Hi, this is a comment.<br />To delete a comment, just log in, and view the posts'' comments, there you will have the option to edit or delete them.')";
 $q = mysqli_query($connexion, $query) or db_doh("doh, can't insert a first comment in the table \"$tablecomments\" in the database.", $query, mysqli_error($connexion));
 
 echo "comments: OK<br />";
@@ -94,7 +94,7 @@ echo "users: OK<br />";
 <br/>
 Installation successful !<br/>
 <br/ >
-Now you can <a href="b2login.php">log in</a> with the login "admin" and password "<?php echo $random_password; ?>".<br/><br/>
+Now you can <a href="b2login.php">log in</a> with the login "admin" and password "<?= $random_password ?>".<br/><br/>
 <br/>
 Note that password carefully ! It is a <em>random</em> password that is given to you when you install b2. If you lose it, you will have to delete the tables from the database
 yourself, and re-install b2.
