@@ -4,7 +4,7 @@
 $standalone = "1";
 require_once("./b2header.php");
 
-if ($user_level == 0) //Checks to see if user has logged in
+if ($user_level === 0) //Checks to see if user has logged in
 {
     die ("Cheatin' uh ?");
 }
@@ -18,7 +18,8 @@ if (!$use_fileupload) //Checks if file upload is enabled in the config
 <html>
 <head>
   <title>b2 > upload images/files</title>
-  <link rel="stylesheet" href="<?php echo $b2inc; ?>/b2.css" type="text/css">
+  <link rel="stylesheet" href="<?= $b2inc ?>/b2.css" type="text/css">
+  <!--suppress CssUnusedSymbol -->
   <style type="text/css">
     <!--
     body {
@@ -40,11 +41,11 @@ if (!$use_fileupload) //Checks if file upload is enabled in the config
 
     <?php if (!$is_gecko) { ?>
     .checkbox {
-      border-width: 0px;
+      border-width: 0;
       border-color: transparent;
       border-style: solid;
-      padding: 0px;
-      margin: 0px;
+      padding: 0;
+      margin: 0;
     }
 
     .uploadform {
@@ -66,7 +67,6 @@ if (!$use_fileupload) //Checks if file upload is enabled in the config
     -->
   </style>
   <script type="text/javascript">
-    <!-- // idocs.com's popup tutorial rules !
     function targetopener(blah, closeme, closeonly) {
       if (!(window.focus && window.opener)) return true
       window.opener.focus()
@@ -74,13 +74,11 @@ if (!$use_fileupload) //Checks if file upload is enabled in the config
       if (closeme) window.close()
       return false
     }
-
-    //-->
   </script>
 </head>
 <body>
 
-<table align="center" width="100%" height="100%" cellpadding="15" cellspacing="0" border="1" style="border-width: 1px; border-color: #cccccc;">
+<table align="center" width="100%" cellpadding="15" cellspacing="0" border="1" style="border-width: 1px; border-color: #cccccc;">
   <tbody>
   <tr>
     <td valign="top" style="background-color: transparent;">
@@ -91,10 +89,10 @@ if (!$use_fileupload) //Checks if file upload is enabled in the config
         $i = implode(", ", array_slice($i, 1, count($i) - 2));
         ?>
       <p><strong>File upload</strong></p>
-      <p>You can upload files of type:<br/><em><?php echo $i ?></em></p>
-      <p>The maximum size of the file should be:<br/><em><?php echo $fileupload_maxk ?> KB</em></p>
+      <p>You can upload files of type:<br/><em><?= $i ?></em></p>
+      <p>The maximum size of the file should be:<br/><em><?= $fileupload_maxk ?> KB</em></p>
       <form action="b2upload.php" method="post" enctype="multipart/form-data">
-        <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo $fileupload_maxk * 1024 ?>"/>
+        <input type="hidden" name="MAX_FILE_SIZE" value="<?= $fileupload_maxk * 1024 ?>"/>
         <input type="file" name="img1" size="30" class="uploadform"/>
         <br/><br/>
         Description:<br/>
@@ -165,17 +163,17 @@ if (!empty($_POST)) { //$img1_name != "") {
         // duplicate-renaming function contributed by Gary Lawrence Murphy
         ?>
       <p><strong>Duplicate File?</strong></p>
-      <p><b><em>The filename '<?php echo $img1_name; ?>' already exists!</em></b></p>
-      <p> filename '<?php echo $img1; ?>' moved to '<?php echo "$pathtofile2 - $img2_name"; ?>'</p>
+      <p><b><em>The filename '<?= $img1_name ?>' already exists!</em></b></p>
+      <p> filename '<?= $img1 ?>' moved to '<?= "$pathtofile2 - $img2_name" ?>'</p>
       <p>Confirm or rename:</p>
       <form action="b2upload.php" method="post" enctype="multipart/form-data">
-        <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo $fileupload_maxk * 1024 ?>"/>
-        <input type="hidden" name="img1_type" value="<?php echo $img1_type; ?>"/>
-        <input type="hidden" name="img1_name" value="<?php echo $img2_name; ?>"/>
-        <input type="hidden" name="img1" value="<?php echo $pathtofile2; ?>"/>
-        Alternate name:<br/><input type="text" name="imgalt" size="30" class="uploadform" value="<?php echo $img2_name; ?>"/><br/>
+        <input type="hidden" name="MAX_FILE_SIZE" value="<?= $fileupload_maxk * 1024 ?>"/>
+        <input type="hidden" name="img1_type" value="<?= $img1_type ?>"/>
+        <input type="hidden" name="img1_name" value="<?= $img2_name ?>"/>
+        <input type="hidden" name="img1" value="<?= $pathtofile2 ?>"/>
+        Alternate name:<br/><input type="text" name="imgalt" size="30" class="uploadform" value="<?= $img2_name ?>"/><br/>
         <br/>
-        Description:<br/><input type="text" name="imgdesc" size="30" class="uploadform" value="<?php echo $imgdesc; ?>"/>
+        Description:<br/><input type="text" name="imgdesc" size="30" class="uploadform" value="<?= $imgdesc ?>"/>
         <br/>
         <input type="submit" name="submit" value="confirm !" class="search"/>
       </form>
@@ -184,7 +182,8 @@ if (!empty($_POST)) { //$img1_name != "") {
       </tbody>
       </table>
       </body>
-      </html><?php die();
+      </html>
+        <?php die();
     }
 
     if (!strlen($imgalt)) {
@@ -205,24 +204,24 @@ if (str_contains($img1_type, 'image/')) {
 ?>
 
 <p><strong>File uploaded !</strong></p>
-<p>Your file <b><?php echo "$img1_name"; ?></b> was uploaded successfully !</p>
+<p>Your file <b><?= $img1_name ?></b> was uploaded successfully !</p>
 <p>Here's the code to display it:</p>
 <p>
 <form>
-  <!--<textarea cols="25" rows="3" wrap="virtual"><?php echo "&lt;img src=&quot;$fileupload_url/$img1_name&quot; border=&quot;0&quot; alt=&quot;&quot; /&gt;"; ?></textarea>-->
-  <input type="text" name="imgpath" value="<?php echo $piece_of_code; ?>" size="38" style="padding: 5px; margin: 2px;"/><br/>
-  <input type="button" name="close" value="Add the code to your post !" class="search" onClick="targetopener('<?php echo $piece_of_code; ?>')" style="margin: 2px;"/>
+  <!--<textarea cols="25" rows="3" wrap="virtual"><?= "&lt;img src=&quot;$fileupload_url/$img1_name&quot; border=&quot;0&quot; alt=&quot;&quot; /&gt;" ?></textarea>-->
+  <input type="text" name="imgpath" value="<?= $piece_of_code ?>" size="38" style="padding: 5px; margin: 2px;"/><br/>
+  <input type="button" name="close" value="Add the code to your post !" class="search" onClick="targetopener('<?= $piece_of_code ?>')" style="margin: 2px;"/>
 </form>
 </p>
 <p><strong>Image Details</strong>: <br/>
   name:
-    <?php echo "$img1_name"; ?>
+    <?= "$img1_name" ?>
   <br/>
   size:
-    <?php echo round($img1_size / 1024, 2); ?> KB
+    <?= round($img1_size / 1024, 2) ?> KB
   <br/>
   type:
-    <?php echo "$img1_type"; ?>
+    <?= "$img1_type" ?>
 </p>
 <p align="right">
 <form>
