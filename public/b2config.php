@@ -1,5 +1,7 @@
 <?php
 
+/** @noinspection DuplicatedCode */
+
 /* *
  * b2's config file *
                   * */
@@ -139,7 +141,7 @@ $require_name_email = 0;
 #  you can add tags to the list, just add them in the string,
 #  add only the opening tag: for example, only '<a>' instead of '<a href=""></a>'
 
-$comment_allowed_tags = '<b><i><u><strong><em><code><blockquote><p><br><strike><a>';
+$comment_allowed_tags = '<b><i><u><strong><em><code><blockquote><p><br><s><a>';
 
 # set this to 1 to let every author be notified about comments on their posts
 $comments_notify = 0;
@@ -159,7 +161,6 @@ $b2smiliestrans = [
     ':D' => 'icon_biggrin.gif',
     ':-D' => 'icon_biggrin.gif',
     ':grin:' => 'icon_biggrin.gif',
-    ':)' => 'icon_smile.gif',
     ':-)' => 'icon_smile.gif',
     ':smile:' => 'icon_smile.gif',
     ':(' => 'icon_sad.gif',
@@ -247,5 +248,3 @@ $loginsql = $dbusername;
 $passsql = $dbpassword;
 $path = $pathserver;
 $base = $dbname;
-
-?>
