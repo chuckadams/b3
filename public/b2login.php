@@ -23,26 +23,16 @@ $_GET = add_magic_quotes($_GET);
 $_POST = add_magic_quotes($_POST);
 $_COOKIE = add_magic_quotes($_COOKIE);
 
-$b2varstoreset = ['action', 'mode', 'error', 'text', 'popupurl', 'popuptitle'];
-
-for ($i = 0; $i < count($b2varstoreset); $i = $i + 1) {
-    $b2var = $b2varstoreset[$i];
-    if (!isset($$b2var)) {
-        if (empty($_POST["$b2var"])) {
-            if (empty($_GET["$b2var"])) {
-                $$b2var = '';
-            } else {
-                $$b2var = $_GET["$b2var"];
-            }
-        } else {
-            $$b2var = $_POST["$b2var"];
-        }
-    }
-}
+$action = $_REQUEST['action'] ?? '';
+$mode = $_REQUEST['mode'] ?? '';
+$error = $_REQUEST['error'] ?? '';
+$text = $_REQUEST['text'] ?? '';
+$popupurl = $_REQUEST['popupurl'] ?? '';
+$popuptitle = $_REQUEST['popuptitle'] ?? '';
 
 /* connecting the db */
 $connexion = @mysqli_connect($server, $loginsql, $passsql) or die("Can't connect to the database<br>");
-mysqli_select_db($connexion, "$base");
+mysqli_select_db($connexion, $base);
 
 switch ($action) {
     case "logout":
@@ -60,8 +50,6 @@ switch ($action) {
         }
         exit();
 
-        break;
-
     case "login":
 
         if (!empty($_POST)) {
@@ -72,8 +60,8 @@ switch ($action) {
 
         function login()
         {
-            global $server, $loginsql, $passsql, $base, $log, $pwd, $error, $user_ID, $connexion;
-            global $tableusers, $pass_is_md5;
+            global $log, $pwd, $error, $user_ID, $connexion, $tableusers, $pass_is_md5;
+
             $user_login = $log;
             $password = $pwd;
             if (!$user_login) {
@@ -86,7 +74,7 @@ switch ($action) {
                 return false;
             }
 
-            if (substr($password, 0, 4) == "md5:") {
+            if (str_starts_with($password, "md5:")) {
                 $pass_is_md5 = 1;
                 $password = substr($password, 4, strlen($password));
                 $query = " SELECT ID, user_login, user_pass FROM $tableusers WHERE user_login = '$user_login' AND MD5(user_pass) = '$password' ";
@@ -101,17 +89,17 @@ switch ($action) {
                 $error = "<b>ERROR</b>: wrong login or password";
                 $pwd = "";
                 return false;
-            } else {
-                $res = mysqli_fetch_row($result);
-                $user_ID = $res[0];
-                if (($pass_is_md5 == 0 && $res[1] == $user_login && $res[2] == $password) || ($pass_is_md5 == 1 && $res[1] == $user_login && md5($res[2]) == $password)) {
-                    return true;
-                } else {
-                    $error = "<b>ERROR</b>: wrong login or password";
-                    $pwd = "";
-                    return false;
-                }
             }
+
+            $res = mysqli_fetch_row($result);
+            $user_ID = $res[0];
+            if ((!$pass_is_md5 && $res[1] === $user_login && $res[2] === $password) || ($pass_is_md5 && $res[1] === $user_login && md5($res[2]) === $password)) {
+                return true;
+            }
+
+            $error = "<b>ERROR</b>: wrong login or password";
+            $pwd = "";
+            return false;
         }
 
         if (!login()) {
@@ -125,37 +113,33 @@ switch ($action) {
                 header("Location: b2login.php");
             }
             exit();
+        }
+
+        $user_login = $log;
+        $user_pass = $pwd;
+        setcookie("cafeloguser", $user_login, time() + 31536000);
+        if ($pass_is_md5) {
+            setcookie("cafelogpass", $user_pass, time() + 31536000);
         } else {
-            $user_login = $log;
-            $user_pass = $pwd;
-            setcookie("cafeloguser", $user_login, time() + 31536000);
-            if ($pass_is_md5) {
-                setcookie("cafelogpass", $user_pass, time() + 31536000);
-            } else {
-                setcookie("cafelogpass", md5($user_pass), time() + 31536000);
-            }
-            if (empty($_COOKIE["cafelogblogid"])) {
-                setcookie("cafelogblogid", "1", time() + 31536000);
-            }
-            header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
-            header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-            header("Cache-Control: no-cache, must-revalidate");
-            header("Pragma: no-cache");
+            setcookie("cafelogpass", md5($user_pass), time() + 31536000);
+        }
+        if (empty($_COOKIE["cafelogblogid"])) {
+            setcookie("cafelogblogid", "1", time() + 31536000);
+        }
+        header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+        header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+        header("Cache-Control: no-cache, must-revalidate");
+        header("Pragma: no-cache");
 
-            switch ($mode) {
-                case "profile":
-                    $location = "profile.php?text=$text&popupurl=$popupurl&popuptitle=$popuptitle";
-                    break;
-                default:
-                    $location = "$redirect_to";
-                    break;
-            }
+        $location = match ($mode) {
+            "profile" => "profile.php?text=$text&popupurl=$popupurl&popuptitle=$popuptitle",
+            default => $redirect_to,
+        };
 
-            if ($is_IIS) {
-                header("Refresh: 0;url=$location");
-            } else {
-                header("Location: $location");
-            }
+        if ($is_IIS) {
+            header("Refresh: 0;url=$location");
+        } else {
+            header("Location: $location");
         }
 
         break;
@@ -164,77 +148,71 @@ switch ($action) {
 
         ?>
       <html>
-    <head>
-      <title>b2 > Lost password ?</title>
-      <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-      <link rel="stylesheet" href="<?php echo $b2inc; ?>/b2.css" type="text/css">
-      <style type="text/css">
-        <!--
-        <?php
-        if (!preg_match("/Nav/",$HTTP_USER_AGENT)) {
-        ?>
-        textarea, input, select {
-          background-color: #f0f0f0;
-          border-width: 1px;
-          border-color: #cccccc;
-          border-style: solid;
-          padding: 2px;
-          margin: 1px;
-        }
+      <head>
+        <title>b2 > Lost password ?</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+        <link rel="stylesheet" href="<?= $b2inc ?>/b2.css" type="text/css">
+        <style type="text/css">
+          <?php if (!str_contains($HTTP_USER_AGENT, "Nav")) { ?>
+          textarea, input, select {
+            background-color: #f0f0f0;
+            border-width: 1px;
+            border-color: #cccccc;
+            border-style: solid;
+            padding: 2px;
+            margin: 1px;
+          }
 
-        <?php
-        }
-        ?>
-        -->
-      </style>
-    </head>
-    <body bgcolor="#ffffff" text="#000000" link="#cccccc" vlink="#cccccc" alink="#ff0000">
+          <?php } ?>
+        </style>
+      </head>
+      <body bgcolor="#ffffff" text="#000000" link="#cccccc" vlink="#cccccc" alink="#ff0000">
 
-    <table width="100%" height="100%">
-      <td align="center" valign="middle">
+      <table width="100%">
+        <tr>
+          <td align="center" valign="middle">
+            <table width="200" style="border: 1px solid #cccccc;" cellpadding="0" cellspacing="0">
 
-        <table width="200" height="200" style="border: 1px solid #cccccc;" cellpadding="0" cellspacing="0">
+              <tr>
+                <td height="50" width="50">
+                  <a href="/" target="_blank"><img src="b2-img/b2minilogo.png" border="0"/></a>
+                </td>
+                <td align="right" valign="top">&nbsp;</td>
+              </tr>
 
-          <tr height="50">
-            <td height="50" width="50">
-              <a href="/" target="_blank"><img src="b2-img/b2minilogo.png" border="0"/></a>
-            </td>
-            <td align="right" valign="top">&nbsp;</td>
-          </tr>
+              <tr>
+                <td align="right" valign="bottom" height="150" colspan="2">
 
-          <tr height="150">
-            <td align="right" valign="bottom" height="150" colspan="2">
+                  <p align="center" style="color: #b0b0b0">Type your login here and click OK. You will receive an email with your password.</p>
+                    <?php
+                    if ($error) {
+                        echo "<div align=\"right\" style=\"padding:4px;\"><span style='color: #FF0000'>$error</span><br />&nbsp;</div>";
+                    }
+                    ?>
 
-              <p align="center" style="color: #b0b0b0">Type your login here and click OK. You will receive an email with your password.</p>
-                <?php
-                if ($error) {
-                    echo "<div align=\"right\" style=\"padding:4px;\"><font color=\"#FF0000\">$error</font><br />&nbsp;</div>";
-                }
-                ?>
+                  <form name="" action="b2login.php" method="post">
+                    <input type="hidden" name="action" value="retrievepassword"/>
+                    <table width="100" style="background-color: #ffffff">
+                      <tr>
+                        <td align="right">login</td>
+                        <td><input type="text" name="user_login" value="" size="8"/>&nbsp;&nbsp;&nbsp;</td>
+                      </tr>
+                      <tr>
+                        <td>&nbsp;</td>
+                        <td><input type="submit" name="Submit2" value="OK" class="search">&nbsp;&nbsp;&nbsp;</td>
+                      </tr>
+                    </table>
 
-              <form name="" action="b2login.php" method="post">
-                <input type="hidden" name="action" value="retrievepassword"/>
-                <table width="100" style="background-color: #ffffff">
-                  <tr>
-                    <td align="right">login</td>
-                    <td><input type="text" name="user_login" value="" size="8"/>&nbsp;&nbsp;&nbsp;</td>
-                  </tr>
-                  <tr>
-                    <td>&nbsp;</td>
-                    <td><input type="submit" name="Submit2" value="OK" class="search">&nbsp;&nbsp;&nbsp;</td>
-                  </tr>
-                </table>
+                  </form>
 
-              </form>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
 
-            </td>
-          </tr>
-        </table>
-      </td>
-      </tr>
-    </table>
-
-    </body>
+      </body>
       </html>
         <?php
 
@@ -252,17 +230,14 @@ switch ($action) {
 
         $m = mail($user_email, "your weblog's login/password", $message);
 
-        if ($m == false) {
+        if ($m === false) {
             echo "<p>The email could not be sent.<br />\n";
             echo "Possible reason: your host may have disabled the mail() function...</p>";
-            die();
         } else {
             echo "<p>The email was sent successfully to $user_login's email address.<br />\n";
             echo "<a href=\"b2login.php\">Click here to login !</a></p>";
-            die();
         }
-
-        break;
+        die();
 
     default:
 
@@ -271,21 +246,16 @@ switch ($action) {
             $user_pass_md5 = $_COOKIE["cafelogpass"];
         }
 
-        function checklogin()
+        function checklogin(): bool
         {
-            global $server, $loginsql, $passsql, $base;
-            global $user_login, $user_pass_md5, $user_ID;
+            global $user_login, $user_pass_md5;
 
             $userdata = get_userdatabylogin($user_login);
             if (!$userdata) {
                 return false;
             }
 
-            if ($user_pass_md5 != md5($userdata["user_pass"])) {
-                return false;
-            } else {
-                return true;
-            }
+            return $user_pass_md5 === md5($userdata["user_pass"]);
         }
 
         if (!(checklogin())) {
@@ -302,88 +272,78 @@ switch ($action) {
         }
         ?>
       <html>
-    <head>
-      <title>b2 > Login form</title>
-      <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-      <link rel="stylesheet" href="<?php echo $b2inc; ?>/b2.css" type="text/css">
-      <style type="text/css">
-        <!--
-        <?php
-        if (!preg_match("/Nav/",$HTTP_USER_AGENT)) {
-        ?>
-        textarea, input, select {
-          background-color: #f0f0f0;
-          border-width: 1px;
-          border-color: #cccccc;
-          border-style: solid;
-          padding: 2px;
-          margin: 1px;
-        }
+      <head>
+        <title>b2 > Login form</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+        <link rel="stylesheet" href="<?= $b2inc ?>/b2.css" type="text/css">
+        <style type="text/css">
+          <?php if (!str_contains($HTTP_USER_AGENT, "Nav")) { ?>
+          textarea, input, select {
+            background-color: #f0f0f0;
+            border-width: 1px;
+            border-color: #cccccc;
+            border-style: solid;
+            padding: 2px;
+            margin: 1px;
+          }
 
-        <?php
-        }
-        ?>
-        -->
-      </style>
-    </head>
-    <body bgcolor="#ffffff" text="#000000" link="#cccccc" vlink="#cccccc" alink="#ff0000">
+          <?php } ?>
+        </style>
+      </head>
+      <body bgcolor="#ffffff" text="#000000" link="#cccccc" vlink="#cccccc" alink="#ff0000">
 
-    <table width="100%" height="100%">
-      <td align="center" valign="middle">
+      <table width="100%">
+        <tr>
+          <td align="center" valign="middle">
+            <table width="200" style="border: 1px solid #cccccc;" cellpadding="0" cellspacing="0">
+              <tr>
+                <td height="50" width="50">
+                  <a href="/" target="_blank"><img src="b2-img/b2minilogo.png" border="0"/></a>
+                </td>
+                <td align="right" valign="top">
+                  <a href="b2register.php" class="b2menutop">register ?</a><br/>
+                  <a href="b2login.php?action=lostpassword" class="b2menutop">lost your password ?</a>
+                </td>
+              </tr>
+              <tr>
+                <td align="right" valign="bottom" height="150" colspan="2">
 
-        <table width="200" height="200" style="border: 1px solid #cccccc;" cellpadding="0" cellspacing="0">
+                    <?php
+                    if ($error) {
+                        echo "<div align=\"right\" style=\"padding:4px;\"><span style='color: #FF0000'>$error</span><br />&nbsp;</div>";
+                    }
+                    ?>
 
-          <tr height="50">
-            <td height="50" width="50">
-              <a href="/" target="_blank"><img src="b2-img/b2minilogo.png" border="0"/></a>
-            </td>
-            <td align="right" valign="top">
-              <a href="b2register.php" class="b2menutop">register ?</a><br/>
-              <a href="b2login.php?action=lostpassword" class="b2menutop">lost your password ?</a>
-            </td>
-          </tr>
+                  <form name="" action="b2login.php" method="post">
+                    <input type="hidden" name="redirect_to" value="b2edit.php"/>
+                    <input type="hidden" name="action" value="login"/>
+                    <table width="100" style="background-color: #ffffff">
+                      <tr>
+                        <td align="right">login</td>
+                        <td><input type="text" name="log" value="" size="8"/>&nbsp;&nbsp;&nbsp;</td>
+                      </tr>
+                      <tr>
+                        <td align="right">password</td>
+                        <td><input type="password" name="pwd" value="" size="8"/>&nbsp;&nbsp;&nbsp;</td>
+                      </tr>
+                      <tr>
+                        <td>&nbsp;</td>
+                        <td><input type="submit" name="Submit2" value="OK" class="search">&nbsp;&nbsp;&nbsp;</td>
+                      </tr>
+                    </table>
 
-          <tr height="150">
-            <td align="right" valign="bottom" height="150" colspan="2">
+                  </form>
 
-                <?php
-                if ($error) {
-                    echo "<div align=\"right\" style=\"padding:4px;\"><font color=\"#FF0000\">$error</font><br />&nbsp;</div>";
-                }
-                ?>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
 
-              <form name="" action="b2login.php" method="post">
-                <input type="hidden" name="redirect_to" value="b2edit.php"/>
-                <input type="hidden" name="action" value="login"/>
-                <table width="100" style="background-color: #ffffff">
-                  <tr>
-                    <td align="right">login</td>
-                    <td><input type="text" name="log" value="" size="8"/>&nbsp;&nbsp;&nbsp;</td>
-                  </tr>
-                  <tr>
-                    <td align="right">password</td>
-                    <td><input type="password" name="pwd" value="" size="8"/>&nbsp;&nbsp;&nbsp;</td>
-                  </tr>
-                  <tr>
-                    <td>&nbsp;</td>
-                    <td><input type="submit" name="Submit2" value="OK" class="search">&nbsp;&nbsp;&nbsp;</td>
-                  </tr>
-                </table>
-
-              </form>
-
-            </td>
-          </tr>
-        </table>
-      </td>
-      </tr>
-    </table>
-
-    </body>
+      </body>
       </html>
         <?php
 
         break;
 }
-
-?>
