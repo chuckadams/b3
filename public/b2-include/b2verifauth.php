@@ -1,28 +1,18 @@
 <?php
 
-require_once('b2config.php');
+require_once 'b2config.php';
 
-/* connecting the db */
 $connexion = @mysqli_connect($server, $loginsql, $passsql) or die("Can't connect to the database<br>");
-mysqli_select_db($connexion, "$base");
+mysqli_select_db($connexion, $base);
 
-/* checking login & pass in the database */
 function veriflog()
 {
-    global $_COOKIE, $connexion;
-    global $tableusers, $tablesettings, $tablecategories, $tableposts, $tablecomments;
+    global $user_login, $connexion, $tableusers;
 
-    if (!empty($_COOKIE["cafeloguser"])) {
-        $user_login = $_COOKIE["cafeloguser"];
-        $user_pass_md5 = $_COOKIE["cafelogpass"];
-    } else {
-        return false;
-    }
+    $user_login = $_COOKIE["cafeloguser"] ?? null;
+    $user_pass_md5 = $_COOKIE["cafelogpass"] ?? null;
 
-    if (!($user_login != "")) {
-        return false;
-    }
-    if (!$user_pass_md5) {
+    if (!($user_login && $user_pass_md5)) {
         return false;
     }
 
@@ -32,28 +22,16 @@ function veriflog()
     $lines = mysqli_num_rows($result);
     if ($lines < 1) {
         return false;
-    } else {
-        $res = mysqli_fetch_row($result);
-        if ($res[0] == $user_login && md5($res[1]) == $user_pass_md5) {
-            return true;
-        } else {
-            return false;
-        }
     }
+
+    $res = mysqli_fetch_row($result);
+    return $res[0] === $user_login && md5($res[1]) === $user_pass_md5;
 }
 
-#if ( $user_login!="" && $user_pass!="" && $id_session!="" && $adresse_ip==$REMOTE_ADDR) {
-#	if ( !(veriflog()) AND !(verifcookielog()) ) {
-if (!(veriflog())) {
-    header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
-    header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-    header("Cache-Control: no-cache, must-revalidate");
-    header("Pragma: no-cache");
+if (!veriflog()) {
     if (!empty($_COOKIE["cafeloguser"])) {
         $error = "<b>Error</b>: wrong login or password";
     }
-    include("b2login.php");
+    include "b2login.php";
     exit();
 }
-#}
-?>
