@@ -5,36 +5,6 @@
 $title = "Post / Edit";
 /* <Edit> */
 
-function add_magic_quotes($array)
-{
-    foreach ($array as $k => $v) {
-        if (is_array($v)) {
-            $array[$k] = add_magic_quotes($v);
-        } else {
-            $array[$k] = addslashes($v);
-        }
-    }
-    return $array;
-}
-
-$_GET = add_magic_quotes($_GET);
-$_POST = add_magic_quotes($_POST);
-$_COOKIE = add_magic_quotes($_COOKIE);
-
-$b2varstoreset = [
-    'action',
-    'safe_mode',
-    'withcomments',
-    'c',
-    'posts',
-    'poststart',
-    'postend',
-    'content',
-    'edited_post_title',
-    'comment_error',
-    'profile',
-];
-
 $action = $_REQUEST['action'] ?? '';
 $safe_mode = $_REQUEST['safe_mode'] ?? '';
 $withcomments = $_REQUEST['withcomments'] ?? '';

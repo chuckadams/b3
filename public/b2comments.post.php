@@ -12,22 +12,6 @@ include "$b2inc/b2functions.php";
 
 dbconnect();
 
-function add_magic_quotes($array)
-{
-    foreach ($array as $k => $v) {
-        if (is_array($v)) {
-            $array[$k] = add_magic_quotes($v);
-        } else {
-            $array[$k] = addslashes($v);
-        }
-    }
-    return $array;
-}
-
-$_GET = add_magic_quotes($_GET);
-$_POST = add_magic_quotes($_POST);
-$_COOKIE = add_magic_quotes($_COOKIE);
-
 $author = trim($_POST["author"]);
 $email = trim($_POST["email"]);
 $url = trim($_POST["url"]);
