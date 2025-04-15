@@ -1,4 +1,7 @@
 <?php
+
+/** @noinspection DuplicatedCode */
+
 $title = "Categories";
 /* <Categories> */
 
@@ -18,21 +21,9 @@ $_GET = add_magic_quotes($_GET);
 $_POST = add_magic_quotes($_POST);
 $_COOKIE = add_magic_quotes($_COOKIE);
 
-$b2varstoreset = ['action', 'standalone', 'cat'];
-for ($i = 0; $i < count($b2varstoreset); $i += 1) {
-    $b2var = $b2varstoreset[$i];
-    if (!isset($$b2var)) {
-        if (empty($_POST["$b2var"])) {
-            if (empty($_GET["$b2var"])) {
-                $$b2var = '';
-            } else {
-                $$b2var = $_GET["$b2var"];
-            }
-        } else {
-            $$b2var = $_POST["$b2var"];
-        }
-    }
-}
+$action = $_REQUEST['action'] ?? '';
+$standalone = $_REQUEST['standalone'] ?? '';
+$cat = $_REQUEST['cat'] ?? '';
 
 switch ($action) {
     case "addcat":
@@ -58,11 +49,11 @@ switch ($action) {
         $standalone = 1;
         require_once("./b2header.php");
 
-        $cat_ID = $_POST["cat_ID"];
+        $cat_ID = (int)$_POST["cat_ID"];
         $cat_name = get_catname($cat_ID);
         $cat_name = addslashes($cat_name);
 
-        if ($cat_ID == "1") {
+        if ($cat_ID === 1) {
             die("Can't delete the <b>$cat_name</b> category: this is the default one");
         }
 
@@ -86,18 +77,18 @@ switch ($action) {
         $cat_name = get_catname($_POST["cat_ID"]);
         $cat_name = addslashes($cat_name);
         ?>
-        <?php echo $blankline; ?>
-        <?php echo $tabletop; ?>
-      <p><b>Old</b> name: <?php echo $cat_name ?></p>
+        <?= $blankline ?>
+        <?= $tabletop ?>
+      <p><b>Old</b> name: <?= $cat_name ?></p>
       <p>
       <form name="renamecat" action="b2categories.php" method="post">
         <b>New</b> name:<br/>
         <input type="hidden" name="action" value="editedcat"/>
-        <input type="hidden" name="cat_ID" value="<?php echo $_POST["cat_ID"] ?>"/>
-        <input type="text" name="cat_name" value="<?php echo $cat_name ?>"/><br/>
+        <input type="hidden" name="cat_ID" value="<?= $_POST["cat_ID"] ?>"/>
+        <input type="text" name="cat_name" value="<?= $cat_name ?>"/><br/>
         <input type="submit" name="submit" value="Edit it !" class="search"/>
       </form>
-        <?php echo $tablebottom; ?>
+        <?= $tablebottom ?>
 
         <?php
 
@@ -131,10 +122,9 @@ switch ($action) {
         }
         ?>
 
-        <?php echo $blankline ?>
-        <?php echo $tabletop ?>
+        <?= $blankline ?>
+        <?= $tabletop ?>
       <table width="" cellpadding="5" cellspacing="0">
-        <form></form>
         <tr>
           <td>
             <form name="cats" method="post">
@@ -145,7 +135,7 @@ switch ($action) {
                 echo "<select name=\"cat_ID\">\n";
                 while ($row = mysqli_fetch_object($result)) {
                     echo "\t<option value=\"" . $row->cat_ID . "\"";
-                    if ($row->cat_ID == $cat) {
+                    if ($row->cat_ID === (int)$cat) {
                         echo " selected";
                     }
                     echo ">" . $row->cat_ID . ": " . $row->cat_name . "</option>\n";
@@ -155,7 +145,6 @@ switch ($action) {
               <input type="submit" name="action" value="Delete" class="search"/>
               <input type="submit" name="action" value="Rename" class="search"/>
             </form>
-            </p>
             <p>
               <b>Add</b> a category:<br/>
             <form name="addcat" action="b2categories.php" method="post">
@@ -165,14 +154,14 @@ switch ($action) {
           </td>
         </tr>
       </table>
-        <?php echo $tablebottom ?>
+        <?= $tablebottom ?>
 
       <br/>
 
-        <?php echo $tabletop ?>
+        <?= $tabletop ?>
       <b>Note:</b><br/>
-      Deleting a category does not delete posts from that category.<br/>It will just set them back to the default category <b><?php echo get_catname(1) ?></b>.
-        <?php echo $tablebottom ?>
+      Deleting a category does not delete posts from that category.<br/>It will just set them back to the default category <b><?= get_catname(1) ?></b>.
+        <?= $tablebottom ?>
 
         <?php
         break;
