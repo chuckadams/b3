@@ -1,10 +1,10 @@
-<?php /* Don't remove this line, it calls the b2 function files ! */
+<?php
 $blog = 1;
-include("blog.header.php"); ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml/DTD/xhtml-transitional.dtd">
+include("blog.header.php");
+?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml/DTD/xhtml-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <title><?php echo $blogname ?></title>
+  <title><?= $blogname ?></title>
 
   <!-- Change charset if needed(?)  But please do not remove this metatag -->
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
