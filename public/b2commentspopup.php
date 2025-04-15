@@ -1,10 +1,18 @@
-<?php /* Don't remove this line, it calls the b2 function files ! */
-$blog = 1; include("blog.header.php"); while($row = mysqli_fetch_object($result)) { start_b2();
+<?php
+
+/** @noinspection DuplicatedCode */
+
+$blog = 1;
+include("blog.header.php");
+
+while($row = mysqli_fetch_object($result)) {
+  start_b2();
+
 ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <title><?php echo $blogname ?> - comments on '<?php the_title() ?>'</title>
+  <title><?= $blogname ?> - comments on '<?php the_title() ?>'</title>
 
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
   <meta http-equiv="reply-to" content="you@yourdomain.com"/>
@@ -18,7 +26,7 @@ $blog = 1; include("blog.header.php"); while($row = mysqli_fetch_object($result)
   <link rel="alternate" type="application/rss+xml" title="RSS" href="<?php bloginfo('rss2_url'); ?>"/>
 </head>
 <body>
-<div id="header"><a href="" title="<?php echo $blogname ?>"><?php echo $blogname ?></a></div>
+<div id="header"><a href="" title="<?= $blogname ?>"><?= $blogname ?></a></div>
 
 <div id="contentcomments">
 
@@ -49,7 +57,7 @@ $blog = 1; include("blog.header.php"); while($row = mysqli_fetch_object($result)
 
             <!-- comment -->
             <p>
-              <b><?php comment_author() ?><?php comment_author_email_link("email", " - ", "") ?><?php comment_author_url_link("url", " - ", "") ?></b>
+              <b><?php comment_author() ?><?php comment_author_email_link("email", " - ") ?><?php comment_author_url_link("url", " - ") ?></b>
               <br/>
                 <?php comment_text() ?>
               <br/>
@@ -71,30 +79,30 @@ $blog = 1; include("blog.header.php"); while($row = mysqli_fetch_object($result)
         <!-- form to add a comment -->
 
         <form action="b2comments.post.php" method="post">
-          <input type="hidden" name="comment_post_ID" value="<?php echo $id; ?>"/>
-          <input type="hidden" name="redirect_to" value="<?php echo htmlspecialchars($_SERVER["REQUEST_URI"]); ?>"/>
+          <input type="hidden" name="comment_post_ID" value="<?= $id ?>"/>
+          <input type="hidden" name="redirect_to" value="<?= htmlspecialchars($_SERVER["REQUEST_URI"]) ?>"/>
 
           <p class="commentfield">
             name<br/>
             <input
-                type="text" name="author" class="textarea" value="<?php echo $comment_author ?>" size="20" tabindex="1"
-                onfocus="this.value=(this.value=='name') ? '' : this.value;" onblur="this.value=(this.value=='') ? 'name' : this.value;"
+                type="text" name="author" class="textarea" value="<?= $comment_author ?>" size="20" tabindex="1"
+                onfocus="this.value=(this.value==='name') ? '' : this.value;" onblur="this.value=(this.value==='') ? 'name' : this.value;"
             />
           </p>
 
           <p class="commentfield">
             email<br/>
             <input
-                type="text" name="email" class="textarea" value="<?php echo $comment_author_email ?>" size="20" tabindex="2"
-                onfocus="this.value=(this.value=='email') ? '' : this.value;" onblur="this.value=(this.value=='') ? 'email' : this.value;"
+                type="text" name="email" class="textarea" value="<?= $comment_author_email ?>" size="20" tabindex="2"
+                onfocus="this.value=(this.value==='email') ? '' : this.value;" onblur="this.value=(this.value==='') ? 'email' : this.value;"
             />
           </p>
 
           <p class="commentfield">
             url<br/>
             <input
-                type="text" name="url" class="textarea" value="<?php echo $comment_author_url ?>" size="20" tabindex="3"
-                onfocus="this.value=(this.value=='http://url') ? '' : this.value;" onblur="this.value=(this.value=='') ? 'http://url' : this.value;"
+                type="text" name="url" class="textarea" value="<?= $comment_author_url ?>" size="20" tabindex="3"
+                onfocus="this.value=(this.value==='http://url') ? '' : this.value;" onblur="this.value=(this.value==='') ? 'http://url' : this.value;"
             />
           </p>
 
@@ -102,7 +110,7 @@ $blog = 1; include("blog.header.php"); while($row = mysqli_fetch_object($result)
             your comment<br/>
             <textarea
                 cols="40" rows="4" name="comment" tabindex="4" class="textarea"
-                onfocus="this.value=(this.value=='comment') ? '' : this.value;" onblur="this.value=(this.value=='') ? 'comment' : this.value;"
+                onfocus="this.value=(this.value==='comment') ? '' : this.value;" onblur="this.value=(this.value==='') ? 'comment' : this.value;"
             >comment</textarea>
           </p>
 
