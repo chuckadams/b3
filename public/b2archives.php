@@ -38,7 +38,7 @@ if (!$archive_date_format_over_ride) {
     $archive_week_end_date_format = $dateformat;
 }
 
-if (basename($_SERVER['SCRIPT_FILENAME']) == 'b2archives.php') {
+if (basename($_SERVER['SCRIPT_FILENAME']) === 'b2archives.php') {
     include('blog.header.php');
 }
 
@@ -48,7 +48,7 @@ if (!isset($querycount)) {
 
 $now = date('Y-m-d H:i:s', (time() + ($time_difference * 3600)));
 
-if ($archive_mode == 'monthly') {
+if ($archive_mode === 'monthly') {
     $arc_sql = "SELECT DISTINCT YEAR(post_date), MONTH(post_date) FROM $tableposts WHERE post_date < '$now' AND post_category > 0 ORDER BY post_date DESC";
     $querycount++;
     $arc_result = mysqli_query($connexion, $arc_sql) or die($arc_sql . '<br />' . mysqli_error($connexion));
@@ -60,7 +60,7 @@ if ($archive_mode == 'monthly') {
         echo '</a>';
         echo $archive_line_separator . "\n";
     }
-} elseif ($archive_mode == 'daily') {
+} elseif ($archive_mode === 'daily') {
     $arc_sql = "SELECT DISTINCT YEAR(post_date), MONTH(post_date), DAYOFMONTH(post_date) FROM $tableposts WHERE post_date < '$now' AND post_category > 0 ORDER BY post_date DESC";
     $querycount++;
     $arc_result = mysqli_query($connexion, $arc_sql) or die($arc_sql . '<br />' . mysqli_error($connexion));
@@ -74,7 +74,7 @@ if ($archive_mode == 'monthly') {
         echo '</a>';
         echo $archive_line_separator . "\n";
     }
-} elseif ($archive_mode == 'weekly') {
+} elseif ($archive_mode === 'weekly') {
     if (!isset($start_of_week)) {
         $start_of_week = 1;
     }
@@ -85,7 +85,7 @@ if ($archive_mode == 'monthly') {
     while ($arc_row = mysqli_fetch_array($arc_result)) {
         $arc_year = $arc_row['YEAR(post_date)'];
         $arc_w = $arc_row['WEEK(post_date)'];
-        if ($arc_w != $arc_w_last) {
+        if ($arc_w !== $arc_w_last) {
             $arc_w_last = $arc_w;
             $arc_ymd = $arc_year . '-' . zeroise($arc_row['MONTH(post_date)'], 2) . '-' . zeroise($arc_row['DAYOFMONTH(post_date)'], 2);
             $arc_week = get_weekstartend($arc_ymd, $start_of_week);
@@ -97,12 +97,12 @@ if ($archive_mode == 'monthly') {
             echo $archive_line_separator . "\n";
         }
     }
-} elseif ($archive_mode == 'postbypost') {
+} elseif ($archive_mode === 'postbypost') {
     $requestarc = " SELECT ID,post_date,post_title FROM $tableposts WHERE post_date < '$now' AND post_category > 0 ORDER BY post_date DESC";
     $querycount++;
     $resultarc = mysqli_query($connexion, $requestarc);
     while ($row = mysqli_fetch_object($resultarc)) {
-        if ($row->post_date != '0000-00-00 00:00:00') {
+        if ($row->post_date !== '0000-00-00 00:00:00') {
             echo "<a href=\"$archive_link_p" . $row->ID . '">';
             $arc_title = stripslashes($row->post_title);
             if ($arc_title) {
@@ -115,7 +115,3 @@ if ($archive_mode == 'monthly') {
         }
     }
 }
-
-#echo $querycount."<br />\n";
-#timer_stop(1,8);
-?>
