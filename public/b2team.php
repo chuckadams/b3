@@ -1,22 +1,14 @@
 <?php
+
+/** @noinspection DuplicatedCode */
+
 $title = "Team management";
 /* <Team> */
 
-$b2varstoreset = ['action', 'standalone', 'redirect', 'profile'];
-for ($i = 0; $i < count($b2varstoreset); $i += 1) {
-    $b2var = $b2varstoreset[$i];
-    if (!isset($$b2var)) {
-        if (empty($_POST["$b2var"])) {
-            if (empty($_GET["$b2var"])) {
-                $$b2var = '';
-            } else {
-                $$b2var = $_GET["$b2var"];
-            }
-        } else {
-            $$b2var = $_POST["$b2var"];
-        }
-    }
-}
+$action = $_REQUEST["action"] ?? '';
+$standalone = $_REQUEST["standalone"] ?? '';
+$redirect = $_REQUEST["redirect"] ?? '';
+$profile = $_REQUEST["profile"] ?? '';
 
 switch ($action) {
     case "promote":
@@ -38,9 +30,9 @@ switch ($action) {
             die("Can't change the level of an user whose level is higher than yours.");
         }
 
-        if ($prom == "up") {
+        if ($prom === "up") {
             $sql = "UPDATE $tableusers SET user_level=user_level+1 WHERE ID = $id";
-        } elseif ($prom == "down") {
+        } elseif ($prom === "down") {
             $sql = "UPDATE $tableusers SET user_level=user_level-1 WHERE ID = $id";
         }
         $result = mysqli_query($connexion, $sql) or die("Couldn't change $id's level.");
@@ -82,7 +74,7 @@ switch ($action) {
         $standalone = 0;
         include("./b2header.php");
         ?>
-        <?php echo $blankline . $tabletop ?>
+        <?= $blankline . $tabletop ?>
       <table cellspacing="0" cellpadding="5" border="0" width="100%">
         <tr>
           <td>Click on an user's login name to see his/her complete Profile.<br/>
@@ -90,9 +82,9 @@ switch ($action) {
           </td>
         </tr>
       </table>
-        <?php echo $tablebottom ?>
+        <?= $tablebottom ?>
       <br/>
-        <?php echo $tabletop ?>
+        <?= $tabletop ?>
       <p><b>Active users</b>
       <table cellpadding="5" cellspacing="0">
         <tr>
@@ -114,22 +106,22 @@ switch ($action) {
               echo "<tr>\n<!--" . $user_data["user_login"] . "-->\n";
               $email = $user_data["user_email"];
               $url = $user_data["user_url"];
-              $bg1 = ($user_data["user_login"] == $user_login) ? "style=\"background-image: url('b2-img/b2button.gif');\"" : "bgcolor=\"#dddddd\"";
-              $bg2 = ($user_data["user_login"] == $user_login) ? "style=\"background-image: url('b2-img/b2button.gif');\"" : "bgcolor=\"#eeeeee\"";
+              $bg1 = ($user_data["user_login"] === $user_login) ? "style=\"background-image: url('b2-img/b2button.gif');\"" : "bgcolor=\"#dddddd\"";
+              $bg2 = ($user_data["user_login"] === $user_login) ? "style=\"background-image: url('b2-img/b2button.gif');\"" : "bgcolor=\"#eeeeee\"";
               echo "<td $bg1>" . $user_data["ID"] . "</td>\n";
               echo "<td $bg2><b><a href=\"javascript:profile(" . $user_data["ID"] . ")\">" . $user_data["user_nickname"] . "</a></b></td>\n";
               echo "<td $bg1>" . $user_data["user_firstname"] . "&nbsp;" . $user_data["user_lastname"] . "</td>\n";
               echo "<td $bg2>&nbsp;<a href=\"mailto:$email\" title=\"e-mail: $email\"><img src=\"b2-img/email.gif\" border=\"0\" alt=\"e-mail: $email\" /></a>&nbsp;</td>";
               echo "<td $bg1>&nbsp;";
-              if (($user_data["user_url"] != "http://") and ($user_data["user_url"] != "")) {
+              if (($user_data["user_url"] !== "http://") && ($user_data["user_url"])) {
                   echo "<a href=\"$url\" target=\"_blank\" title=\"website: $url\"><img src=\"b2-img/url.gif\" border=\"0\" alt=\"website: $url\" /></a>&nbsp;";
               }
               echo "</td>\n";
               echo "<td $bg2>" . $user_data["user_level"];
-              if (($user_level >= 2) and ($user_level > ($user_data["user_level"] + 1))) {
+              if (($user_level >= 2) && ($user_level > ($user_data["user_level"] + 1))) {
                   echo " <a href=\"b2team.php?action=promote&id=" . $user_data["ID"] . "&prom=up\">+</a> ";
               }
-              if (($user_level >= 2) and ($user_level > $user_data["user_level"]) and ($user_data["user_level"] > 0)) {
+              if (($user_level >= 2) && ($user_level > $user_data["user_level"]) && ($user_data["user_level"] > 0)) {
                   echo " <a href=\"b2team.php?action=promote&id=" . $user_data["ID"] . "&prom=down\">-</a> ";
               }
               echo "</td>\n";
@@ -142,15 +134,14 @@ switch ($action) {
           ?>
 
       </table>
-      </p>
-        <?php echo $tablebottom ?>
+        <?= $tablebottom ?>
         <?php
         $request = " SELECT * FROM $tableusers WHERE user_level=0 ORDER BY ID";
         $result = mysqli_query($connexion, $request);
         if (mysqli_num_rows($result)) {
             ?>
           <br/>
-            <?php echo $tabletop ?>
+            <?= $tabletop ?>
           <p><b>Inactive users (level 0)</b>
           <table cellpadding="5" cellspacing="0">
             <tr>
@@ -170,8 +161,8 @@ switch ($action) {
                   echo "<tr>\n<!--" . $user_data["user_login"] . "-->\n";
                   $email = $user_data["user_email"];
                   $url = $user_data["user_url"];
-                  $bg1 = ($user_data["user_login"] == $user_login) ? "style=\"background-image: url('b2-img/b2button.gif');\"" : "bgcolor=\"#dddddd\"";
-                  $bg2 = ($user_data["user_login"] == $user_login) ? "style=\"background-image: url('b2-img/b2button.gif');\"" : "bgcolor=\"#eeeeee\"";
+                  $bg1 = ($user_data["user_login"] === $user_login) ? "style=\"background-image: url('b2-img/b2button.gif');\"" : "bgcolor=\"#dddddd\"";
+                  $bg2 = ($user_data["user_login"] === $user_login) ? "style=\"background-image: url('b2-img/b2button.gif');\"" : "bgcolor=\"#eeeeee\"";
                   echo "<td $bg1>" . $user_data["ID"] . "</td>\n";
                   echo "<td $bg2><b><a href=\"javascript:profile(" . $user_data["ID"] . ")\">" . $user_data["user_nickname"] . "</a></b></td>\n";
                   echo "<td $bg1>" . $user_data["user_firstname"] . "&nbsp;" . $user_data["user_lastname"] . "</td>\n";
@@ -183,7 +174,7 @@ switch ($action) {
                       . antispambot($email)
                       . "\" /></a>&nbsp;</td>";
                   echo "<td $bg2>&nbsp;";
-                  if (($user_data["user_url"] != "http://") and ($user_data["user_url"] != "")) {
+                  if (($user_data["user_url"] !== "http://") && ($user_data["user_url"])) {
                       echo "<a href=\"$url\" target=\"_blank\" title=\"website: $url\"><img src=\"b2-img/url.gif\" border=\"0\" alt=\"website: $url\" /></a>&nbsp;";
                   }
                   echo "</td>\n";
@@ -204,17 +195,16 @@ switch ($action) {
               ?>
 
           </table>
-          </p>
-            <?php echo $tablebottom ?>
+            <?= $tablebottom ?>
 
             <?php
         }
         if ($user_level >= 3) { ?>
           <br/>
-            <?php echo $tabletop ?>
+            <?= $tabletop ?>
           To delete an user, bring his/her level to zero, then click on the red cross.<br/>
           <b>Warning:</b> deleting an user also deletes all posts made by this user.
-            <?php echo $tablebottom ?>
+            <?= $tablebottom ?>
             <?php
         }
 
