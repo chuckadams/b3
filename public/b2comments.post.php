@@ -1,12 +1,14 @@
 <?php
 
+/** @noinspection DuplicatedCode */
+
 # if you want to change the paths here, remember to put your new path BEFORE $b2inc,
 #  like this: "b2/$b2inc/b2functions.php"
 
-require("b2config.php");
-require("$b2inc/b2template.functions.php");
-include("$b2inc/b2vars.php");
-include("$b2inc/b2functions.php");
+require "b2config.php";
+require "$b2inc/b2template.functions.php";
+include "$b2inc/b2vars.php";
+include "$b2inc/b2functions.php";
 
 dbconnect();
 
@@ -34,11 +36,11 @@ $original_comment = $comment;
 $comment_autobr = $_POST["comment_autobr"];
 $comment_post_ID = $_POST["comment_post_ID"];
 
-if ($require_name_email && ($email == "" || $email == "@" || $author == "" || $author == "name")) { //original fix by Dodo, and then Drinyth
+if ($require_name_email && (!$email || $email === "@" || $author == "" || $author === "name")) { //original fix by Dodo, and then Drinyth
     echo "Error: please fill the required fields (name, email)";
     exit;
 }
-if ($comment == "comment" || $comment == "") {
+if ($comment === "comment" || $comment == "") {
     echo "Error: please type a comment";
     exit;
 }
@@ -46,7 +48,7 @@ if ($comment == "comment" || $comment == "") {
 $user_ip = $_SERVER['REMOTE_ADDR'];
 $user_domain = gethostbyaddr($user_ip);
 $time_difference = get_settings("time_difference");
-$now = date("Y-m-d H:i:s", (time() + ($time_difference * 3600)));
+$now = date("Y-m-d H:i:s", time() + $time_difference * 3600);
 
 $author = strip_tags($author);
 $email = strip_tags($email);
@@ -54,7 +56,7 @@ if (strlen($email) < 6) {
     $email = '';
 }
 $url = trim(strip_tags($url));
-$url = ((!stristr($url, '://')) && ($url != '')) ? 'http://' . $url : $url;
+$url = !str_contains($url, '://') && $url ? 'http://' . $url : $url;
 if (strlen($url) < 7) {
     $url = '';
 }
@@ -80,9 +82,9 @@ if (!empty($result)) {
         $then = $row->comment_date;
     }
     $then ??= '1970-01-01 00:00:00';
-    $time_lastcomment = mysql2date("U", "$then");
-    $time_newcomment = mysql2date("U", "$now");
-    if (($time_newcomment - $time_lastcomment) < 30) {
+    $time_lastcomment = mysql2date("U", $then);
+    $time_newcomment = mysql2date("U", $now);
+    if ($time_newcomment - $time_lastcomment < 30) {
         $ok = 0;
     }
 }
@@ -120,13 +122,13 @@ if ($ok) {
         $recipient = $authordata["user_email"];
         $subject = "comment on post #$comment_post_ID \"" . $postdata["Title"] . "\"";
 
-        @mail($recipient, $subject, $notify_message, "From: b2@" . $_SERVER['SERVER_NAME'] . "\r\n" . "X-Mailer: b2 $b2_version - PHP/" . phpversion());
+        @mail($recipient, $subject, $notify_message, "From: b2@" . $_SERVER['SERVER_NAME'] . "\r\n" . "X-Mailer: b2 $b2_version - PHP/" . PHP_VERSION);
     }
 
-    if ($email == "") {
+    if (!$email) {
         $email = " "; // this to make sure a cookie is set for 'no email'
     }
-    if ($url == "") {
+    if (!$url) {
         $url = " "; // this to make sure a cookie is set for 'no url'
     }
     setcookie("comment_author", $author, time() + 30000000);
@@ -137,7 +139,7 @@ if ($ok) {
     header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
     header("Cache-Control: no-cache, must-revalidate");
     header("Pragma: no-cache");
-    $location = (!empty($_POST['redirect_to'])) ? $_POST['redirect_to'] : $_SERVER["HTTP_REFERER"];
+    $location = !empty($_POST['redirect_to']) ? $_POST['redirect_to'] : $_SERVER["HTTP_REFERER"];
     if ($is_IIS) {
         header("Refresh: 0;url=$location");
     } else {
@@ -146,5 +148,3 @@ if ($ok) {
 } else {
     die("Sorry, you can only post a new comment every 30 seconds");
 }
-
-?>
